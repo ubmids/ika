@@ -3,7 +3,13 @@ __pycache__/
 *.pyc
 *.egg-info/
 .pytest_cache/
-data/*.npz
+
+# Datasets and weights stay out of git. The HaGRID subset is 384 MB of
+# someone else's CC BY-SA data, the landmarker is a Google release, and
+# checkpoints are reproducible from the code. The README says how to fetch
+# each one.
+data/
 checkpoints/
 models/*.task
-v.json
+*.zip
+*.npz
