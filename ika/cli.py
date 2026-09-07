@@ -176,6 +176,52 @@ def _compare(args):
     return 0
 
 
+def _tell(args):
+    """Can we find a habit, and call the next move in time to use it?"""
+    import numpy as np
+
+    from .tell import Fighter, Habit, lead_times, mine, summarise
+    from .tell.actions import names
+
+    habits = (
+        Habit(("jab", "jab"), "drop_guard", 0.70),
+        Habit(("low_kick",), "step_back", 0.45),
+    )
+
+    if args.null:
+        print(f"\n  {args.trials} fighters with NO habits. Anything found is invented.\n")
+        counts = [len(mine(names(Fighter(habits=(), seed=1000 + s).sequence(args.actions))))
+                  for s in range(args.trials)]
+        counts = np.array(counts)
+        print(f"    a false find in {100 * (counts > 0).mean():.0f}% of fighters")
+        print(f"    {counts.mean():.2f} false finds per fighter on average\n")
+        return 0
+
+    train = Fighter(habits=habits, seed=args.seed).sequence(args.actions)
+    found = mine(names(train))
+    print(f"\n  planted {len(habits)} habits, learned from {args.actions} past actions")
+    print(f"  the miner reports {len(found)}:\n")
+    for finding in found:
+        print(f"    {finding.describe()}")
+
+    unseen = Fighter(habits=habits, seed=args.seed + 92).sequence(args.actions // 2)
+    print(f"\n  replayed against {len(unseen)} unseen actions "
+          f"({unseen[-1].end / 60:.0f} min of action)\n")
+    print(f"  {'recognition delay':>18}  {'right':>6}  {'in time':>8}  "
+          f"{'useful':>7}  {'median lead':>12}")
+    for cost in (0.0, 0.10, 0.25, 0.40):
+        result = summarise(lead_times(unseen, found, detection_cost=cost))
+        print(f"  {cost * 1000:>15.0f} ms  {result['precision']:>5.0%}  "
+              f"{result['in_time']:>7.0%}  {result['useful']:>6.0%}  "
+              f"{result['median_lead'] * 1000:>9.0f} ms")
+
+    gaps = np.array([unseen[i + 1].start - unseen[i].end for i in range(len(unseen) - 1)])
+    print(f"\n  the window being shot into: {np.median(gaps) * 1000:.0f} ms median "
+          f"between one action ending and the next starting")
+    print("  so recognition delay, not prediction quality, is the constraint.\n")
+    return 0
+
+
 def _bindings(_args):
     print("\n  gesture bindings\n")
     for line in control.describe_bindings():
@@ -249,6 +295,14 @@ def build_parser() -> argparse.ArgumentParser:
     cmp.add_argument("--epochs-mlp", type=int, default=300, dest="epochs_mlp")
     cmp.add_argument("--seed", type=int, default=0)
     cmp.set_defaults(func=_compare)
+
+    tl = sub.add_parser("tell", help="can we find a habit and call the next move in time?")
+    tl.add_argument("--actions", type=int, default=2000, help="length of the history")
+    tl.add_argument("--null", action="store_true",
+                    help="run against fighters with no habits, to count invented ones")
+    tl.add_argument("--trials", type=int, default=30)
+    tl.add_argument("--seed", type=int, default=7)
+    tl.set_defaults(func=_tell)
 
     sub.add_parser("bindings", help="show what each gesture does").set_defaults(func=_bindings)
     return parser

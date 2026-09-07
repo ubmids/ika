@@ -16,8 +16,9 @@ ika train data/session.npz     # a model that knows your hands
 ika live --live                # actually drive the machine
 ika compare                    # landmarks vs a fine-tuned backbone, on real data
 ika train-dynamic              # the movement classifier (swipes, snap)
+ika tell                       # can we find a habit and call the next move?
 ika bindings                   # what each gesture does
-pytest -q                      # 92 tests, no camera, no network
+pytest -q                      # 125 tests, no camera, no network
 ```
 
 `ika live` is a dry run unless you pass `--live`. Everything is visible and
@@ -237,6 +238,84 @@ never lost work.
   every improvement to `features.py` threw away all the recording work.
 - **macOS needs Accessibility permission** for `--live` (System Settings,
   Privacy and Security, Accessibility). pynput fails silently without it.
+
+## Reading the tell: can we call the next move in time?
+
+`ika tell` runs the experiment that decides whether the interesting product is
+possible. The hand lane answers "what is this doing". This answers "what will
+it do next", which is a different problem.
+
+Movement becomes a stream of actions, the stream is mined for conditional
+habits, and every habit is then judged on the only measure that matters: how
+long before the move lands could we have said it.
+
+**Finding the habit works.** Planting "after jab, jab: drop guard, 70% of the
+time" in a synthetic fighter and mining 3,000 actions recovers it at 73%, 11.5x
+above the base rate.
+
+**It mostly does not invent them.** Over 30 fighters with no habits at all, a
+false find turns up in 15% of them, 0.20 per fighter. That number is the real
+headline, because a miner that reports tells someone does not have is worse
+than no miner: a fighter will act on it. Two defences get it there. A binomial
+tail per candidate, computed in log space since the naive form overflows at
+these counts, and a Benjamini-Hochberg correction for having tested thousands
+of contexts. Bonferroni would be far too strict, throwing away real habits to
+avoid a single mistake; what you actually want is "most of what you tell me is
+true", which is the false-discovery rate.
+
+**One habit must produce one finding.** A single planted habit generates a
+family of overlapping candidates: the same habit with irrelevant prefixes
+("after cross, jab, jab") and diluted shorter versions ("after jab", at a third
+of the strength). The first cut reported four findings for one habit. Both
+directions are junk for different reasons and each gets its own test: a longer
+context survives only if it beats its own suffix by more than chance, and a
+shorter one is dropped when a longer kept context ending with it predicts the
+same outcome far more strongly.
+
+**How much history you need:**
+
+| actions observed | habit found |
+|---|---|
+| 500 | 78% to 95% |
+| 1,500 | 100% |
+| 3,000 | 98% to 100% |
+
+At roughly 1.5 s per action, 1,500 actions is about half an hour of continuous
+action. So this reads a fighter across a bout or from footage of earlier ones,
+not from a standing start in round one.
+
+### The verdict, and it is not the one I expected
+
+Replayed against unseen action from the same fighter:
+
+| recognition delay | right | in time | useful | median lead |
+|---|---|---|---|---|
+| 0 ms | 58% | 100% | 58% | 281 ms |
+| 100 ms | 58% | 88% | 51% | 181 ms |
+| **250 ms** | 58% | 62% | **39%** | **31 ms** |
+| 400 ms | 58% | 12% | 6% | -119 ms |
+
+The prediction is good: 58% precision against base rates of 6% to 11%, so the
+reads are five to eleven times better than chance, and the accuracy does not
+change with delay because the prediction is the same either way.
+
+**The bottleneck is recognition latency, and it is brutal.** The median gap
+between one action ending and the next beginning is 263 ms, and the 10th
+percentile is 93 ms. That gap is the entire window. Our own gesture pipeline
+takes 250 ms to recognise something, which eats almost all of it, and at 400 ms
+the median warning arrives *after* the punch.
+
+So the whole engineering problem is getting recognition under about 100 ms, and
+the obvious route is not a faster model. It is refusing to wait for the action
+to finish: commit early from the first third of a movement instead of
+confirming a completed one. The 250 ms figure is mostly dwell and smoothing,
+which exist to confirm gestures, and confirmation is exactly what prediction
+cannot afford.
+
+Every figure above is synthetic and the fighters are a crude model of a real
+one. What the experiment establishes is the *shape* of the problem: habits are
+findable, prediction beats chance comfortably, and latency is where this lives
+or dies.
 
 ## Not done yet
 
