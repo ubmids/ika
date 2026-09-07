@@ -9,8 +9,8 @@ data fixes that.
 import numpy as np
 import pytest
 
-from owo import features, synth
-from owo.schema import THUMB_TIP, INDEX_TIP
+from ika import features, synth
+from ika.schema import THUMB_TIP, INDEX_TIP
 
 CANON = slice(0, 63)
 BASIS = slice(63, 72)

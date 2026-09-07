@@ -30,7 +30,7 @@ def _train(args):
         paths = [Path(p) for p in args.data]
         missing = [p for p in paths if not p.exists()]
         if missing:
-            print(f"  no such dataset: {missing[0]}\n  record one first: owo record")
+            print(f"  no such dataset: {missing[0]}\n  record one first: ika record")
             return 1
         data = Dataset.concat([Dataset.load(p) for p in paths])
         print(f"  {len(data)} recorded samples from {len(paths)} session(s)")
@@ -48,7 +48,7 @@ def _live(args):
     from .app import run_live
 
     if not Path(args.checkpoint).exists():
-        print(f"  no model at {args.checkpoint}\n  train one first: owo train --synthetic")
+        print(f"  no model at {args.checkpoint}\n  train one first: ika train --synthetic")
         return 1
     if args.live:
         print(
@@ -74,7 +74,7 @@ def _bindings(_args):
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="owo", description="Control a computer with bare hands.")
+    parser = argparse.ArgumentParser(prog="ika", description="Control a computer with bare hands.")
     sub = parser.add_subparsers(dest="command", required=True)
 
     rec = sub.add_parser("record", help="record your own gestures")

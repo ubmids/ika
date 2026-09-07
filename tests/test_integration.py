@@ -12,10 +12,10 @@ from a webcam.
 import numpy as np
 import pytest
 
-from owo import control, features, synth
-from owo.dataset import synthetic
-from owo.machine import GestureMachine
-from owo.train import train
+from ika import control, features, synth
+from ika.dataset import synthetic
+from ika.machine import GestureMachine
+from ika.train import train
 
 
 @pytest.fixture(scope="module")
@@ -119,7 +119,7 @@ def test_nothing_fires_while_disengaged(trained):
 def test_a_checkpoint_survives_a_round_trip(tmp_path, trained):
     """Saving and loading must not change a single prediction, or the model you
     ship is not the model you measured."""
-    from owo.model import GestureNet
+    from ika.model import GestureNet
 
     path = tmp_path / "model.pt"
     trained.save(path)

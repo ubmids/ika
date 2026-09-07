@@ -1,21 +1,24 @@
-# owo — control a computer with bare hands
+# ika — control a computer with bare hands
 
-ọwọ́, Yoruba for hand. Webcam in, cursor and keystrokes out. No gloves, no
+ìka, Yoruba for finger. Webcam in, cursor and keystrokes out. No gloves, no
 sensors, no cloud.
+
+Named for the finger rather than the hand because ọwọ́ (hand) and owó (money)
+collide in ASCII, and `~/Desktop/owo` was already a finance app.
 
 ```bash
 pip install -e '.[dev]'
 
-owo train --synthetic          # a model from invented hands, no recording needed
-owo live                       # webcam, dry run: prints what it would do
-owo record                     # capture your own gestures
-owo train data/session.npz     # a model that knows your hands
-owo live --live                # actually drive the machine
-owo bindings                   # what each gesture does
+ika train --synthetic          # a model from invented hands, no recording needed
+ika live                       # webcam, dry run: prints what it would do
+ika record                     # capture your own gestures
+ika train data/session.npz     # a model that knows your hands
+ika live --live                # actually drive the machine
+ika bindings                   # what each gesture does
 pytest -q                      # 66 tests, no camera, no network
 ```
 
-`owo live` is a dry run unless you pass `--live`. Everything is visible and
+`ika live` is a dry run unless you pass `--live`. Everything is visible and
 nothing is sent to the OS. That is the mode to develop in, because a gesture
 classifier wired to a keyboard is a program that types whatever it
 hallucinates.
@@ -153,4 +156,4 @@ never lost work.
   against the landmark classifier. Landmarks should win on speed and probably
   on accuracy, and being able to say so with numbers is the point.
 - Nothing has met a real hand yet beyond the landmarker benchmark. Every
-  accuracy figure above is synthetic, and `owo record` exists to fix that.
+  accuracy figure above is synthetic, and `ika record` exists to fix that.

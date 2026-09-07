@@ -8,7 +8,7 @@ reach for my coffee".
 import numpy as np
 import pytest
 
-from owo.machine import GestureMachine
+from ika.machine import GestureMachine
 
 CLASSES = ["rest", "open_palm", "fist", "point", "peace"]
 

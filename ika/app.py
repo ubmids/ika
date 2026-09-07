@@ -132,7 +132,7 @@ def run_live(
 
             _hud(bgr, model, probabilities, machine, gesture, confidence, fps,
                  live_control, pinched, controller, width, height)
-            cv2.imshow("owo", bgr)
+            cv2.imshow("ika", bgr)
 
             key = cv2.waitKey(1) & 0xFF
             if key == ord("q"):

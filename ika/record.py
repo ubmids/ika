@@ -112,7 +112,7 @@ def run_recorder(
                     "space record   tab next   z undo   s save   q quit",
                 ],
             )
-            cv2.imshow("owo recorder", bgr)
+            cv2.imshow("ika recorder", bgr)
 
             key = cv2.waitKey(1) & 0xFF
             if key == ord("q"):

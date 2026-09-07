@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "owo"
+name = "ika"
 version = "0.1.0"
 description = "Control a computer with bare hands"
 readme = "README.md"
@@ -27,10 +27,10 @@ dependencies = [
 dev = ["pytest>=8.0"]
 
 [project.scripts]
-owo = "owo.cli:main"
+ika = "ika.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["owo*"]
+include = ["ika*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

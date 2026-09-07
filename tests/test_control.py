@@ -2,7 +2,7 @@
 
 import pytest
 
-from owo import control
+from ika import control
 
 
 def test_dry_run_is_the_default():

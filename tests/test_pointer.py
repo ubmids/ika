@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from owo.pointer import CursorSmoother, map_to_screen
+from ika.pointer import CursorSmoother, map_to_screen
 
 
 def test_the_centre_of_the_frame_is_the_centre_of_the_screen():
