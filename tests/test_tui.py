@@ -114,3 +114,46 @@ def test_the_drawing_is_mirrored():
     rows = c.text_rows()
     columns = [i for row in rows for i, ch in enumerate(row) if ch != " "]
     assert min(columns) > 20, "a hand at x=0.15 should draw on the right"
+
+
+def test_the_picture_fills_the_terminal():
+    """It was capped at 78x14 regardless of window size, which wasted most of
+    a large terminal. It should grow with the space available."""
+    from ika.tui import _box_size, _text_rows
+
+    text = _text_rows({"a": 1, "b": 2}, [])
+    small_w, small_h = _box_size(100, 46, 4 / 3, text)
+    large_w, large_h = _box_size(250, 80, 4 / 3, text)
+    assert large_w > small_w * 2 and large_h > small_h * 2
+
+
+def test_the_picture_is_not_stretched():
+    """A braille cell is 2 dots wide by 4 tall, so a square block of
+    characters is a tall thin pixel grid. Ignoring that squashes the hand
+    vertically by half."""
+    from ika.tui import _box_size, _text_rows
+
+    for aspect in (4 / 3, 16 / 9):
+        for term in ((250, 80), (120, 50), (400, 100)):
+            cols, rows = _box_size(*term, aspect, _text_rows({"a": 1}, []))
+            dots = ((cols - 2) * 2) / ((rows - 2) * 4)
+            assert abs(dots - aspect) / aspect < 0.06, (term, aspect, dots)
+
+
+def test_the_picture_leaves_room_for_the_readouts():
+    """The numbers below are the useful half; the picture must not evict them."""
+    from ika.tui import _box_size, _text_rows
+
+    for hands in (1, 2):
+        states = {f"h{i}": None for i in range(hands)}
+        text = _text_rows(states, ["a", "b"])
+        for term_h in (24, 46, 80):
+            _, rows = _box_size(250, term_h, 4 / 3, text)
+            assert rows + text <= term_h + 4, (hands, term_h, rows, text)
+
+
+def test_a_tiny_terminal_still_produces_a_usable_box():
+    from ika.tui import _box_size
+
+    cols, rows = _box_size(40, 12, 4 / 3, 15)
+    assert cols >= 4 and rows >= 4

@@ -102,7 +102,8 @@ def run_live(
         + "\n  hold open_palm to engage, q to quit\n"
     )
 
-    with HandTracker(max_hands=1) as tracker:
+    with HandTracker(max_hands=2, detection_confidence=0.3,
+                     tracking_confidence=0.3) as tracker:
         while True:
             ok, bgr = capture.read()
             if not ok:
@@ -115,6 +116,8 @@ def run_live(
 
             now = time.time()
             hands = tracker(rgb, int((now - started) * 1000))
+            for other in hands:
+                draw.hand(bgr, other.image, colour=(150, 150, 150), thickness=1)
             hand = max(hands, key=lambda h: h.score) if hands else None
 
             probabilities = None

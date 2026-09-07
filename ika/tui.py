@@ -15,6 +15,7 @@ the system, and the cursor follows whichever hand is actually pointing.
 from __future__ import annotations
 
 import curses
+import math
 import time
 from pathlib import Path
 
@@ -27,7 +28,11 @@ from .hands import HandTracker
 from .machine import GestureMachine
 from .model import GestureNet
 from .pointer import CursorSmoother, map_to_screen, screen_size
-from .schema import CONNECTIONS, INDEX_TIP, TIPS
+from .schema import (INDEX_DIP, INDEX_MCP, INDEX_PIP, INDEX_TIP, MIDDLE_DIP,
+                     MIDDLE_MCP, MIDDLE_PIP, MIDDLE_TIP, PINKY_DIP, PINKY_MCP,
+                     PINKY_PIP, PINKY_TIP, RING_DIP, RING_MCP, RING_PIP,
+                     RING_TIP, THUMB_CMC, THUMB_IP, THUMB_MCP, THUMB_TIP,
+                     TIPS, WRIST)
 
 PINCH_CLOSE = 0.38
 PINCH_OPEN = 0.55
@@ -53,21 +58,107 @@ def meter(value: float, width: int) -> str:
     return ("▓" * filled + "░" * (width - filled))[:width]
 
 
-def draw_hands(canvas: Braille, hands) -> None:
-    """Both hands, mirrored so the drawing moves the way you do."""
-    canvas.clear()
-    for hand in hands:
+PALM_LAYER, BONE_LAYER, TIP_LAYER = 1, 2, 3
+
+# Knuckle row plus the wrist, in order around the palm, so it fills as a
+# convex shape rather than a bow tie.
+_PALM_OUTLINE = (WRIST, PINKY_MCP, RING_MCP, MIDDLE_MCP, INDEX_MCP, THUMB_CMC)
+_CHAINS = (
+    (THUMB_CMC, THUMB_MCP, THUMB_IP, THUMB_TIP),
+    (INDEX_MCP, INDEX_PIP, INDEX_DIP, INDEX_TIP),
+    (MIDDLE_MCP, MIDDLE_PIP, MIDDLE_DIP, MIDDLE_TIP),
+    (RING_MCP, RING_PIP, RING_DIP, RING_TIP),
+    (PINKY_MCP, PINKY_PIP, PINKY_DIP, PINKY_TIP),
+)
+
+
+class HandRenderer:
+    """Draws hands, and remembers them between frames so they stop shaking.
+
+    Two things separate this from the stick figure it replaces.
+
+    **Smoothing.** Landmark estimates wobble a dot or two every frame. On a
+    still hand that reads as static, and it was most of why the old drawing
+    looked scratchy. An exponential average over positions costs nothing and
+    is the single biggest improvement here. It is presentation only: the
+    classifier still sees the raw landmarks, because smoothing its input would
+    add lag to every decision.
+
+    **Solidity.** A filled palm with tapered fingers reads as a hand; lines
+    between joints read as a bundle of sticks. Widths scale with how large the
+    hand appears, so it looks right near the camera and far from it.
+    """
+
+    def __init__(self, smoothing: float = 0.55):
+        self.smoothing = smoothing
+        self._previous: dict[str, np.ndarray] = {}
+
+    def forget(self, label: str) -> None:
+        self._previous.pop(label, None)
+
+    def draw(self, canvas: Braille, hands) -> None:
+        canvas.clear()
+        live = set()
+        for hand in hands:
+            label = getattr(hand, "label", "?")
+            live.add(label)
+            marks = np.asarray(hand.image, dtype=np.float64)
+            previous = self._previous.get(label)
+            if previous is not None and previous.shape == marks.shape:
+                k = self.smoothing
+                marks = k * previous + (1.0 - k) * marks
+            self._previous[label] = marks
+            self._draw_one(canvas, marks)
+        for label in list(self._previous):
+            if label not in live:
+                self.forget(label)
+
+    def _draw_one(self, canvas: Braille, marks: np.ndarray) -> None:
+        # Mirrored, so moving your hand right moves the drawing right.
         points = [
-            (
-                int((1.0 - x) * (canvas.width - 1)),
-                int(y * (canvas.height - 1)),
-            )
-            for x, y, _ in hand.image
+            ((1.0 - x) * (canvas.width - 1), y * (canvas.height - 1))
+            for x, y, _ in marks
         ]
-        for a, b in CONNECTIONS:
-            canvas.line(*points[a], *points[b])
+
+        span = math.hypot(
+            points[MIDDLE_MCP][0] - points[WRIST][0],
+            points[MIDDLE_MCP][1] - points[WRIST][1],
+        )
+        # Line art, not silhouette. At anatomically correct width a finger is
+        # ~19% of palm length, which means adjacent fingers *touch* at the
+        # knuckles, and in a dot matrix with no outlines they merge into one
+        # solid mitten. Drawing them at about half that width leaves a visible
+        # gap, and the hand reads far better as a drawing than as a shape.
+        base = max(0.6, span * 0.045)    # finger half-width at the knuckle
+        tip = max(0.4, span * 0.025)     # and at the fingertip
+
+        # The palm is outlined for the same reason: filled, it swallows the
+        # fingers that grow out of it.
+        for i in range(len(_PALM_OUTLINE)):
+            a = points[_PALM_OUTLINE[i]]
+            b = points[_PALM_OUTLINE[(i + 1) % len(_PALM_OUTLINE)]]
+            canvas.stroke(*a, *b, 0.7, 0.7, layer=PALM_LAYER)
+
+        for chain in _CHAINS:
+            for i in range(len(chain) - 1):
+                a, b = chain[i], chain[i + 1]
+                # Taper along the whole finger, not per segment, so the joints
+                # do not step in width.
+                start = base + (tip - base) * (i / (len(chain) - 1))
+                end = base + (tip - base) * ((i + 1) / (len(chain) - 1))
+                canvas.stroke(*points[a], *points[b], start, end, layer=BONE_LAYER)
+
         for index in TIPS:
-            canvas.dot(*points[index], size=2)
+            canvas.dot(int(points[index][0]), int(points[index][1]),
+                       max(1, int(round(tip))), layer=TIP_LAYER)
+
+
+_renderer = HandRenderer()
+
+
+def draw_hands(canvas: Braille, hands) -> None:
+    """Module-level entry point, kept for the tests and simple callers."""
+    _renderer.draw(canvas, hands)
 
 
 class HandState:
@@ -135,6 +226,7 @@ def _loop(stdscr, model, camera, width, live_control, threshold, dwell, smoothin
     frames, fps = 0, 0.0
     canvas: Braille | None = None
     canvas_size = (0, 0)
+    renderer = HandRenderer()
 
     with HandTracker(max_hands=max_hands) as tracker:
         while True:
@@ -211,15 +303,14 @@ def _loop(stdscr, model, camera, width, live_control, threshold, dwell, smoothin
                 fps = frames / (now - started)
 
             height, term_w = stdscr.getmaxyx()
-            box_w = max(20, min(term_w - 4, 78))
-            # Budget the text first and give the picture what is left. Sizing
-            # the box by a fixed guess pushed the readouts off the bottom of a
-            # 24-row terminal, hiding the half that is actually useful.
-            box_h = max(4, min(height - _text_rows(states, fired_log), 14))
+            box_w, box_h = _box_size(
+                term_w, height, bgr.shape[1] / bgr.shape[0],
+                _text_rows(states, fired_log),
+            )
             if canvas is None or canvas_size != (box_w, box_h):
                 canvas = Braille(box_w - 2, box_h - 2)
                 canvas_size = (box_w, box_h)
-            draw_hands(canvas, hands)
+            renderer.draw(canvas, hands)
 
             stdscr.erase()
             _render(stdscr, canvas, box_w, box_h, hands, states, engaged, fps,
@@ -240,6 +331,30 @@ def _loop(stdscr, model, camera, width, live_control, threshold, dwell, smoothin
         if state.pinched:
             controller.press_mouse(False)
     capture.release()
+
+
+def _box_size(term_w: int, term_h: int, aspect: float, text_rows: int) -> tuple[int, int]:
+    """Fill the terminal, without stretching the hand.
+
+    Two things to respect. The readouts below need their rows, so the picture
+    gets what is left. And a braille cell is 2 dots wide by 4 tall, so a square
+    block of characters is a *tall thin* pixel grid: drawing a 4:3 camera frame
+    into it without correcting would squash the hand vertically by half.
+
+    Solving `(cols * 2) / (rows * 4) == aspect` gives `cols = rows * 2 *
+    aspect`, so the picture grows until it runs out of either width or height.
+    Earlier this was capped at 78 by 14 regardless of terminal size, which
+    wasted most of a large window.
+    """
+    available_rows = max(4, term_h - text_rows)
+    available_cols = max(18, term_w - 4)
+
+    rows = available_rows
+    cols = int(rows * 2 * aspect)
+    if cols > available_cols:                 # width-limited instead
+        cols = available_cols
+        rows = max(4, int(cols / (2 * aspect)))
+    return cols + 2, rows + 2
 
 
 def _text_rows(states: dict, fired_log: list) -> int:
@@ -273,11 +388,14 @@ def _render(stdscr, canvas, box_w, box_h, hands, states, engaged, fps,
     put(0, max(18, box_w + 2 - len(right)), right, RED if live_control else DIM)
 
     put(1, 2, "┌" + "─" * (box_w - 2) + "┐", DIM)
-    for i, line in enumerate(canvas.text_rows()):
+    layer_attr = {1: CYAN | DIM, 2: CYAN, 3: GREEN | curses.A_BOLD}
+    rows = canvas.runs()
+    for i, row in enumerate(rows):
         put(2 + i, 2, "│", DIM)
-        put(2 + i, 3, line, CYAN)
+        for column, text, layer in row:
+            put(2 + i, 3 + column, text, layer_attr.get(layer, CYAN))
         put(2 + i, 2 + box_w - 1, "│", DIM)
-    bottom = 2 + len(canvas.text_rows())
+    bottom = 2 + len(rows)
     put(bottom, 2, "└" + "─" * (box_w - 2) + "┘", DIM)
 
     row = bottom + 1
@@ -297,15 +415,16 @@ def _render(stdscr, canvas, box_w, box_h, hands, states, engaged, fps,
             row += 1
             continue
         marks = "  pinched" if state.pinched else ""
+        wide = max(24, min(60, term_w - 34))
         put(row, 2, f"{label:<6}", curses.A_BOLD)
         put(row, 9, f"{state.gesture:<12}", GREEN if state.machine.engaged else 0)
         put(row, 22, f"{state.confidence:>4.0%} ")
-        put(row, 28, bar(state.confidence, 24), CYAN)
-        put(row, 53, marks, YELLOW)
+        put(row, 28, bar(state.confidence, wide), CYAN)
+        put(row, 29 + wide, marks, YELLOW)
         row += 1
         if state.machine.candidate:
             put(row, 9, f"{state.machine.candidate:<12}", DIM)
-            put(row, 28, meter(state.machine.progress, 24), YELLOW)
+            put(row, 28, meter(state.machine.progress, wide), YELLOW)
             row += 1
         # runners-up, so a misread is legible instead of mysterious
         order = np.argsort(state.probabilities)[::-1][1:3]
@@ -313,7 +432,7 @@ def _render(stdscr, canvas, box_w, box_h, hands, states, engaged, fps,
             if state.probabilities[index] < 0.02:
                 continue
             put(row, 9, f"{model.classes[index]:<12}", DIM)
-            put(row, 28, bar(float(state.probabilities[index]), 24), DIM)
+            put(row, 28, bar(float(state.probabilities[index]), wide), DIM)
             put(row, 22, f"{state.probabilities[index]:>4.0%} ", DIM)
             row += 1
         row += 1

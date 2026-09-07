@@ -8,6 +8,14 @@ from pathlib import Path
 
 from . import control
 
+# Defaults resolve against the repo, not the working directory, so `ika live`
+# works from anywhere rather than only from the project root.
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def _default(*parts: str) -> str:
+    return str(ROOT.joinpath(*parts))
+
 
 def _record(args):
     from .record import run_recorder
@@ -63,6 +71,17 @@ def _live(args):
             camera=args.camera, width=args.width,
             live_control=args.live, threshold=args.threshold, dwell=args.dwell,
             smoothing=args.smoothing, pointer=not args.no_pointer,
+        )
+        return 0
+
+    if args.stream:
+        from .stream import run_stream
+
+        run_stream(
+            checkpoint=args.checkpoint, camera=args.camera, width=args.width,
+            live_control=args.live, threshold=args.threshold, dwell=args.dwell,
+            smoothing=args.smoothing, max_hands=args.hands,
+            seconds=args.seconds, pointer=not args.no_pointer,
         )
         return 0
 
@@ -171,14 +190,14 @@ def build_parser() -> argparse.ArgumentParser:
     sub = parser.add_subparsers(dest="command", required=True)
 
     rec = sub.add_parser("record", help="record your own gestures")
-    rec.add_argument("--out", default="data/session.npz")
+    rec.add_argument("--out", default=_default("data", "session.npz"))
     rec.add_argument("--seconds", type=float, default=4.0, help="capture length per gesture")
     rec.add_argument("--camera", type=int, default=0)
     rec.add_argument("--width", type=int, default=640)
     rec.set_defaults(func=_record)
 
     tr = sub.add_parser("train", help="train the gesture classifier")
-    tr.add_argument("data", nargs="*", default=["data/session.npz"])
+    tr.add_argument("data", nargs="*", default=[_default("data", "session.npz")])
     tr.add_argument("--synthetic", action="store_true", help="train on invented hands instead")
     tr.add_argument("--per-class", type=int, default=400, dest="per_class")
     tr.add_argument("--noise", type=float, default=0.012)
@@ -186,11 +205,11 @@ def build_parser() -> argparse.ArgumentParser:
     tr.add_argument("--dropout", type=float, default=0.0, help="fraction of landmarks lost")
     tr.add_argument("--epochs", type=int, default=120)
     tr.add_argument("--seed", type=int, default=0)
-    tr.add_argument("--out", default="checkpoints/static.pt")
+    tr.add_argument("--out", default=_default("checkpoints", "static.pt"))
     tr.set_defaults(func=_train)
 
     lv = sub.add_parser("live", help="run it against the webcam, in the terminal")
-    lv.add_argument("--checkpoint", default="checkpoints/static.pt")
+    lv.add_argument("--checkpoint", default=_default("checkpoints", "static.pt"))
     lv.add_argument("--live", action="store_true", help="actually drive the machine")
     lv.add_argument("--camera", type=int, default=0)
     lv.add_argument("--width", type=int, default=640)
@@ -199,10 +218,15 @@ def build_parser() -> argparse.ArgumentParser:
     lv.add_argument("--smoothing", type=float, default=0.6)
     lv.add_argument("--no-pointer", action="store_true", dest="no_pointer")
     lv.add_argument("--hands", type=int, default=2, help="how many hands to track")
+    lv.add_argument("--stream", action="store_true",
+                    help="print events instead of drawing a screen. Works "
+                         "anywhere, including through a pipe")
+    lv.add_argument("--seconds", type=float, default=None,
+                    help="stop after this long (stream mode)")
     lv.add_argument("--window", action="store_true",
                     help="use the OpenCV window instead of the terminal "
                          "(single hand, but shows the camera image)")
-    lv.add_argument("--dynamic", nargs="?", const="checkpoints/dynamic_motion.pt",
+    lv.add_argument("--dynamic", nargs="?", const=_default("checkpoints", "dynamic_motion.pt"),
                     default=None, dest="dynamic",
                     help="enable swipes and snaps. Off by default: it fires about "
                          "3 times a minute at an idle hand (see the README)")
@@ -213,11 +237,11 @@ def build_parser() -> argparse.ArgumentParser:
     td.add_argument("--epochs", type=int, default=250)
     td.add_argument("--gru", action="store_true", help="use the sequence model instead")
     td.add_argument("--seed", type=int, default=0)
-    td.add_argument("--out", default="checkpoints/dynamic_motion.pt")
+    td.add_argument("--out", default=_default("checkpoints", "dynamic_motion.pt"))
     td.set_defaults(func=_train_dynamic)
 
     cmp = sub.add_parser("compare", help="landmarks vs a fine-tuned backbone, on HaGRID")
-    cmp.add_argument("--root", default="data/hagrid")
+    cmp.add_argument("--root", default=_default("data", "hagrid"))
     cmp.add_argument("--backbone", default="mobilenet_v3_small",
                      choices=("mobilenet_v3_small", "resnet18", "efficientnet_b0"))
     cmp.add_argument("--size", type=int, default=128)
