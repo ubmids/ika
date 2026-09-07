@@ -57,10 +57,91 @@ def _live(args):
             "  and pynput fails silently without it.\n"
         )
     run_live(
-        checkpoint=args.checkpoint, camera=args.camera, width=args.width,
+        checkpoint=args.checkpoint, dynamic_checkpoint=args.dynamic,
+        camera=args.camera, width=args.width,
         live_control=args.live, threshold=args.threshold, dwell=args.dwell,
         smoothing=args.smoothing, pointer=not args.no_pointer,
     )
+    return 0
+
+
+def _train_dynamic(args):
+    from . import trajectory
+    from .dynamic import train_motion
+    from .train import format_confusion
+
+    vectors, labels, classes, windows = trajectory.realistic_dataset(
+        per_class=args.per_class, seed=args.seed
+    )
+    print(f"  {len(labels)} sliding windows, {len(classes)} classes")
+    if args.gru:
+        from .sequence import train_sequence
+
+        model, report = train_sequence(windows, labels, classes, epochs=args.epochs,
+                                       seed=args.seed, verbose=True)
+        print(f"\n  accuracy {report['accuracy']:.1%}")
+    else:
+        model, report = train_motion(vectors, labels, classes, epochs=args.epochs,
+                                     seed=args.seed, verbose=True)
+        print(f"\n  accuracy {report['accuracy']:.1%}   "
+              f"balanced recall {report['balanced']:.1%}")
+    print(format_confusion(report["confusion"], classes))
+    print(f"\n  idle-class recall is the number that matters: "
+          f"{report['recall'].get('none', 0):.1%}")
+    print("  every point below 100% there is a firing you did not ask for.")
+    model.save(args.out)
+    print(f"  saved {args.out}")
+    return 0
+
+
+def _compare(args):
+    """Landmarks against pixels, on the same real images and the same split."""
+    import numpy as np
+    import torch
+
+    from .model import GestureNet
+    from .vision import (finetune, landmark_features, load_crops, load_hagrid,
+                         split_by_user)
+
+    if not Path(args.root).exists():
+        print(f"  no dataset at {args.root}. See the README for the download.")
+        return 1
+
+    records, classes = load_hagrid(args.root)
+    labels = np.array([classes.index(r.label) for r in records], dtype=np.int64)
+    train_idx, val_idx, held, total = split_by_user(records, fraction=0.25, seed=args.seed)
+    print(f"  {len(records)} real hand crops, {len(classes)} classes")
+    print(f"  split by PERSON: {len(train_idx)} train / {len(val_idx)} val, "
+          f"{held}/{total} users held out\n")
+
+    x = landmark_features(records)
+    torch.manual_seed(args.seed)
+    mlp = GestureNet(x.shape[1], classes, hidden=(256, 128), dropout=0.3)
+    mlp.fit_standardiser(x[train_idx])
+    xt, yt = torch.tensor(x[train_idx]), torch.tensor(labels[train_idx])
+    xv, yv = torch.tensor(x[val_idx]), torch.tensor(labels[val_idx])
+    opt = torch.optim.AdamW(mlp.parameters(), lr=2e-3, weight_decay=1e-4)
+    lf = torch.nn.CrossEntropyLoss(label_smoothing=0.05)
+    best = 0.0
+    for _ in range(args.epochs_mlp):
+        mlp.train()
+        order = torch.randperm(len(xt))
+        for start in range(0, len(order), 64):
+            b = order[start:start + 64]
+            if len(b) < 2:
+                continue
+            opt.zero_grad(); lf(mlp(xt[b]), yt[b]).backward(); opt.step()
+        mlp.eval()
+        with torch.no_grad():
+            best = max(best, float((mlp(xv).argmax(1) == yv).float().mean()))
+    lm_params = sum(p.numel() for p in mlp.parameters())
+    print(f"  landmarks -> features -> MLP: {best:.1%}  ({lm_params:,} params)")
+
+    crops = load_crops(records, size=args.size)
+    _, rep = finetune(crops, labels, classes, train_idx, val_idx,
+                      backbone=args.backbone, epochs=args.epochs_cnn, verbose=True)
+    print(f"  {args.backbone}: {rep['accuracy']:.1%}  ({rep['params']:,} params, "
+          f"on {rep['device']})")
     return 0
 
 
@@ -105,7 +186,29 @@ def build_parser() -> argparse.ArgumentParser:
     lv.add_argument("--dwell", type=int, default=5, help="frames a gesture must hold")
     lv.add_argument("--smoothing", type=float, default=0.6)
     lv.add_argument("--no-pointer", action="store_true", dest="no_pointer")
+    lv.add_argument("--dynamic", nargs="?", const="checkpoints/dynamic_motion.pt",
+                    default=None, dest="dynamic",
+                    help="enable swipes and snaps. Off by default: it fires about "
+                         "3 times a minute at an idle hand (see the README)")
     lv.set_defaults(func=_live)
+
+    td = sub.add_parser("train-dynamic", help="train the movement classifier")
+    td.add_argument("--per-class", type=int, default=700, dest="per_class")
+    td.add_argument("--epochs", type=int, default=250)
+    td.add_argument("--gru", action="store_true", help="use the sequence model instead")
+    td.add_argument("--seed", type=int, default=0)
+    td.add_argument("--out", default="checkpoints/dynamic_motion.pt")
+    td.set_defaults(func=_train_dynamic)
+
+    cmp = sub.add_parser("compare", help="landmarks vs a fine-tuned backbone, on HaGRID")
+    cmp.add_argument("--root", default="data/hagrid")
+    cmp.add_argument("--backbone", default="mobilenet_v3_small",
+                     choices=("mobilenet_v3_small", "resnet18", "efficientnet_b0"))
+    cmp.add_argument("--size", type=int, default=128)
+    cmp.add_argument("--epochs-cnn", type=int, default=18, dest="epochs_cnn")
+    cmp.add_argument("--epochs-mlp", type=int, default=300, dest="epochs_mlp")
+    cmp.add_argument("--seed", type=int, default=0)
+    cmp.set_defaults(func=_compare)
 
     sub.add_parser("bindings", help="show what each gesture does").set_defaults(func=_bindings)
     return parser

@@ -116,12 +116,23 @@ ACTIONS: dict[str, Action] = {
     "l_shape": Action("l_shape", "previous desktop", lambda c: c.hotkey("ctrl", "left")),
     "thumbs_up": Action("thumbs_up", "volume up", lambda c: c.tap("media_volume_up")),
     "thumbs_down": Action("thumbs_down", "volume down", lambda c: c.tap("media_volume_down")),
+    # Dynamic gestures. Swipes read naturally as navigation, and a snap is a
+    # deliberate, hard-to-do-by-accident movement, so it gets play/pause too.
+    "swipe_left": Action("swipe_left", "previous track", lambda c: c.tap("media_previous")),
+    "swipe_right": Action("swipe_right", "next track", lambda c: c.tap("media_next")),
+    "swipe_up": Action("swipe_up", "scroll up", lambda c: c.scroll(5)),
+    "swipe_down": Action("swipe_down", "scroll down", lambda c: c.scroll(-5)),
+    "snap": Action("snap", "play / pause", lambda c: c.tap("media_play_pause")),
 }
 
 # Poses used for continuous control rather than discrete firing. They are
 # handled outside the state machine, because a cursor should track your finger
 # every frame, not wait for a dwell timer.
 CONTINUOUS = {"point", "pinch"}
+
+# Handled by the dynamic lane rather than the pose classifier, so the static
+# machine must never see them as candidates.
+DYNAMIC = {"swipe_left", "swipe_right", "swipe_up", "swipe_down", "snap", "pinch_drag"}
 
 
 def describe_bindings() -> list[str]:

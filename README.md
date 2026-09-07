@@ -14,8 +14,10 @@ ika live                       # webcam, dry run: prints what it would do
 ika record                     # capture your own gestures
 ika train data/session.npz     # a model that knows your hands
 ika live --live                # actually drive the machine
+ika compare                    # landmarks vs a fine-tuned backbone, on real data
+ika train-dynamic              # the movement classifier (swipes, snap)
 ika bindings                   # what each gesture does
-pytest -q                      # 66 tests, no camera, no network
+pytest -q                      # 92 tests, no camera, no network
 ```
 
 `ika live` is a dry run unless you pass `--live`. Everything is visible and
@@ -71,6 +73,94 @@ pipeline is connected, nothing more. The interesting rows are the ones below.
 Both knobs buy noise rejection with time. 250 ms is the default because it
 feels deliberate rather than twitchy, and `--dwell 3 --smoothing 0.4` is
 noticeably snappier if you would rather have that.
+
+## Landmarks or pixels? Measured, on real hands
+
+The question the project was really for. One route keeps 21 points and throws
+the image away; the other keeps the pixels and throws the points away. Both are
+used in real products.
+
+Run on **HaGRID**, 3,109 real photographs across 34 gesture classes, with the
+identical examples and the identical split given to both models:
+
+| route | params | val accuracy | ms per hand |
+|---|---|---|---|
+| 21 landmarks → 87 features → MLP | 60,578 | **96.1%** | 0.06 |
+| 128px hand crop → MobileNetV3-Small, fine-tuned | 1,552,706 | 80.8% | 5.52 |
+
+The landmark route wins by 15 points, with 26x fewer parameters, 92x faster.
+The backbone's weakest classes say why: `one` 52%, `three3` 58%,
+`peace_inverted` 60%, `thumb_index` 61%. Those are finger-count and orientation
+distinctions, which are trivial once you have joint coordinates and genuinely
+hard from 128 pixels.
+
+**The honest reading is not "landmarks beat CNNs".** It is that MediaPipe's
+landmarker was pretrained on vastly more hands than 2,300, so the landmark
+route is quietly standing on an enormous amount of transfer while the backbone
+gets 2,300 images to learn hands from scratch. Given HaGRID's full 700 GB the
+gap would close and might reverse. On a laptop with a small dataset, the
+pretrained landmarker is doing the heavy lifting and it is the right choice by
+a wide margin.
+
+**Split by person, not by image.** HaGRID carries a `user_id`, and the same
+person appears in many photos. A random split puts the same hands on both
+sides, so the model is rewarded for recognising people and the accuracy is
+inflated. Every number above holds 548 of 2,192 users entirely out of training.
+A test asserts zero user overlap.
+
+## The dynamic lane does not work yet, and is off by default
+
+Swipes, snap and pinch-drag are built, trained and measured, and the honest
+result is that they are not usable. Measured end to end on a continuous stream
+of idle hand with real swipes injected every ten seconds:
+
+| threshold | dwell | false firings per minute | real swipes caught |
+|---|---|---|---|
+| 0.70 | 2 | 13.9 | 35% |
+| 0.85 | 3 | 3.3 | 38% |
+| 0.95 | 3 | 0.8 | 25% |
+
+Firing three times a minute at nothing while missing two thirds of what you
+meant is worse than having no swipes at all, so `ika live` leaves this off
+unless you pass `--dynamic`.
+
+**The cause is not the model, and more training will not fix it.** A swipe is
+"the hand moved fast in a straight line", and an idle hand does that all the
+time: reaching for a cup, waving while thinking, scratching an ear.
+Displacement cannot separate intent from traffic. The fix is interaction
+design, gating swipes behind a pose nobody holds by accident, which is the same
+trick the engage gesture already uses for static poses.
+
+Two real bugs surfaced on the way, both worth remembering:
+
+- **Window duration and frame count were motion features.** Every training
+  window was the same length, so the model leaned on them; a shorter window at
+  inference read as out-of-distribution and returned `none` with total
+  confidence. A swipe classified perfectly in training and was never once
+  detected live. The features are now named constants, because removing one
+  silently shifted every index after it while the tests kept passing.
+- **The window would not answer until it had more history than a gesture
+  lasts.** The readiness bar was 60% of a 0.7s window, so 13 frames, and a
+  swipe is about 14 frames. It agreed to look at the movement for its final
+  frame or two.
+
+## Does a sequence model earn its keep?
+
+A GRU over raw per-frame sequences, against those 16 hand-picked motion
+features, three seeds each:
+
+| examples per class | features + MLP | GRU |
+|---|---|---|
+| 8 | **100.0%** | 97.6% |
+| 20 | 100.0% | 100.0% |
+| 60 | 100.0% | 100.0% |
+| 200 | 99.7% | 99.8% |
+
+It never wins, and it loses when data is scarce, so the shipped classifier is
+the MLP at a quarter of the parameters. The GRU stays in the tree because real
+swipes will be messier than generated ones and a sequence model has more
+headroom if that mess carries signal, but the default follows the evidence that
+exists rather than the evidence one might wish for.
 
 ## What the confusion matrix caught
 
@@ -150,10 +240,23 @@ never lost work.
 
 ## Not done yet
 
-- Dynamic gestures (swipe, snap, pinch-drag) need the sequence model. The
-  vocabulary is defined in `schema.py`, the model is not written.
-- The vision-backbone fine-tune on a real gesture dataset, as a comparison
-  against the landmark classifier. Landmarks should win on speed and probably
-  on accuracy, and being able to say so with numbers is the point.
-- Nothing has met a real hand yet beyond the landmarker benchmark. Every
-  accuracy figure above is synthetic, and `ika record` exists to fix that.
+- **Nothing has met *your* hands yet.** The 96.1% is on HaGRID's people, and
+  every latency and false-firing figure is measured, but the classifier that
+  ships was trained on synthetic poses. `ika record` is the fix and takes about
+  five minutes.
+- **Gate the swipes behind a pose** so the dynamic lane becomes usable. That is
+  a design change, not a training run.
+- **Accessibility permission** is the only thing `--live` waits on, and it is
+  yours to grant: System Settings, Privacy and Security, Accessibility.
+
+## Attribution
+
+HaGRID is by Kapitanov et al., licensed CC BY-SA 4.0. The subset used here is
+the `hagrid_subsets` export, 34 classes at 100 images each with bounding boxes
+and 21-point landmarks:
+
+```bash
+curl -L -o data/hagrid/export_100.zip \
+  "https://huggingface.co/datasets/GestureDetectionConnoisseurs/hagrid_subsets/resolve/main/hagrid-export_100_images.zip"
+cd data/hagrid && unzip -q export_100.zip
+```
