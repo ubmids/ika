@@ -45,8 +45,6 @@ def _train(args):
 
 
 def _live(args):
-    from .app import run_live
-
     if not Path(args.checkpoint).exists():
         print(f"  no model at {args.checkpoint}\n  train one first: ika train --synthetic")
         return 1
@@ -56,11 +54,25 @@ def _live(args):
             "  permission (System Settings > Privacy & Security > Accessibility),\n"
             "  and pynput fails silently without it.\n"
         )
-    run_live(
-        checkpoint=args.checkpoint, dynamic_checkpoint=args.dynamic,
-        camera=args.camera, width=args.width,
+
+    if args.window:
+        from .app import run_live
+
+        run_live(
+            checkpoint=args.checkpoint, dynamic_checkpoint=args.dynamic,
+            camera=args.camera, width=args.width,
+            live_control=args.live, threshold=args.threshold, dwell=args.dwell,
+            smoothing=args.smoothing, pointer=not args.no_pointer,
+        )
+        return 0
+
+    from .tui import run_terminal
+
+    run_terminal(
+        checkpoint=args.checkpoint, camera=args.camera, width=args.width,
         live_control=args.live, threshold=args.threshold, dwell=args.dwell,
-        smoothing=args.smoothing, pointer=not args.no_pointer,
+        smoothing=args.smoothing, max_hands=args.hands,
+        pointer=not args.no_pointer,
     )
     return 0
 
@@ -177,7 +189,7 @@ def build_parser() -> argparse.ArgumentParser:
     tr.add_argument("--out", default="checkpoints/static.pt")
     tr.set_defaults(func=_train)
 
-    lv = sub.add_parser("live", help="run it against the webcam")
+    lv = sub.add_parser("live", help="run it against the webcam, in the terminal")
     lv.add_argument("--checkpoint", default="checkpoints/static.pt")
     lv.add_argument("--live", action="store_true", help="actually drive the machine")
     lv.add_argument("--camera", type=int, default=0)
@@ -186,6 +198,10 @@ def build_parser() -> argparse.ArgumentParser:
     lv.add_argument("--dwell", type=int, default=5, help="frames a gesture must hold")
     lv.add_argument("--smoothing", type=float, default=0.6)
     lv.add_argument("--no-pointer", action="store_true", dest="no_pointer")
+    lv.add_argument("--hands", type=int, default=2, help="how many hands to track")
+    lv.add_argument("--window", action="store_true",
+                    help="use the OpenCV window instead of the terminal "
+                         "(single hand, but shows the camera image)")
     lv.add_argument("--dynamic", nargs="?", const="checkpoints/dynamic_motion.pt",
                     default=None, dest="dynamic",
                     help="enable swipes and snaps. Off by default: it fires about "
