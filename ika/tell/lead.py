@@ -36,12 +36,23 @@ def lead_times(
     stream: list[Action],
     findings: list[Finding],
     detection_cost: float = 0.25,
+    recognition: float = 1.0,
+    vocabulary: tuple[str, ...] | None = None,
+    seed: int = 0,
 ) -> list[Warning_]:
     """Replay a stream and record every warning a finding would have produced.
 
-    `detection_cost` is the delay between an action finishing and the system
-    knowing what it was, measured at 0.25s for the gesture pipeline. Charging
-    it is the difference between an honest lead time and a flattering one.
+    `detection_cost` is the delay between a movement happening and the system
+    knowing what it was. `recognition` is how often it gets that right.
+
+    Those two are not independent, and pretending otherwise is the easiest way
+    to produce a flattering number. Committing to a call early cuts the delay
+    but gets fooled by feints; waiting for certainty costs time. `early.sweep`
+    measures that trade, and this composes it with the prediction so the two
+    can be judged together rather than each in isolation.
+
+    A misrecognised action corrupts the context, so the habit lookup either
+    misses entirely or matches the wrong habit, exactly as it would live.
     """
     by_context: dict[tuple[str, ...], Finding] = {}
     for finding in findings:
@@ -51,12 +62,22 @@ def lead_times(
             by_context[finding.context] = finding
 
     longest = max((len(c) for c in by_context), default=0)
+    rng = np.random.default_rng(seed)
+    vocabulary = vocabulary or tuple(sorted({a.name for a in stream}))
+
+    # What the system *thinks* it saw, which is what the lookup actually uses.
+    observed = [
+        a.name if rng.random() < recognition
+        else str(rng.choice([v for v in vocabulary if v != a.name]))
+        for a in stream
+    ]
+
     out: list[Warning_] = []
     for i in range(len(stream) - 1):
         for length in range(longest, 0, -1):
             if i + 1 < length:
                 continue
-            context = tuple(a.name for a in stream[i + 1 - length : i + 1])
+            context = tuple(observed[i + 1 - length : i + 1])
             finding = by_context.get(context)
             if finding is None:
                 continue

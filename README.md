@@ -17,8 +17,9 @@ ika live --live                # actually drive the machine
 ika compare                    # landmarks vs a fine-tuned backbone, on real data
 ika train-dynamic              # the movement classifier (swipes, snap)
 ika tell                       # can we find a habit and call the next move?
+ika early                      # how early can we commit, and what does it cost?
 ika bindings                   # what each gesture does
-pytest -q                      # 125 tests, no camera, no network
+pytest -q                      # 134 tests, no camera, no network
 ```
 
 `ika live` is a dry run unless you pass `--live`. Everything is visible and
@@ -316,6 +317,61 @@ Every figure above is synthetic and the fighters are a crude model of a real
 one. What the experiment establishes is the *shape* of the problem: habits are
 findable, prediction beats chance comfortably, and latency is where this lives
 or dies.
+
+## Committing early, and the number that decides it
+
+`lead` found the constraint: gaps between actions are around 263 ms, and
+confirming a gesture takes 250 ms, so waiting for a movement to finish leaves
+nothing. `ika early` is the answer to that, and the result is not the obvious
+one.
+
+Instead of confirming a completed movement, the classifier is trained on
+**prefixes**: the first quarter, third, half of an action, each labelled with
+what the action turned out to be. It then watches a movement unfold and commits
+the moment it is confident enough.
+
+### Feints are the whole difficulty
+
+The first version of this reported **99% accuracy from four frames**, which
+should have been suspicious and was. Every synthetic action began
+distinctively, so the model was reading the starting pose rather than the
+movement, and nothing ever lied about what it was going to do.
+
+So the generator now produces feints: a movement that commits to one action for
+its first 30% to 60% and then becomes another, labelled by what it *becomes*,
+because that is what a fighter has to get right. With 35% of movements feinting:
+
+| commit at | committed | accuracy | movement seen | latency |
+|---|---|---|---|---|
+| 0.50 | 100% | 72% | 25% | 100 ms |
+| 0.85 | 100% | 80% | 31% | 100 ms |
+| 0.95 | 99% | 96% | 60% | 233 ms |
+| 0.99 | 93% | 98% | 64% | 267 ms |
+
+Against an opponent who never feints it is 100% accurate at 100 ms. Every point
+of accuracy above that is bought purely with time.
+
+### End to end, the counterintuitive part
+
+Composing the two, with recognition errors corrupting the habit lookup exactly
+as they would live:
+
+| strategy | delay | recognition | right | in time | **useful** |
+|---|---|---|---|---|---|
+| commit at 0.50 | 100 ms | 70% | 35% | 88% | 32% |
+| **commit at 0.85** | **100 ms** | **78%** | **41%** | **89%** | **37%** |
+| commit at 0.95 | 233 ms | 97% | 56% | 57% | 33% |
+| commit at 0.99 | 267 ms | 99% | 58% | 48% | 28% |
+| wait for the movement to finish | 400 ms | 100% | 59% | 13% | **7%** |
+
+**Being 78% right at 100 ms beats being 99% right at 267 ms**, and waiting for
+the movement to finish is a catastrophe at 7%. Accept being faked out: the
+latency cost of certainty is worse than the accuracy cost of speed.
+
+There is a genuine interior optimum at 0.85 rather than a monotonic trend.
+Commit sooner and too many calls are wrong; wait longer and too many arrive
+after the punch. That peak is the operating point, and finding it is the entire
+point of measuring both halves together instead of each alone.
 
 ## Not done yet
 

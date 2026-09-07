@@ -118,6 +118,57 @@ def make(name: str, fps: float = 30.0, seed: int = 0) -> list[Sample]:
     raise KeyError(f"unknown dynamic gesture {name!r}; have {DYNAMIC_GESTURES}")
 
 
+def feint(
+    looks_like: str,
+    becomes: str,
+    switch: float = 0.45,
+    fps: float = 30.0,
+    seed: int = 0,
+) -> list[Sample]:
+    """A movement that begins as one action and turns into another.
+
+    The reason early commitment is hard, and the reason it is interesting.
+    Without feints a classifier can read the opening of a movement and be right
+    almost always, which flatters it enormously: the first measurement of this
+    reported 99% accuracy from four frames, because every synthetic action
+    began distinctively and nothing ever lied.
+
+    A feint commits to the first action for `switch` of its duration, then
+    changes to the second, with the timeline stitched so there is no
+    discontinuity at the join. Labelled as what it *becomes*, because that is
+    what a fighter has to get right.
+    """
+    rng = np.random.default_rng(seed)
+    first = make(looks_like, fps=fps, seed=int(rng.integers(1 << 30)))
+    second = make(becomes, fps=fps, seed=int(rng.integers(1 << 30)))
+
+    cut = max(2, int(len(first) * switch))
+    head = first[:cut]
+    # Continue from wherever the feint left the hand, rather than teleporting.
+    offset = head[-1].position - second[0].position
+    tail = [
+        Sample(s.at, s.position + offset, s.span, s.pinch, s.pose)
+        for s in second
+    ]
+    joined = head + tail
+    return [Sample(i / fps, s.position, s.span, s.pinch, s.pose)
+            for i, s in enumerate(joined)]
+
+
+# Feints worth simulating: pairs whose openings genuinely resemble each other,
+# so the early frames are honestly ambiguous rather than artificially so.
+FEINTS = (
+    ("swipe_left", "swipe_right"),
+    ("swipe_right", "swipe_left"),
+    ("swipe_up", "swipe_down"),
+    ("swipe_down", "swipe_up"),
+    ("pinch_drag", "snap"),
+    ("snap", "pinch_drag"),
+    ("swipe_left", "none"),
+    ("swipe_up", "none"),
+)
+
+
 def dataset(
     per_class: int = 300,
     classes: list[str] | None = None,

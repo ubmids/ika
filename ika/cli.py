@@ -222,6 +222,58 @@ def _tell(args):
     return 0
 
 
+def _early(args):
+    """How much of a movement do we need to see before we can call it?"""
+    import numpy as np
+    import torch
+
+    from .model import GestureNet
+    from .sequence import _stratified
+    from .tell.early import sweep, training_set
+
+    x, y, classes = training_set(per_class=args.per_class,
+                                 feint_rate=args.feints, seed=args.seed)
+    print(f"\n  {len(y)} prefix samples, {args.feints:.0%} of movements are feints")
+
+    tr, va = _stratified(y, 0.2, args.seed)
+    torch.manual_seed(args.seed)
+    model = GestureNet(x.shape[1], classes, hidden=(96, 48), dropout=0.25)
+    model.fit_standardiser(x[tr])
+    xt, yt = torch.tensor(x[tr]), torch.tensor(y[tr])
+    xv, yv = torch.tensor(x[va]), torch.tensor(y[va])
+    opt = torch.optim.AdamW(model.parameters(), lr=2e-3, weight_decay=1e-4)
+    loss_fn = torch.nn.CrossEntropyLoss()
+    best, state = 0.0, None
+    for _ in range(args.epochs):
+        model.train()
+        order = torch.randperm(len(xt))
+        for start in range(0, len(order), 64):
+            batch = order[start : start + 64]
+            if len(batch) < 2:
+                continue
+            opt.zero_grad(); loss_fn(model(xt[batch]), yt[batch]).backward(); opt.step()
+        model.eval()
+        with torch.no_grad():
+            score = float((model(xv).argmax(1) == yv).float().mean())
+        if score > best:
+            best, state = score, {k: v.clone() for k, v in model.state_dict().items()}
+    model.load_state_dict(state)
+    model.eval()
+    print(f"  held-out accuracy over all prefix lengths: {best:.1%}")
+    model.save(args.out)
+
+    for label, rate in ((f"{args.feints:.0%} feints", args.feints), ("no feints", 0.0)):
+        print(f"\n  -- against an opponent with {label} --")
+        print(f"  {'commit at':>10} {'committed':>10} {'accuracy':>9} "
+              f"{'seen':>6} {'latency':>10}")
+        for row in sweep(model, classes, per_class=args.trials, feint_rate=rate):
+            print(f"  {row['threshold']:>10.2f} {row['committed']:>9.0%} "
+                  f"{row['accuracy']:>8.0%} {row['median_fraction']:>5.0%} "
+                  f"{row['median_latency'] * 1000:>8.0f} ms")
+    print("\n  Certainty is bought with time, and time is what there is none of.\n")
+    return 0
+
+
 def _bindings(_args):
     print("\n  gesture bindings\n")
     for line in control.describe_bindings():
@@ -303,6 +355,16 @@ def build_parser() -> argparse.ArgumentParser:
     tl.add_argument("--trials", type=int, default=30)
     tl.add_argument("--seed", type=int, default=7)
     tl.set_defaults(func=_tell)
+
+    er = sub.add_parser("early", help="how early can we commit to a call?")
+    er.add_argument("--per-class", type=int, default=300, dest="per_class")
+    er.add_argument("--feints", type=float, default=0.35,
+                    help="fraction of movements that lie about their opening")
+    er.add_argument("--trials", type=int, default=50)
+    er.add_argument("--epochs", type=int, default=200)
+    er.add_argument("--seed", type=int, default=0)
+    er.add_argument("--out", default=_default("checkpoints", "early.pt"))
+    er.set_defaults(func=_early)
 
     sub.add_parser("bindings", help="show what each gesture does").set_defaults(func=_bindings)
     return parser

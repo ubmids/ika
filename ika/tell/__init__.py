@@ -14,10 +14,17 @@ significant, so this is mostly about not being fooled.
 
 `lead` measures the only number that decides whether any of it is a product:
 how long before the move lands can we call it.
+
+`early` is the answer to what `lead` found. Waiting for a movement to finish
+costs more time than the certainty is worth, so the classifier is trained on
+prefixes and commits before the movement ends, accepting that a feint will
+sometimes catch it out.
 """
 
 from .actions import Action, Fighter, Habit
+from .early import Commitment, sweep, training_set, watch
 from .habits import Finding, mine
 from .lead import lead_times, summarise
 
-__all__ = ["Action", "Fighter", "Habit", "Finding", "mine", "lead_times", "summarise"]
+__all__ = ["Action", "Fighter", "Habit", "Finding", "mine", "lead_times",
+           "summarise", "Commitment", "sweep", "training_set", "watch"]
