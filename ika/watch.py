@@ -150,6 +150,7 @@ class Watcher:
     _pose: PoseTracker = field(init=False, repr=False)
     _tracker: Tracker = field(init=False, repr=False)
     _stabiliser: Stabiliser = field(init=False, repr=False)
+    _clock: int = field(default=0, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self._pose = PoseTracker(
@@ -162,8 +163,20 @@ class Watcher:
         self._stabiliser = Stabiliser()
 
     def observe(self, rgb: np.ndarray, at: float, index: int = 0) -> Observation:
-        """Run one frame through the whole pipeline."""
-        bodies = self._pose(rgb, int(at * 1000))
+        """Run one frame through the whole pipeline.
+
+        The landmarker is handed a clock of this object's own rather than the
+        caller's timestamps. MediaPipe rejects a timestamp that does not
+        increase, and every clip in a corpus starts again at zero, so reusing
+        one Watcher across a folder of clips made time run backwards and threw.
+        Rebuilding the pose model per clip would avoid it and cost more than
+        everything else in the loop put together.
+
+        The caller's real `at` still travels in the Observation, because every
+        movement feature downstream is a rate and needs true elapsed seconds.
+        """
+        self._clock = max(self._clock + 1, int(at * 1000))
+        bodies = self._pose(rgb, self._clock)
 
         motion = Motion(0.0, 0.0, 1.0, 0.0, 0)
         compensated = False
@@ -189,6 +202,8 @@ class Watcher:
                            camera=motion, compensated=compensated)
 
     def reset(self) -> None:
+        """Start a new stream. Identities and camera history go, the clock does
+        not: it has to keep rising across clips for the landmarker's sake."""
         self._tracker = Tracker(max_missing=self.max_missing)
         self._stabiliser.reset()
 

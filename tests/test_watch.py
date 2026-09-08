@@ -161,3 +161,32 @@ def test_it_reads_two_stable_identities_off_a_panning_clip(tmp_path):
     # stabiliser's own downscale, so the per-frame figure under-reads while the
     # accumulated one does not.
     assert sum(o.compensated for o in observations) > count * 0.8
+
+
+def test_one_watcher_survives_many_clips():
+    """MediaPipe rejects a timestamp that does not increase, and every clip in
+    a corpus starts again at zero. Reusing one Watcher across a folder of clips
+    therefore made time run backwards and threw, which would have hit on the
+    first real dataset. The landmarker gets the Watcher's own rising clock
+    while the caller's real seconds travel in the Observation.
+    """
+    import pytest as _pytest
+
+    from ika.watch import Watcher
+
+    if not MODEL.exists():
+        _pytest.skip("pose model not downloaded")
+
+    rng = np.random.default_rng(0)
+    frames = [(rng.random((120, 160, 3)) * 255).astype(np.uint8) for _ in range(4)]
+
+    with Watcher(max_bodies=1, stabilise=False) as watcher:
+        for clip in range(3):
+            watcher.reset()
+            for i, frame in enumerate(frames):
+                # every clip restarts at zero, which is the whole point
+                observation = watcher.observe(frame, i / 30.0, i)
+                assert observation.at == pytest.approx(i / 30.0), (
+                    "the caller's real time must survive, since every movement "
+                    "feature downstream is a rate"
+                )
