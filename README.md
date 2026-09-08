@@ -86,8 +86,36 @@ media keys from bare hands.
 **The body is the target.** 33 landmarks instead of 21, and the same pipeline
 throughout. This is where the idea actually lives, because a fight, a serve or
 a golf swing is a whole-body movement. The pose landmarker runs at 108 fps,
-which is three times faster than the hand one and leaves real budget for
-everything downstream.
+three times faster than the hand one, which leaves real budget for everything
+downstream.
+
+### Seeing a body works. Seeing its feet does not.
+
+Measured on **400 real photographs** at ordinary webcam framing, 14 ms each:
+
+| | |
+|---|---|
+| a body was found | **96%** of photographs |
+| features computed cleanly | 100% of those |
+| head, shoulders, elbows, wrists, hips visible | **100%** |
+| knees visible | **4%** |
+| ankles visible | **0%** |
+
+Ten of the fourteen named reads are usable in every frame: guard height, elbow
+extension, reach, torso lean, shoulder twist, head slip. The four that are not
+are all the leg-dependent ones: knee angles, stance width, weight shift.
+
+That is a product constraint, not a bug. **At laptop framing, footwork is
+invisible**, and footwork is half of fighting. Either the camera has to see the
+whole body, which means a tripod and a wider shot, or the system reads only
+guard, hands and torso and says so. A test pins the split, so no read that
+depends on legs can quietly be trusted.
+
+This also justifies carrying visibility inside the feature vector rather than
+filtering on it once. Pose landmarkers do not omit what they cannot see, they
+guess, and an unseen ankle comes back as a confident-looking coordinate. Zeroing
+it would be worse: that places the joint at the hip centre, which is a specific
+wrong posture rather than an absent one.
 
 ---
 
@@ -105,7 +133,7 @@ ika live                # the terminal app: hands drawn in braille, live reads
 ika tell                # can we find a habit and call the next move?
 ika early               # how early can we commit, and what does it cost?
 ika compare             # landmarks vs a fine-tuned CNN, on real photographs
-pytest -q               # 190 tests, no camera, no network
+pytest -q               # 218 tests, no camera, no network
 ```
 
 `ika live` is a dry run unless you pass `--live`. It shows everything and sends
