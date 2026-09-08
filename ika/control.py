@@ -134,6 +134,35 @@ CONTINUOUS = {"point", "pinch"}
 # machine must never see them as candidates.
 DYNAMIC = {"swipe_left", "swipe_right", "swipe_up", "swipe_down", "snap", "pinch_drag"}
 
+# The pose a hand must be holding for a swipe to count.
+#
+# Measured, the swipe lane fired 3.3 times a minute at an idle hand while
+# catching only 38% of real swipes, and no amount of training fixes that: a
+# fast straight hand movement is what reaching for a cup looks like, so
+# displacement alone cannot separate intent from traffic. The fix is
+# interaction design. Requiring a deliberate pose during the movement is the
+# same trick the engage gesture uses, one level down: a flat palm is not a
+# shape a hand passes through while doing something else.
+# Measured, and the choice is entirely about rarity. A gate the idle state
+# already satisfies is not a gate:
+#
+#   gate pose          share of idle   idle firings/min   swipes caught
+#   none                         n/a               3.00             50%
+#   open_palm + point            35%               1.17             42%
+#   pinch                       3.3%               0.00             39%
+#   thumbs_up                   0.3%               0.00             33%
+#
+# The first attempt gated on open_palm and point, which together are 35% of
+# what an idle hand reads as, and it only halved the problem. A pinch is 3.3%
+# and removes idle firings entirely. It also reads naturally, since pinching
+# while moving is grab and drag, and pinch is already the drag gesture.
+SWIPE_GATE = ("pinch",)
+
+# How much of the movement must be spent in a gate pose. Not all of it,
+# because the classifier is briefly uncertain at the start and end of any
+# movement, and demanding a perfect run would reject genuine swipes.
+SWIPE_GATE_SHARE = 0.5
+
 
 def describe_bindings() -> list[str]:
     lines = [f"  {name:<12} {action.describe}" for name, action in sorted(ACTIONS.items())]

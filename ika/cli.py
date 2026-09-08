@@ -106,7 +106,7 @@ def _live(args):
         checkpoint=args.checkpoint, camera=args.camera, width=args.width,
         live_control=args.live, threshold=args.threshold, dwell=args.dwell,
         smoothing=args.smoothing, max_hands=args.hands,
-        pointer=not args.no_pointer,
+        pointer=not args.no_pointer, commit=not args.confirm,
     )
     return 0
 
@@ -433,6 +433,9 @@ def build_parser() -> argparse.ArgumentParser:
     lv.add_argument("--smoothing", type=float, default=0.6)
     lv.add_argument("--no-pointer", action="store_true", dest="no_pointer")
     lv.add_argument("--hands", type=int, default=2, help="how many hands to track")
+    lv.add_argument("--confirm", action="store_true",
+                    help="wait for a gesture to be held instead of committing "
+                         "early. Slower by about 130 ms, measured")
     lv.add_argument("--stream", action="store_true",
                     help="print events instead of drawing a screen. Works "
                          "anywhere, including through a pipe")

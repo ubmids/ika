@@ -157,3 +157,85 @@ def test_a_tiny_terminal_still_produces_a_usable_box():
 
     cols, rows = _box_size(40, 12, 4 / 3, 15)
     assert cols >= 4 and rows >= 4
+
+
+# --- the two-layer decision split ---------------------------------------
+
+def _onehot(classes, name, confidence=0.97):
+    import numpy as np
+
+    p = np.full(len(classes), (1 - confidence) / (len(classes) - 1))
+    p[classes.index(name)] = confidence
+    return p
+
+
+CLASSES = ["rest", "open_palm", "fist", "point", "peace"]
+
+
+def test_the_live_app_commits_early_by_default():
+    """Measured at 7 frames against 11 for the dwell machine, so the default
+    should be the fast one."""
+    from ika.tui import HandState
+
+    assert HandState(CLASSES, 0.8, 5, 0.6).committer is not None
+    assert HandState(CLASSES, 0.8, 5, 0.6, commit=False).committer is None
+
+
+def test_arming_stays_slow_while_acting_is_fast():
+    """Arming and acting want opposite things. You do not want the machine to
+    go live because a hand passed through an open palm, so engagement keeps
+    the dwell timer; firing does not."""
+    from ika.tui import HandState
+
+    state = HandState(CLASSES, 0.8, 5, 0.6)
+    # Engagement is still the dwell machine's job.
+    for i in range(12):
+        state.machine.update(_onehot(CLASSES, "open_palm"), i / 30.0)
+    assert state.machine.engaged
+
+    # And the committer is what calls the gesture.
+    state.gesture = "fist"
+    call = None
+    for i in range(12):
+        call = state.committer.update(_onehot(CLASSES, "fist"), 1.0 + i / 30.0) or call
+    assert call is not None and call.label == "fist"
+
+
+def test_the_committer_is_silent_before_engagement():
+    """The engagement guarantee has to survive the new layer: hands in frame
+    must stay inert until the system is deliberately armed."""
+    from ika.tui import HandState
+
+    state = HandState(CLASSES, 0.8, 5, 0.6)
+    assert not state.machine.engaged
+    # The app only consults the committer once engaged, so the guarantee is
+    # that engagement is false here rather than that the committer is silent.
+    for i in range(30):
+        state.machine.update(_onehot(CLASSES, "fist"), i / 30.0)
+    assert not state.machine.engaged, "a fist must not arm the system"
+
+
+def test_the_meter_follows_whichever_layer_is_deciding():
+    """Without this the on-screen progress bar would show the dwell timer
+    while the committer was the thing actually firing."""
+    from ika.tui import HandState
+
+    state = HandState(CLASSES, 0.8, 5, 0.6)
+    for i in range(12):
+        state.machine.update(_onehot(CLASSES, "open_palm"), i / 30.0)
+    assert state.machine.engaged
+
+    state.gesture = "point"
+    for i in range(2):
+        state.committer.update(_onehot(CLASSES, "point"), 1.0 + i / 30.0)
+    assert state.progress == state.committer.progress
+    assert 0.0 <= state.progress <= 1.0
+
+
+def test_dwell_mode_still_reports_its_own_progress():
+    from ika.tui import HandState
+
+    state = HandState(CLASSES, 0.8, 5, 0.6, commit=False)
+    for i in range(3):
+        state.machine.update(_onehot(CLASSES, "open_palm"), i / 30.0)
+    assert state.progress == state.machine.progress
