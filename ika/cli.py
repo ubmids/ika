@@ -18,6 +18,7 @@ def _default(*parts: str) -> str:
 
 
 def _record(args):
+    _preflight()
     from .record import run_recorder
 
     run_recorder(out=args.out, seconds=args.seconds, camera=args.camera, width=args.width)
@@ -52,7 +53,21 @@ def _train(args):
     return 0
 
 
+def _preflight() -> None:
+    """Check the landmarker before anything takes over the screen.
+
+    The tracker is built inside the capture loop, and by then curses owns the
+    terminal, so a missing-model error gets wiped by the teardown and the user
+    sees a bare curses traceback instead of the one command that fixes it.
+    """
+    from .hands import MODEL, ModelMissing
+
+    if not MODEL.exists():
+        raise ModelMissing(MODEL)
+
+
 def _live(args):
+    _preflight()
     if not Path(args.checkpoint).exists():
         print(f"  no model at {args.checkpoint}\n  train one first: ika train --synthetic")
         return 1
@@ -372,7 +387,18 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    return args.func(args)
+    try:
+        return args.func(args)
+    except KeyboardInterrupt:
+        return 130
+    except Exception as exc:  # noqa: BLE001
+        from .hands import ModelMissing
+
+        if isinstance(exc, ModelMissing):
+            # A missing model is a setup step, not a crash. Print the fix.
+            print(f"\n  {exc}")
+            return 1
+        raise
 
 
 if __name__ == "__main__":

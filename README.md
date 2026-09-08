@@ -1,397 +1,251 @@
-# ika — control a computer with bare hands
+# ika
 
-ìka, Yoruba for finger. Webcam in, cursor and keystrokes out. No gloves, no
-sensors, no cloud.
+**Read movement, find the habit, and call the next move while there is still
+time to use it.**
 
-Named for the finger rather than the hand because ọwọ́ (hand) and owó (money)
-collide in ASCII, and `~/Desktop/owo` was already a finance app.
+Not gesture recognition. Gesture recognition answers "what is this hand doing",
+which is a solved and largely uninteresting problem. This answers a different
+question: *what is this person about to do, and can I say so before it
+happens.*
+
+The difference is the whole project. Recognising a punch after it lands is
+trivia. Naming the habit that produces it, a quarter of a second before it
+starts, is a read.
+
+---
+
+## The flow
+
+Four stages. Each one is measured, and each one turned out to constrain the
+next in ways that were not obvious from the outside.
+
+```
+  video ──▶ SEE ──▶ RECOGNISE ──▶ PREDICT ──▶ WARN
+            │         │             │           │
+       landmarks   which move    what comes   in time
+       per frame   is this,      next, from   to act on
+                   committed     the mined
+                   early         habit
+```
+
+| stage | what it does | state | measured |
+|---|---|---|---|
+| **See** | landmarks from video | working | hands **32 fps**, body **108 fps** |
+| **Recognise** | which movement, committed before it ends | working | **80%** at 100 ms |
+| **Predict** | what follows, from habits mined on the fly | working | **5-11x** better than chance |
+| **Warn** | delivered while it is still useful | measured | **37%** of warnings land right and in time |
+
+The last row is the product. The first three exist to serve it.
+
+---
+
+## The finding that shaped everything
+
+The gap between one action ending and the next beginning is **263 ms**. That
+gap is the entire budget.
+
+A conventional gesture pipeline spends **250 ms** deciding what it just saw,
+because it waits for the movement to finish and then confirms it with a dwell
+timer. Which means a conventional pipeline has almost exactly zero time left
+to do anything with the answer.
+
+So the design rule for the whole system, arrived at by measurement rather than
+taste:
+
+> **Commit early and accept being faked out.** The latency cost of certainty is
+> worse than the accuracy cost of speed.
+
+Composed end to end, with recognition errors corrupting the prediction exactly
+as they would in life:
+
+| strategy | delay | recognition | right | in time | **useful** |
+|---|---|---|---|---|---|
+| commit at 0.50 confidence | 100 ms | 70% | 35% | 88% | 32% |
+| **commit at 0.85 confidence** | **100 ms** | **78%** | **41%** | **89%** | **37%** |
+| commit at 0.95 confidence | 233 ms | 97% | 56% | 57% | 33% |
+| commit at 0.99 confidence | 267 ms | 99% | 58% | 48% | 28% |
+| wait for the movement to finish | 400 ms | 100% | 59% | 13% | **7%** |
+
+Being 78% right at 100 ms beats being 99% right at 267 ms. Waiting for the
+movement to end, which is what every gesture system does, collapses to 7%.
+
+And 0.85 is a genuine peak rather than a monotonic trend: commit sooner and too
+many calls are wrong, wait longer and too many arrive after the punch. That
+peak only appears because both halves were measured together instead of each
+on its own.
+
+---
+
+## Two lanes
+
+**Hands are the proving ground.** Cheap to iterate on, a camera and your own
+hands, and every stage of the pipeline can be built and broken there first. It
+also happens to be a usable thing in itself: `ika live` will drive a cursor and
+media keys from bare hands.
+
+**The body is the target.** 33 landmarks instead of 21, and the same pipeline
+throughout. This is where the idea actually lives, because a fight, a serve or
+a golf swing is a whole-body movement. The pose landmarker runs at 108 fps,
+which is three times faster than the hand one and leaves real budget for
+everything downstream.
+
+---
+
+## Quick start
 
 ```bash
 pip install -e '.[dev]'
 
-ika train --synthetic          # a model from invented hands, no recording needed
-ika live                       # webcam, dry run: prints what it would do
-ika record                     # capture your own gestures
-ika train data/session.npz     # a model that knows your hands
-ika live --live                # actually drive the machine
-ika compare                    # landmarks vs a fine-tuned backbone, on real data
-ika train-dynamic              # the movement classifier (swipes, snap)
-ika tell                       # can we find a habit and call the next move?
-ika early                      # how early can we commit, and what does it cost?
-ika bindings                   # what each gesture does
-pytest -q                      # 134 tests, no camera, no network
+# the landmarkers are not in the repo; ika tells you this command if you skip it
+curl -sL -o models/hand_landmarker.task \
+  https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task
+
+ika train --synthetic   # a classifier from invented hands, no recording needed
+ika live                # the terminal app: hands drawn in braille, live reads
+ika tell                # can we find a habit and call the next move?
+ika early               # how early can we commit, and what does it cost?
+ika compare             # landmarks vs a fine-tuned CNN, on real photographs
+pytest -q               # 134 tests, no camera, no network
 ```
 
-`ika live` is a dry run unless you pass `--live`. Everything is visible and
-nothing is sent to the OS. That is the mode to develop in, because a gesture
-classifier wired to a keyboard is a program that types whatever it
-hallucinates.
+`ika live` is a dry run unless you pass `--live`. It shows everything and sends
+nothing, which is the mode to develop in: a classifier wired to a keyboard is a
+program that types whatever it hallucinates.
 
-## What is pretrained and what we actually train
+---
 
-Worth being explicit, because "fine-tune a vision model" can easily become
-theatre where the pretrained thing does all the work.
+## What is proven, and what is not
 
-**Pretrained:** MediaPipe's hand landmarker, 21 points per hand. Getting stable
-landmarks off a moving hand in changing light took Google more data than a
-laptop will see, and reproducing it badly would sink the project before the
-interesting parts start. This is the eyes, and only the eyes.
+**Proven on real data:** the landmarkers work at the frame rates quoted, on
+this laptop. The gesture classifier reaches **96.1%** across 34 classes on
+3,109 real photographs from HaGRID, held out **by person** so the model cannot
+score by recognising individuals.
 
-**Ours, trained here:** the gesture classifier, the sequence model for gestures
-that only exist as movement, and the entire decision layer. On an M2 Pro, no
-external GPU.
+**Proven, but synthetic:** every number in the predict-and-warn lane. Habits
+are found at 11.5x lift, false ones appear in 15% of clean fighters, and the
+latency budget above is real arithmetic over simulated movement. What this
+establishes is the *shape* of the problem. The fighters are a crude model with
+fixed action durations, no fatigue, no ring position, and no reaction to being
+read.
 
-## Measured on this machine
+**Not tested at all:** whether actions are recognisable from real sparring
+video. Every figure in the warn lane assumes they are. That is the next thing
+worth doing and the biggest remaining unknown.
 
-**Landmark throughput**, 640x480, one hand, M2 Pro CPU:
+---
 
-| | |
-|---|---|
-| detection | 30.9 ms/frame, **32.4 fps** |
-| two hands in a real photo | both found, 0.94 and 0.96 confidence |
+## Findings worth keeping
 
-**Classifier accuracy** on synthetic hands, as the problem gets more realistic:
+### Landmarks beat a fine-tuned CNN, and not for the reason you would guess
 
-| landmarks | accuracy | weakest gesture |
-|---|---|---|
-| clean | 100.0% | all at 100% |
-| noisy | 96.1% | point, 88% |
-| noisy plus some lost | 93.1% | point, 85% |
-| harsh | 83.6% | fist, 69% |
+Same 3,109 photographs, same person-grouped split, both models:
 
-That first row is not a result, it is a wiring check. Every synthetic class is
-a tight cloud around a pose designed to be distinctive, so 100% means the
-pipeline is connected, nothing more. The interesting rows are the ones below.
-
-**Gesture to action latency**, which is what your hand actually feels:
-
-| dwell frames | smoothing | frames | at 32 fps |
-|---|---|---|---|
-| 3 | 0.0 | 3 | 94 ms |
-| 3 | 0.6 | 6 | 188 ms |
-| 5 | 0.6 | 8 | **250 ms** (default) |
-| 8 | 0.8 | 15 | 469 ms |
-
-Both knobs buy noise rejection with time. 250 ms is the default because it
-feels deliberate rather than twitchy, and `--dwell 3 --smoothing 0.4` is
-noticeably snappier if you would rather have that.
-
-## Landmarks or pixels? Measured, on real hands
-
-The question the project was really for. One route keeps 21 points and throws
-the image away; the other keeps the pixels and throws the points away. Both are
-used in real products.
-
-Run on **HaGRID**, 3,109 real photographs across 34 gesture classes, with the
-identical examples and the identical split given to both models:
-
-| route | params | val accuracy | ms per hand |
+| route | params | accuracy | ms per hand |
 |---|---|---|---|
 | 21 landmarks → 87 features → MLP | 60,578 | **96.1%** | 0.06 |
-| 128px hand crop → MobileNetV3-Small, fine-tuned | 1,552,706 | 80.8% | 5.52 |
+| 128px hand crop → MobileNetV3, fine-tuned | 1,552,706 | 80.8% | 5.52 |
 
-The landmark route wins by 15 points, with 26x fewer parameters, 92x faster.
-The backbone's weakest classes say why: `one` 52%, `three3` 58%,
-`peace_inverted` 60%, `thumb_index` 61%. Those are finger-count and orientation
-distinctions, which are trivial once you have joint coordinates and genuinely
-hard from 128 pixels.
+15 points better, 26x smaller, 92x faster. The CNN's weakest classes say why:
+`one` 52%, `three3` 58%, `peace_inverted` 60%. Finger counting and orientation,
+trivial from joint coordinates and hard from 128 pixels.
 
-**The honest reading is not "landmarks beat CNNs".** It is that MediaPipe's
-landmarker was pretrained on vastly more hands than 2,300, so the landmark
-route is quietly standing on an enormous amount of transfer while the backbone
-gets 2,300 images to learn hands from scratch. Given HaGRID's full 700 GB the
-gap would close and might reverse. On a laptop with a small dataset, the
-pretrained landmarker is doing the heavy lifting and it is the right choice by
-a wide margin.
+The honest reading is *not* "landmarks beat CNNs". MediaPipe's landmarker was
+pretrained on vastly more hands than 2,300, so that route stands on an enormous
+amount of transfer while the CNN learns hands from scratch. On a laptop with a
+small dataset the pretrained landmarker is the right call by a wide margin.
 
-**Split by person, not by image.** HaGRID carries a `user_id`, and the same
-person appears in many photos. A random split puts the same hands on both
-sides, so the model is rewarded for recognising people and the accuracy is
-inflated. Every number above holds 548 of 2,192 users entirely out of training.
-A test asserts zero user overlap.
-
-## The dynamic lane does not work yet, and is off by default
-
-Swipes, snap and pinch-drag are built, trained and measured, and the honest
-result is that they are not usable. Measured end to end on a continuous stream
-of idle hand with real swipes injected every ten seconds:
-
-| threshold | dwell | false firings per minute | real swipes caught |
-|---|---|---|---|
-| 0.70 | 2 | 13.9 | 35% |
-| 0.85 | 3 | 3.3 | 38% |
-| 0.95 | 3 | 0.8 | 25% |
-
-Firing three times a minute at nothing while missing two thirds of what you
-meant is worse than having no swipes at all, so `ika live` leaves this off
-unless you pass `--dynamic`.
-
-**The cause is not the model, and more training will not fix it.** A swipe is
-"the hand moved fast in a straight line", and an idle hand does that all the
-time: reaching for a cup, waving while thinking, scratching an ear.
-Displacement cannot separate intent from traffic. The fix is interaction
-design, gating swipes behind a pose nobody holds by accident, which is the same
-trick the engage gesture already uses for static poses.
-
-Two real bugs surfaced on the way, both worth remembering:
-
-- **Window duration and frame count were motion features.** Every training
-  window was the same length, so the model leaned on them; a shorter window at
-  inference read as out-of-distribution and returned `none` with total
-  confidence. A swipe classified perfectly in training and was never once
-  detected live. The features are now named constants, because removing one
-  silently shifted every index after it while the tests kept passing.
-- **The window would not answer until it had more history than a gesture
-  lasts.** The readiness bar was 60% of a 0.7s window, so 13 frames, and a
-  swipe is about 14 frames. It agreed to look at the movement for its final
-  frame or two.
-
-## Does a sequence model earn its keep?
-
-A GRU over raw per-frame sequences, against those 16 hand-picked motion
-features, three seeds each:
-
-| examples per class | features + MLP | GRU |
-|---|---|---|
-| 8 | **100.0%** | 97.6% |
-| 20 | 100.0% | 100.0% |
-| 60 | 100.0% | 100.0% |
-| 200 | 99.7% | 99.8% |
-
-It never wins, and it loses when data is scarce, so the shipped classifier is
-the MLP at a quarter of the parameters. The GRU stays in the tree because real
-swipes will be messier than generated ones and a sequence model has more
-headroom if that mess carries signal, but the default follows the evidence that
-exists rather than the evidence one might wish for.
-
-## What the confusion matrix caught
-
-`point` and `l_shape` get mixed up in both directions, 10 and 7 times out of
-100. That is not a training problem to tune away, it is a vocabulary problem:
-`l_shape` *is* `point` with the thumb extended, so the two differ by one finger
-and nothing else. Either drop one, or accept that whichever you use will
-misfire into the other. The honest fix is a smaller vocabulary, and a gesture
-you cannot perform by accident is worth more than a large alphabet.
-
-## Why the feature engineering is the whole game
+### Feature invariance is where the hand lane was won
 
 Feed raw landmarks to a classifier and it learns that "point" means *an index
 finger in the upper left of frame, at roughly the size my hand was during
-recording*. Lean in, or shift sideways, and it collapses. It memorised the
-recording session, not the gesture.
+recording*. Every hand is instead re-expressed in a frame built from its own
+knuckle row, the only rigid part of a hand, leaving shape independent of
+position, distance and rotation. There are tests asserting each invariance.
 
-So every hand is re-expressed in a frame built from itself: origin at the
-wrist, scale from the palm length, axes from the knuckle row, which is the only
-rigid part of a hand. What survives is shape, independent of position, distance
-and rotation. There are tests asserting each of those invariances.
+Taken too far it destroys the thing it protects: thumbs up and thumbs down are
+the same shape at two angles. Both are kept, canonical shape and world
+orientation as separate features, with a test for that too.
 
-That can be taken too far. Thumbs up and thumbs down are the same shape,
-differing only by orientation, so discarding orientation would silently merge
-two gestures. Both are kept: canonical shape, and world orientation as separate
-features. There is a test for that too, and the synthetic augmentation is
-deliberately bounded below the half turn that separates the pair, because
-rotating freely would have merged the classes and inflated the accuracy of a
-model that had in fact learned to ignore orientation.
+### The state machine matters more than accuracy
 
-## The state machine, which matters more than accuracy
+A classifier has an opinion thirty times a second and is sometimes wrong. Your
+hands are in shot constantly doing things that mean nothing. Four defences:
+smoothing, dwell, hysteresis, and an explicit engage gesture, so reaching for a
+coffee sends nothing. A test proves a flailing hand fires zero actions across
+150 frames, and nothing destructive is bound to any gesture.
 
-A classifier has an opinion every frame, thirty times a second, and is
-sometimes wrong. Your hands are in shot constantly doing things that mean
-nothing, and every one of them gets classified as *something*. Four mechanisms
-against that:
+### Bugs that only measurement caught
 
-- **Smoothing** so one bad frame cannot fire anything alone
-- **Dwell**, a pose must persist, which separates holding a shape from passing
-  through it on the way somewhere
-- **Hysteresis**, a fired gesture is spent until something neutral is seen,
-  otherwise holding a pose repeats it at frame rate
-- **Engagement**, nothing fires until you deliberately arm it with an open
-  palm, and it disarms itself when your hands go quiet
+- **Window duration was a feature.** Every training window was the same length,
+  so the model leaned on it, and any other length at inference read as
+  out-of-distribution and came back "idle" with total confidence. A swipe
+  classified perfectly in training and was never once detected live.
+- **The window would not answer until it had more history than a gesture
+  lasts:** 13 frames of warm-up for a 14-frame swipe.
+- **Per-level gains went negative** at low amplification, so the amplifier
+  quietly *subtracted* real signal.
+- **One habit was reported as four**, the same habit with irrelevant prefixes
+  plus a diluted echo. Reporting a family of overlapping reads as separate
+  findings would badly mislead whoever acted on it.
+- **99% accuracy from four frames**, which was too clean to be true: every
+  synthetic action began distinctively, so the model was reading the starting
+  pose rather than the movement. Nothing ever lied. Adding feints dropped it to
+  80% and made the confidence threshold mean something.
 
-Continuous control deliberately bypasses all of it. A cursor must follow your
-finger *this frame*, so pointing and pinching are read geometrically, with two
-thresholds on the pinch so landmark noise cannot flicker a click.
+---
 
-## Bindings
+## Off by default, and why
 
-| gesture | does |
-|---|---|
-| open palm | engage / disengage |
-| point | move the cursor |
-| pinch | click, or hold to drag |
-| fist | play / pause |
-| peace | next desktop |
-| L shape | previous desktop |
-| thumbs up / down | volume |
+**Swipes and snaps.** Built, trained, measured at **3.3 false firings per
+minute** while catching 38% of real swipes. The cause is not the model: a fast
+straight hand movement is indistinguishable from reaching for a cup.
+Displacement cannot separate intent from traffic, and the fix is interaction
+design, gating swipes behind a pose nobody holds by accident. Needs `--dynamic`
+to enable.
 
-Nothing destructive is bound, and a test enforces it. No quit, no close, no
-delete. A gesture system will misfire, so a misfire should cost an annoyance,
-never lost work.
+---
 
 ## Notes for whoever hits these next
 
-- **mediapipe 1.0.1 is broken on Apple Silicon.** `TensorsToDetectionsCalculator::Open`
-  aborts inside `DrishtiMetalHelper` with "Service is unavailable", in both
-  IMAGE and VIDEO mode, and forcing the CPU delegate does not help. 0.10.35 is
-  the newest working release, hence the `<1.0` pin.
+- **mediapipe 1.0.1 is broken on Apple Silicon.**
+  `TensorsToDetectionsCalculator::Open` aborts inside `DrishtiMetalHelper` with
+  "Service is unavailable", in both IMAGE and VIDEO mode, and forcing the CPU
+  delegate does not help. 0.10.35 is the newest working release, hence the
+  `<1.0` pin.
+- **The `full` pose model finds nothing on close crops** where `lite` succeeds.
+  `lite` is also three times faster, so it is the default.
+- **Video mode on a single still is unreliable.** Detection on one frame at
+  timestamp 0 gives inconsistent answers; use IMAGE mode for stills.
 - **Datasets store raw landmarks, never features.** Features are a guess about
-  what the model needs and that guess will change. Storing them would mean
-  every improvement to `features.py` threw away all the recording work.
-- **macOS needs Accessibility permission** for `--live` (System Settings,
-  Privacy and Security, Accessibility). pynput fails silently without it.
+  what the model needs and that guess changes; storing them would mean every
+  improvement to `features.py` threw away all the recording work.
+- **macOS needs Accessibility permission** for `ika live --live`, and pynput
+  fails silently without it.
+- **A terminal app has to own a terminal.** `ika live` cannot start from a pipe
+  or a tool call; `run.sh` exists to launch it with a real tty, and
+  `ika live --stream` is the pipe-friendly mode.
 
-## Reading the tell: can we call the next move in time?
+---
 
-`ika tell` runs the experiment that decides whether the interesting product is
-possible. The hand lane answers "what is this doing". This answers "what will
-it do next", which is a different problem.
+## Next
 
-Movement becomes a stream of actions, the stream is mined for conditional
-habits, and every habit is then judged on the only measure that matters: how
-long before the move lands could we have said it.
-
-**Finding the habit works.** Planting "after jab, jab: drop guard, 70% of the
-time" in a synthetic fighter and mining 3,000 actions recovers it at 73%, 11.5x
-above the base rate.
-
-**It mostly does not invent them.** Over 30 fighters with no habits at all, a
-false find turns up in 15% of them, 0.20 per fighter. That number is the real
-headline, because a miner that reports tells someone does not have is worse
-than no miner: a fighter will act on it. Two defences get it there. A binomial
-tail per candidate, computed in log space since the naive form overflows at
-these counts, and a Benjamini-Hochberg correction for having tested thousands
-of contexts. Bonferroni would be far too strict, throwing away real habits to
-avoid a single mistake; what you actually want is "most of what you tell me is
-true", which is the false-discovery rate.
-
-**One habit must produce one finding.** A single planted habit generates a
-family of overlapping candidates: the same habit with irrelevant prefixes
-("after cross, jab, jab") and diluted shorter versions ("after jab", at a third
-of the strength). The first cut reported four findings for one habit. Both
-directions are junk for different reasons and each gets its own test: a longer
-context survives only if it beats its own suffix by more than chance, and a
-shorter one is dropped when a longer kept context ending with it predicts the
-same outcome far more strongly.
-
-**How much history you need:**
-
-| actions observed | habit found |
-|---|---|
-| 500 | 78% to 95% |
-| 1,500 | 100% |
-| 3,000 | 98% to 100% |
-
-At roughly 1.5 s per action, 1,500 actions is about half an hour of continuous
-action. So this reads a fighter across a bout or from footage of earlier ones,
-not from a standing start in round one.
-
-### The verdict, and it is not the one I expected
-
-Replayed against unseen action from the same fighter:
-
-| recognition delay | right | in time | useful | median lead |
-|---|---|---|---|---|
-| 0 ms | 58% | 100% | 58% | 281 ms |
-| 100 ms | 58% | 88% | 51% | 181 ms |
-| **250 ms** | 58% | 62% | **39%** | **31 ms** |
-| 400 ms | 58% | 12% | 6% | -119 ms |
-
-The prediction is good: 58% precision against base rates of 6% to 11%, so the
-reads are five to eleven times better than chance, and the accuracy does not
-change with delay because the prediction is the same either way.
-
-**The bottleneck is recognition latency, and it is brutal.** The median gap
-between one action ending and the next beginning is 263 ms, and the 10th
-percentile is 93 ms. That gap is the entire window. Our own gesture pipeline
-takes 250 ms to recognise something, which eats almost all of it, and at 400 ms
-the median warning arrives *after* the punch.
-
-So the whole engineering problem is getting recognition under about 100 ms, and
-the obvious route is not a faster model. It is refusing to wait for the action
-to finish: commit early from the first third of a movement instead of
-confirming a completed one. The 250 ms figure is mostly dwell and smoothing,
-which exist to confirm gestures, and confirmation is exactly what prediction
-cannot afford.
-
-Every figure above is synthetic and the fighters are a crude model of a real
-one. What the experiment establishes is the *shape* of the problem: habits are
-findable, prediction beats chance comfortably, and latency is where this lives
-or dies.
-
-## Committing early, and the number that decides it
-
-`lead` found the constraint: gaps between actions are around 263 ms, and
-confirming a gesture takes 250 ms, so waiting for a movement to finish leaves
-nothing. `ika early` is the answer to that, and the result is not the obvious
-one.
-
-Instead of confirming a completed movement, the classifier is trained on
-**prefixes**: the first quarter, third, half of an action, each labelled with
-what the action turned out to be. It then watches a movement unfold and commits
-the moment it is confident enough.
-
-### Feints are the whole difficulty
-
-The first version of this reported **99% accuracy from four frames**, which
-should have been suspicious and was. Every synthetic action began
-distinctively, so the model was reading the starting pose rather than the
-movement, and nothing ever lied about what it was going to do.
-
-So the generator now produces feints: a movement that commits to one action for
-its first 30% to 60% and then becomes another, labelled by what it *becomes*,
-because that is what a fighter has to get right. With 35% of movements feinting:
-
-| commit at | committed | accuracy | movement seen | latency |
-|---|---|---|---|---|
-| 0.50 | 100% | 72% | 25% | 100 ms |
-| 0.85 | 100% | 80% | 31% | 100 ms |
-| 0.95 | 99% | 96% | 60% | 233 ms |
-| 0.99 | 93% | 98% | 64% | 267 ms |
-
-Against an opponent who never feints it is 100% accurate at 100 ms. Every point
-of accuracy above that is bought purely with time.
-
-### End to end, the counterintuitive part
-
-Composing the two, with recognition errors corrupting the habit lookup exactly
-as they would live:
-
-| strategy | delay | recognition | right | in time | **useful** |
-|---|---|---|---|---|---|
-| commit at 0.50 | 100 ms | 70% | 35% | 88% | 32% |
-| **commit at 0.85** | **100 ms** | **78%** | **41%** | **89%** | **37%** |
-| commit at 0.95 | 233 ms | 97% | 56% | 57% | 33% |
-| commit at 0.99 | 267 ms | 99% | 58% | 48% | 28% |
-| wait for the movement to finish | 400 ms | 100% | 59% | 13% | **7%** |
-
-**Being 78% right at 100 ms beats being 99% right at 267 ms**, and waiting for
-the movement to finish is a catastrophe at 7%. Accept being faked out: the
-latency cost of certainty is worse than the accuracy cost of speed.
-
-There is a genuine interior optimum at 0.85 rather than a monotonic trend.
-Commit sooner and too many calls are wrong; wait longer and too many arrive
-after the punch. That peak is the operating point, and finding it is the entire
-point of measuring both halves together instead of each alone.
-
-## Not done yet
-
-- **Nothing has met *your* hands yet.** The 96.1% is on HaGRID's people, and
-  every latency and false-firing figure is measured, but the classifier that
-  ships was trained on synthetic poses. `ika record` is the fix and takes about
-  five minutes.
-- **Gate the swipes behind a pose** so the dynamic lane becomes usable. That is
-  a design change, not a training run.
-- **Accessibility permission** is the only thing `--live` waits on, and it is
-  yours to grant: System Settings, Privacy and Security, Accessibility.
+1. **Point the pose lane at real video.** Replaces the largest assumption in
+   the project with evidence.
+2. **Feed early commitment back into `ika live`**, which still confirms rather
+   than commits, and is therefore running the 7% strategy.
+3. **Gate the swipes** behind a pose, if hand gestures stay part of the product.
+4. **Record real hands** with `ika record`, four seconds per gesture, to replace
+   the synthetic classifier that ships today.
 
 ## Attribution
 
-HaGRID is by Kapitanov et al., licensed CC BY-SA 4.0. The subset used here is
-the `hagrid_subsets` export, 34 classes at 100 images each with bounding boxes
-and 21-point landmarks:
+HaGRID is by Kapitanov et al., licensed CC BY-SA 4.0. The subset used here:
 
 ```bash
 curl -L -o data/hagrid/export_100.zip \
   "https://huggingface.co/datasets/GestureDetectionConnoisseurs/hagrid_subsets/resolve/main/hagrid-export_100_images.zip"
 cd data/hagrid && unzip -q export_100.zip
 ```
+
+Hand and pose landmarkers are Google MediaPipe releases. Everything else in
+here is MIT, see LICENSE.

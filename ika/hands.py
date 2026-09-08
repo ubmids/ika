@@ -26,6 +26,27 @@ import numpy as np
 
 MODEL = Path(__file__).resolve().parent.parent / "models" / "hand_landmarker.task"
 
+HAND_MODEL_URL = (
+    "https://storage.googleapis.com/mediapipe-models/hand_landmarker"
+    "/hand_landmarker/float16/1/hand_landmarker.task"
+)
+
+
+class ModelMissing(FileNotFoundError):
+    """Raised with the command to fix it.
+
+    The weights are deliberately not in the repo, so a fresh clone has none.
+    A bare FileNotFoundError would be a puzzle; this is a instruction.
+    """
+
+    def __init__(self, path: Path, url: str = HAND_MODEL_URL):
+        self.path = path
+        super().__init__(
+            f"landmarker model missing at {path}\n\n"
+            f"  mkdir -p {path.parent}\n"
+            f"  curl -sL -o {path} \\\n    {url}\n"
+        )
+
 
 @dataclass(frozen=True)
 class Hand:
@@ -67,11 +88,7 @@ class HandTracker:
 
         path = Path(model_path or MODEL)
         if not path.exists():
-            raise FileNotFoundError(
-                f"hand landmarker model missing at {path}. Fetch it with:\n"
-                "  curl -sL -o models/hand_landmarker.task https://storage.googleapis.com"
-                "/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task"
-            )
+            raise ModelMissing(path)
 
         self._vision = vision
         self._landmarker = vision.HandLandmarker.create_from_options(
