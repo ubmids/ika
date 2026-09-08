@@ -392,6 +392,27 @@ def _watch(args):
     return 0
 
 
+def _drill(args):
+    """Watch someone drill at their laptop and report the habit."""
+    _preflight()
+    from .body import MODELS, POSE_URLS
+    from .hands import ModelMissing
+
+    model = MODELS / "pose_landmarker_lite.task"
+    if not model.exists():
+        raise ModelMissing(model, POSE_URLS["lite"])
+
+    from .drill_app import run_drill
+
+    print("\n  Stand where the camera sees your head, shoulders and hands.")
+    print(f"  Hold still for {args.calibration:.0f}s while it learns your resting guard.")
+    print("  Then drill. It reports the habit, not the punches.\n")
+    run_drill(camera=args.camera, width=args.width,
+              calibration=args.calibration, profile=args.profile,
+              subject=args.subject, seconds=args.seconds)
+    return 0
+
+
 def _bindings(_args):
     print("\n  gesture bindings\n")
     for line in control.describe_bindings():
@@ -509,6 +530,17 @@ def build_parser() -> argparse.ArgumentParser:
     wa.add_argument("--variant", default="lite", choices=("lite", "full"))
     wa.add_argument("--no-stabilise", action="store_true", dest="no_stabilise")
     wa.set_defaults(func=_watch)
+
+    dr = sub.add_parser("drill", help="watch a drill session and find the habit")
+    dr.add_argument("--camera", type=int, default=0)
+    dr.add_argument("--width", type=int, default=480)
+    dr.add_argument("--calibration", type=float, default=3.0)
+    dr.add_argument("--subject", default="me")
+    dr.add_argument("--profile", default=_default("data", "profiles"),
+                    help="where habits accumulate between sessions")
+    dr.add_argument("--seconds", type=float, default=None,
+                    help="stop after this long, for a bounded session")
+    dr.set_defaults(func=_drill)
 
     sub.add_parser("bindings", help="show what each gesture does").set_defaults(func=_bindings)
     return parser

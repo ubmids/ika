@@ -185,6 +185,63 @@ it extrapolates a plausible wrong one, so that is what is simulated now. The
 knee signal separating crouch from idle went from **1577 sigma** with legs
 visible to **0.1 sigma** hidden, which is what "cannot see" should look like.
 
+## The drill loop: the whole idea, on a laptop, today
+
+```
+ika drill
+```
+
+Stand where the camera sees your head, shoulders and hands. Hold still for
+three seconds while it learns your resting guard. Then drill. It reports the
+habit, not the punches.
+
+**Why this works without a trained action classifier**, which is the thing
+that unblocked it. Every route up to here needed a model trained on labelled
+movement in laptop framing, and no such dataset exists publicly. But the two
+events a drill coach actually needs are *geometric*:
+
+- a **punch** is a hand closing on the lens, measured from apparent palm size
+- a **dropped guard** is a wrist below its own learned baseline
+
+Neither needs a model trained on anyone's hands. So the loop closes now, and
+recording your own gestures became an optional refinement rather than a
+prerequisite.
+
+Verified end to end on a synthetic subject with a habit planted at 75%:
+
+```
+after punch_right then punch_right: guard_down_both
+79% of the time (normally 21%), 3.7x, seen 23/29
+```
+
+That is the read. Not "you threw a jab", which you already know, but "you drop
+your hands after two punches", which you cannot see yourself.
+
+Two things are deliberately learned rather than assumed. **Guard thresholds
+are calibrated per person**, because the +0.14 resting and -0.84 dropped
+figures were measured on synthetic bodies and real people are built
+differently and sit at different distances. And **a punch is never reported
+without a body in view**: measured, a lean-in with no torso visible is
+indistinguishable from a strike, crossover at 1.25/s, and telling someone they
+punched when they leaned is how they stop trusting it.
+
+Habits accumulate into a profile on disk, and fade when they stop happening.
+
+### The flaw the first end-to-end run exposed
+
+It reported seven habits where one was planted, and four were phantoms. Both
+hands drop together, so `guard_down_left` and `guard_down_right` landed a frame
+apart and the miner announced *"after guard_down_left: guard_down_right, 100%
+of the time, 6.7x"* as a discovery. It was not a discovery, it was the order
+the two events happened to be emitted in. **Sequential mining over
+simultaneous events invents dependencies.** Both sides dropping is now one
+`guard_down_both`, merged in the stream rather than within a frame, since the
+two never cross the threshold on the same frame.
+
+Three findings still survive that are true but useless, of the form "you raise
+your guard after dropping it". Those are state machine necessities rather than
+habits, and filtering them is not done yet.
+
 ---
 
 ## Quick start
@@ -198,6 +255,7 @@ curl -sL -o models/hand_landmarker.task \
 
 python scripts/train_from_hagrid.py   # a classifier from 2,192 real people
 ika train --synthetic   # or from invented hands, which is much worse (below)
+ika drill               # watch a drill session and report the habit
 ika live                # the terminal app: hands drawn in braille, live reads
 ika tell                # can we find a habit and call the next move?
 ika early               # how early can we commit, and what does it cost?
