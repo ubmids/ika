@@ -298,6 +298,47 @@ relationship, which is very likely where the signal is. Testing that means
 running the pair through and building features across both, which is the next
 thing worth doing.
 
+### A strike is a relationship, not a shape
+
+The strikes sat at 43% while gross posture reached 82%, and feature design
+could not move them. The hypothesis: a punch is not a shape at all, it is one
+person's wrist travelling toward another person's body, and reading a single
+figure throws that away. Arm extension survives; the thing that made it a
+punch rather than a stretch does not.
+
+`ika/interaction.py` adds twenty relational features: gap and its closing
+rate, each of four wrists' distance to the other person's torso and how fast
+it is shrinking, whether the two overlap. Measured on the **same clips**, same
+folds, so the comparison is controlled:
+
+| features | overall | strikes | punch | kick | push |
+|---|---|---|---|---|---|
+| one body only | 54.9% | 42% | 21% | 58% | 47% |
+| **the relationship** | **82.5%** | **82%** | **84%** | **79%** | **84%** |
+| both together | 73.4% | 63% | 53% | 68% | 68% |
+
+**Punch recall quadrupled, 21% to 84%.** The hypothesis was right, and by a
+wider margin than expected.
+
+Two honest caveats. Combining both feature sets is *worse* than the
+relationship alone, because seventy features across ninety-eight clips is
+data-starved rather than richer. And this subset is effectively five classes,
+not six: `point` survives in only one clip because two bodies are **never**
+found in those clips, so its 0% is the pipeline failing to see a relationship
+rather than a classifier failing to learn one. For the same reason the 82.5%
+is not comparable with the 62.5% measured over all 120 clips.
+
+That failure is itself informative. Two people are tracked in 96% of
+hand-shake frames and 82% of punch frames, but 48% of hug frames and 0% of
+point frames. The pipeline sees a relationship when the pair are close and
+distinct, and loses one when they clinch or stand apart.
+
+**And this carries to the glasses.** First person only ever shows one body,
+the opponent, so the relational quantity has to be recovered in a different
+form: wrist approaching the *lens* rather than wrist approaching another
+torso. If the signal is relational, and it clearly is, that is the shape the
+first-person version must reconstruct.
+
 ### The framing inversion
 
 The named reads flip completely between the two camera setups measured, and
