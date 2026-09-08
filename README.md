@@ -105,7 +105,7 @@ ika live                # the terminal app: hands drawn in braille, live reads
 ika tell                # can we find a habit and call the next move?
 ika early               # how early can we commit, and what does it cost?
 ika compare             # landmarks vs a fine-tuned CNN, on real photographs
-pytest -q               # 134 tests, no camera, no network
+pytest -q               # 190 tests, no camera, no network
 ```
 
 `ika live` is a dry run unless you pass `--live`. It shows everything and sends
@@ -230,7 +230,8 @@ to enable.
 ## Next
 
 1. **Point the pose lane at real video.** Replaces the largest assumption in
-   the project with evidence.
+   the project with evidence. `ika/body.py` reads bodies at 108 fps; nothing
+   yet turns those landmarks into actions.
 2. **Feed early commitment back into `ika live`**, which still confirms rather
    than commits, and is therefore running the 7% strategy.
 3. **Gate the swipes** behind a pose, if hand gestures stay part of the product.
