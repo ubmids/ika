@@ -9,12 +9,23 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      # pyproject claims >=3.10,<3.13. Testing one version proved a third of
+      # that, so the matrix covers what the metadata promises.
+      matrix:
+        python-version: ['3.10', '3.11', '3.12']
+    name: tests on ${{ matrix.python-version }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: ${{ matrix.python-version }}
+          cache: pip
       - name: OpenCV needs libGL on a headless runner
         run: sudo apt-get update && sudo apt-get install -y libgl1 libglib2.0-0
       - run: pip install -e '.[dev]'
+      # The landmarker weights and the HaGRID subset are deliberately not in
+      # the repo, and there is no camera here, so the 9 tests that need them
+      # skip. Verified locally by hiding both: 181 pass, 9 skip.
       - run: pytest -q
