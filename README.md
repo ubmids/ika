@@ -212,6 +212,17 @@ pytest -q               # 414 tests, no camera, no network
 nothing, which is the mode to develop in: a classifier wired to a keyboard is a
 program that types whatever it hallucinates.
 
+`--body` adds a posture lane: guard height, elbow extension, reach, torso
+lean and shoulder twist, drawn live beside the hands. Only reads that survive
+webcam framing are offered, since knees are visible in 4% of frames from a
+laptop and ankles in none, and a test enforces that nothing leg-derived
+appears. Any read whose joints the landmarker was guessing at is greyed out
+rather than shown as a fact.
+
+Cost measured before wiring it in: hands and gesture classification take
+22.1 ms, pose and posture extraction 9.5 ms, both together 31.6 ms for 32 fps.
+That is 12% of the 263 ms budget, so it is cheap enough to leave running.
+
 It **commits early rather than waiting for a gesture to be held**: 7 frames
 against 11, 233 ms against 367 ms, measured on identical streams. Two layers,
 because arming and acting want opposite things. Engagement keeps the dwell

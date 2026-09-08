@@ -239,3 +239,65 @@ def test_dwell_mode_still_reports_its_own_progress():
     for i in range(3):
         state.machine.update(_onehot(CLASSES, "open_palm"), i / 30.0)
     assert state.progress == state.machine.progress
+
+
+# --- the body lane in the live app ---------------------------------------
+
+def test_only_reads_that_survive_webcam_framing_are_offered():
+    """Measured over 400 real photographs: arms and torso are usable in 100%
+    of frames, knees in 4%, ankles in 0%. Offering a live stance-width read
+    from a laptop would be showing a number with no evidence behind it."""
+    from ika.posture import DEPENDS_ON
+    from ika.body import LEFT_ANKLE, LEFT_KNEE, RIGHT_ANKLE, RIGHT_KNEE
+    from ika.tui import BODY_READS
+
+    legs = {LEFT_KNEE, RIGHT_KNEE, LEFT_ANKLE, RIGHT_ANKLE}
+    for _, key in BODY_READS:
+        assert not (set(DEPENDS_ON[key]) & legs), f"{key} depends on legs"
+
+
+def test_every_offered_read_actually_exists():
+    from ika.posture import DERIVED
+    from ika.tui import BODY_READS
+
+    for label, key in BODY_READS:
+        assert key in DERIVED, key
+        assert label
+
+
+def test_the_body_skeleton_skips_joints_the_model_only_guessed():
+    """A pose landmarker does not withhold a hidden joint, it extrapolates a
+    plausible one. Drawing the guess puts a confident limb where there is no
+    evidence, which at webcam framing means inventing legs below the frame."""
+    from ika.body import (Body, LEFT_ANKLE, LEFT_KNEE, N_LANDMARKS,
+                          RIGHT_ANKLE, RIGHT_KNEE)
+    from ika.canvas import Braille
+    from ika.tui import draw_body
+
+    marks = np.zeros((N_LANDMARKS, 3), dtype=np.float32)
+    marks[:, 0] = np.linspace(0.3, 0.7, N_LANDMARKS)
+    marks[:, 1] = np.linspace(0.2, 0.9, N_LANDMARKS)
+
+    visible = Body(image=marks, world=marks.copy(),
+                   visibility=np.ones(N_LANDMARKS, dtype=np.float32))
+    hidden_vis = np.ones(N_LANDMARKS, dtype=np.float32)
+    for joint in (LEFT_KNEE, RIGHT_KNEE, LEFT_ANKLE, RIGHT_ANKLE):
+        hidden_vis[joint] = 0.05
+    partly = Body(image=marks, world=marks.copy(), visibility=hidden_vis)
+
+    def marked(body):
+        canvas = Braille(60, 15)
+        draw_body(canvas, [body])
+        return sum(ch != " " for row in canvas.text_rows() for ch in row)
+
+    assert marked(partly) < marked(visible), "hidden limbs were still drawn"
+    assert marked(partly) > 0, "the visible part should still appear"
+
+
+def test_the_body_lane_is_opt_in():
+    """It costs 9.5 ms a frame, which is cheap but not free."""
+    import inspect
+
+    from ika.tui import run_terminal
+
+    assert inspect.signature(run_terminal).parameters["body"].default is False

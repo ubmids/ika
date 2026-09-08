@@ -25,9 +25,11 @@ import numpy as np
 from . import control, features
 from .canvas import Braille
 from .hands import HandTracker
+from .body import LIMBS, PoseTracker
 from .live_commit import EarlyCommitter
 from .machine import GestureMachine
 from .model import GestureNet
+from . import posture
 from .pointer import CursorSmoother, map_to_screen, screen_size
 from .schema import (INDEX_DIP, INDEX_MCP, INDEX_PIP, INDEX_TIP, MIDDLE_DIP,
                      MIDDLE_MCP, MIDDLE_PIP, MIDDLE_TIP, PINKY_DIP, PINKY_MCP,
@@ -59,7 +61,22 @@ def meter(value: float, width: int) -> str:
     return ("▓" * filled + "░" * (width - filled))[:width]
 
 
-PALM_LAYER, BONE_LAYER, TIP_LAYER = 1, 2, 3
+PALM_LAYER, BONE_LAYER, TIP_LAYER, BODY_LAYER = 1, 2, 3, 4
+
+# The reads worth showing live, in the order a coach would look at them.
+# Chosen from what is actually visible at webcam framing: measured over 400
+# real photographs, arms and torso are usable in 100% of frames while knees
+# are 4% and ankles 0%, so nothing leg-derived is offered here.
+BODY_READS = (
+    ("guard L", "left_guard_height"),
+    ("guard R", "right_guard_height"),
+    ("elbow L", "left_elbow_angle"),
+    ("elbow R", "right_elbow_angle"),
+    ("reach L", "left_reach"),
+    ("reach R", "right_reach"),
+    ("lean", "torso_lean"),
+    ("twist", "shoulder_twist"),
+)
 
 # Knuckle row plus the wrist, in order around the palm, so it fills as a
 # convex shape rather than a bow tie.
@@ -162,6 +179,27 @@ def draw_hands(canvas: Braille, hands) -> None:
     _renderer.draw(canvas, hands)
 
 
+def draw_body(canvas: Braille, bodies, threshold: float = 0.5) -> None:
+    """A body skeleton, drawn only where the landmarker could actually see.
+
+    Unseen joints are skipped rather than drawn, because a pose landmarker does
+    not withhold a hidden joint, it extrapolates a plausible one. Drawing the
+    guess would put a confident limb where there is no evidence, and at webcam
+    framing that means a pair of legs invented below the frame.
+    """
+    for body in bodies:
+        marks = np.asarray(body.image, dtype=np.float64)
+        visible = np.asarray(body.visibility) >= threshold
+        points = [
+            ((1.0 - x) * (canvas.width - 1), y * (canvas.height - 1))
+            for x, y, _ in marks
+        ]
+        for a, b in LIMBS:
+            if not (visible[a] and visible[b]):
+                continue
+            canvas.stroke(*points[a], *points[b], 0.7, 0.7, layer=BODY_LAYER)
+
+
 class HandState:
     """Per-hand decision state, so two hands never share a timer.
 
@@ -220,16 +258,17 @@ def run_terminal(
     max_hands: int = 2,
     pointer: bool = True,
     commit: bool = True,
+    body: bool = False,
 ) -> None:
     model = GestureNet.load(checkpoint)
     curses.wrapper(
         _loop, model, camera, width, live_control, threshold, dwell, smoothing,
-        max_hands, pointer, commit,
+        max_hands, pointer, commit, body,
     )
 
 
 def _loop(stdscr, model, camera, width, live_control, threshold, dwell, smoothing,
-          max_hands, pointer, commit=True) -> None:
+          max_hands, pointer, commit=True, read_body=False) -> None:
     curses.curs_set(0)
     stdscr.nodelay(True)
     if curses.has_colors():
@@ -263,6 +302,11 @@ def _loop(stdscr, model, camera, width, live_control, threshold, dwell, smoothin
     canvas: Braille | None = None
     canvas_size = (0, 0)
     renderer = HandRenderer()
+    # Pose costs 9.5 ms against the hand lane's 22.1, so both together run at
+    # 32 fps and use 12% of the 263 ms budget. Cheap enough to leave on.
+    pose = PoseTracker(variant="lite", max_bodies=1,
+                       detection_confidence=0.4, tracking_confidence=0.4) if read_body else None
+    body_reads: dict[str, tuple[float, float]] = {}
 
     with HandTracker(max_hands=max_hands) as tracker:
         while True:
@@ -274,7 +318,20 @@ def _loop(stdscr, model, camera, width, live_control, threshold, dwell, smoothin
             rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
 
             now = time.time()
-            hands = tracker(rgb, int((now - started) * 1000))
+            stamp = int((now - started) * 1000)
+            hands = tracker(rgb, stamp)
+            bodies = pose(rgb, stamp) if pose is not None else []
+            if bodies:
+                subject = bodies[0]
+                vector = posture.extract(subject.world, subject.visibility)
+                body_reads = {
+                    name: (float(vector[posture.DERIVED[key]]),
+                           posture.confidence(subject.visibility,
+                                              posture.DEPENDS_ON[key]))
+                    for name, key in BODY_READS
+                }
+            elif pose is not None:
+                body_reads = {}
 
             seen = set()
             for hand in hands:
@@ -365,11 +422,13 @@ def _loop(stdscr, model, camera, width, live_control, threshold, dwell, smoothin
                 canvas = Braille(box_w - 2, box_h - 2)
                 canvas_size = (box_w, box_h)
             renderer.draw(canvas, hands)
+            if bodies:
+                draw_body(canvas, bodies)
 
             stdscr.erase()
             _render(stdscr, canvas, box_w, box_h, hands, states, engaged, fps,
                     live_control, cursor_at, fired_log, controller, model,
-                    (GREEN, YELLOW, CYAN, RED, DIM))
+                    (GREEN, YELLOW, CYAN, RED, DIM), body_reads)
             stdscr.refresh()
 
             key = stdscr.getch()
@@ -384,6 +443,8 @@ def _loop(stdscr, model, camera, width, live_control, threshold, dwell, smoothin
     for state in states.values():
         if state.pinched:
             controller.press_mouse(False)
+    if pose is not None:
+        pose.close()
     capture.release()
 
 
@@ -427,7 +488,8 @@ def _text_rows(states: dict, fired_log: list) -> int:
 
 
 def _render(stdscr, canvas, box_w, box_h, hands, states, engaged, fps,
-            live_control, cursor_at, fired_log, controller, model, colours) -> None:
+            live_control, cursor_at, fired_log, controller, model, colours,
+            body_reads=None) -> None:
     GREEN, YELLOW, CYAN, RED, DIM = colours
     height, term_w = stdscr.getmaxyx()
 
@@ -442,7 +504,7 @@ def _render(stdscr, canvas, box_w, box_h, hands, states, engaged, fps,
     put(0, max(18, box_w + 2 - len(right)), right, RED if live_control else DIM)
 
     put(1, 2, "┌" + "─" * (box_w - 2) + "┐", DIM)
-    layer_attr = {1: CYAN | DIM, 2: CYAN, 3: GREEN | curses.A_BOLD}
+    layer_attr = {1: CYAN | DIM, 2: CYAN, 3: GREEN | curses.A_BOLD, 4: YELLOW | DIM}
     rows = canvas.runs()
     for i, row in enumerate(rows):
         put(2 + i, 2, "│", DIM)
@@ -490,6 +552,25 @@ def _render(stdscr, canvas, box_w, box_h, hands, states, engaged, fps,
             put(row, 22, f"{state.probabilities[index]:>4.0%} ", DIM)
             row += 1
         row += 1
+
+    if body_reads:
+        column = min(term_w - 34, 96)
+        put(bottom + 1, column, "body", curses.A_BOLD)
+        line = bottom + 2
+        for name, key in BODY_READS:
+            if name not in body_reads:
+                continue
+            value, trust = body_reads[name]
+            # Greyed when the landmarker was guessing at a joint this read
+            # depends on, so an unreliable number never looks like a fact.
+            attr = DIM if trust < 0.5 else 0
+            put(line, column, f"{name:<9}", attr)
+            put(line, column + 9, f"{value:>+6.2f}", attr)
+            put(line, column + 17, meter(min(1.0, abs(value)), 12),
+                (YELLOW if trust >= 0.5 else DIM))
+            if trust < 0.5:
+                put(line, column + 30, "unseen", DIM)
+            line += 1
 
     if cursor_at and row < height - 2:
         put(row, 2, f"cursor  {cursor_at[0]}, {cursor_at[1]}", DIM)
