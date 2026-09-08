@@ -344,6 +344,53 @@ def _bodyearly(args):
     return 0
 
 
+def _watch(args):
+    """Run a clip through the whole pipeline and report what it read."""
+    from collections import Counter
+
+    import numpy as np
+
+    from .body import MODELS
+    from .hands import ModelMissing
+    from .watch import watch
+
+    model = MODELS / f"pose_landmarker_{args.variant}.task"
+    if not model.exists():
+        from .body import POSE_URLS
+
+        raise ModelMissing(model, POSE_URLS[args.variant])
+    if not Path(args.clip).exists():
+        print(f"  no such clip: {args.clip}")
+        return 1
+
+    print(f"\n  {args.clip}")
+    seen, identities, drift, compensated, source = [], [], [], 0, "unknown"
+    for observation in watch(args.clip, max_width=args.width, stride=args.stride,
+                             max_frames=args.max_frames, variant=args.variant,
+                             max_bodies=args.bodies, stabilise=not args.no_stabilise):
+        seen.append(len(observation.seen))
+        identities.append(tuple(sorted(s.id for s in observation.sightings)))
+        if observation.camera.confidence > 0.25:
+            drift.append(observation.camera.dx)
+        compensated += observation.compensated
+        source = observation.timeline_source
+
+    if not seen:
+        print("  no frames decoded")
+        return 1
+
+    print(f"  {len(seen)} frames, timed by {source}")
+    print(f"  bodies per frame: " +
+          ", ".join(f"{n} in {c}" for n, c in sorted(Counter(seen).items())))
+    stable = Counter(identities).most_common(1)[0]
+    print(f"  identities: {stable[0]} held for {stable[1]}/{len(seen)} frames")
+    print(f"  camera compensated on {compensated}/{len(seen)} frames")
+    if drift:
+        print(f"  median per-frame camera dx {np.median(drift):+.4f}")
+    print()
+    return 0
+
+
 def _bindings(_args):
     print("\n  gesture bindings\n")
     for line in control.describe_bindings():
@@ -445,6 +492,16 @@ def build_parser() -> argparse.ArgumentParser:
     be.add_argument("--seed", type=int, default=0)
     be.add_argument("--out", default=_default("checkpoints", "body_early.pt"))
     be.set_defaults(func=_bodyearly)
+
+    wa = sub.add_parser("watch", help="run a video clip through the whole pipeline")
+    wa.add_argument("clip")
+    wa.add_argument("--width", type=int, default=640)
+    wa.add_argument("--stride", type=int, default=1)
+    wa.add_argument("--max-frames", type=int, default=None, dest="max_frames")
+    wa.add_argument("--bodies", type=int, default=2)
+    wa.add_argument("--variant", default="lite", choices=("lite", "full"))
+    wa.add_argument("--no-stabilise", action="store_true", dest="no_stabilise")
+    wa.set_defaults(func=_watch)
 
     sub.add_parser("bindings", help="show what each gesture does").set_defaults(func=_bindings)
     return parser

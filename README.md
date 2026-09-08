@@ -28,6 +28,31 @@ next in ways that were not obvious from the outside.
                    early         habit
 ```
 
+`ika watch <clip.mp4>` is the SEE stage end to end: real timestamps, camera
+motion removed, two fighters held apart by identity, posture per frame.
+
+```
+  60 frames, timed by container
+  bodies per frame: 2 in 60
+  identities: (1, 2) held for 60/60 frames
+  camera compensated on 59/60 frames
+```
+
+The order inside it is not arbitrary. **Pose runs before stabilisation**,
+which looks backwards until you see why: camera motion is estimated by finding
+the largest group of points that moved together, and a fighter filling the
+frame *is* that group, so the estimate becomes the fighter reported as the
+camera. Measured with a subject over 40% of the frame, the answer came back
+-0.0625 against a truth of +0.0156, confidently wrong. Masking the subject out
+recovers +0.0156, and pose is the cheapest source of that mask.
+
+Compensation uses **accumulated** drift rather than the last frame pair,
+because movement features span about 0.6 seconds and it is the drift across
+that window which corrupts them. On a 60-frame pan the accumulated figure came
+to 99% of truth while the per-frame median under-read at 70%, since 1.5 px per
+frame is sub-pixel after the stabiliser's own downscale. The errors average
+out rather than accumulating.
+
 | stage | what it does | state | measured |
 |---|---|---|---|
 | **See** | landmarks from video | working | hands **32 fps**, body **108 fps** |
@@ -177,7 +202,8 @@ ika tell                # can we find a habit and call the next move?
 ika early               # how early can we commit, and what does it cost?
 ika compare             # landmarks vs a fine-tuned CNN, on real photographs
 ika body                # can a camera read a body early, and what does it miss?
-pytest -q               # 233 tests, no camera, no network
+ika watch clip.mp4      # a whole clip: two fighters, camera motion removed
+pytest -q               # 400 tests, no camera, no network
 ```
 
 `ika live` is a dry run unless you pass `--live`. It shows everything and sends
