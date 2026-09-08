@@ -289,6 +289,61 @@ def _early(args):
     return 0
 
 
+def _bodyearly(args):
+    """Can a camera read a body early, and what does it fail to see?"""
+    import torch
+
+    from .model import GestureNet
+    from .sequence import _stratified
+    from .tell.bodyearly import sweep, training_set
+
+    for label, occlude in (("legs hidden, as a laptop webcam sees", True),
+                           ("legs visible, tripod and a wider shot", False)):
+        if args.wide and occlude:
+            continue
+        x, y, classes = training_set(per_class=args.per_class,
+                                     occlude_legs=occlude, seed=args.seed)
+        tr, va = _stratified(y, 0.2, args.seed)
+        torch.manual_seed(args.seed)
+        model = GestureNet(x.shape[1], classes, hidden=(128, 64), dropout=0.25)
+        model.fit_standardiser(x[tr])
+        xt, yt = torch.tensor(x[tr]), torch.tensor(y[tr])
+        xv, yv = torch.tensor(x[va]), torch.tensor(y[va])
+        opt = torch.optim.AdamW(model.parameters(), lr=2e-3, weight_decay=1e-4)
+        loss_fn = torch.nn.CrossEntropyLoss()
+        best, state = 0.0, None
+        for _ in range(args.epochs):
+            model.train()
+            order = torch.randperm(len(xt))
+            for start in range(0, len(order), 64):
+                batch = order[start : start + 64]
+                if len(batch) < 2:
+                    continue
+                opt.zero_grad(); loss_fn(model(xt[batch]), yt[batch]).backward(); opt.step()
+            model.eval()
+            with torch.no_grad():
+                score = float((model(xv).argmax(1) == yv).float().mean())
+            if score > best:
+                best, state = score, {k: v.clone() for k, v in model.state_dict().items()}
+        model.load_state_dict(state)
+        model.eval()
+
+        rows = sweep(model, classes, per_class=args.trials, occlude_legs=occlude)
+        at = min(rows, key=lambda r: abs(r["threshold"] - 0.85))
+        print(f"\n  == {label} ==")
+        print(f"  {len(y)} prefix samples, held-out {best:.1%}")
+        print(f"  at 0.85 confidence: {at['accuracy']:.0%} accurate, "
+              f"{at['median_latency'] * 1000:.0f} ms, "
+              f"{at['median_fraction']:.0%} of the movement seen")
+        print("  per action:")
+        for name, value in sorted(at["per_action"].items(), key=lambda kv: kv[1]):
+            print(f"    {name:<14} {value:>5.0%}")
+        if occlude:
+            model.save(args.out)
+    print("\n  Punches and guard survive an occluded camera. Level changes do not.\n")
+    return 0
+
+
 def _bindings(_args):
     print("\n  gesture bindings\n")
     for line in control.describe_bindings():
@@ -380,6 +435,16 @@ def build_parser() -> argparse.ArgumentParser:
     er.add_argument("--seed", type=int, default=0)
     er.add_argument("--out", default=_default("checkpoints", "early.pt"))
     er.set_defaults(func=_early)
+
+    be = sub.add_parser("body", help="can a camera read a body early, and what does it miss?")
+    be.add_argument("--per-class", type=int, default=200, dest="per_class")
+    be.add_argument("--trials", type=int, default=40)
+    be.add_argument("--epochs", type=int, default=180)
+    be.add_argument("--wide", action="store_true",
+                    help="only the tripod case, with legs visible")
+    be.add_argument("--seed", type=int, default=0)
+    be.add_argument("--out", default=_default("checkpoints", "body_early.pt"))
+    be.set_defaults(func=_bodyearly)
 
     sub.add_parser("bindings", help="show what each gesture does").set_defaults(func=_bindings)
     return parser

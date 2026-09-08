@@ -62,7 +62,13 @@ def body_pose(
     marks[RIGHT_HIP] = (-HIP_HALF, 0.0, 0.0)
     hips = np.zeros(3)
 
-    spine = np.array([np.sin(lean), np.cos(lean), 0.0]) * TORSO * (1.0 - 0.18 * crouch)
+    # The spine keeps its length when crouching. An earlier version shortened
+    # it by up to 18%, which is not what a crouch does to a person, and it
+    # leaked: `posture` normalises by torso length, so a shortened spine made
+    # every limb read as proportionally longer and handed the classifier a
+    # crouch cue that was purely an artefact of the fixture. With legs hidden
+    # it scored 86% on an action whose only real evidence is the knees.
+    spine = np.array([np.sin(lean), np.cos(lean), 0.0]) * TORSO
     shoulders = hips + spine
 
     # Shoulders rotate about the spine by `twist`, so the shoulder line and the

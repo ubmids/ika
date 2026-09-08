@@ -108,20 +108,26 @@ class Commitment:
 
 def watch(
     model: GestureNet,
-    window: list[Sample],
+    window: list,
     actual: str,
     threshold: float,
     fps: float = 30.0,
+    feature_fn=None,
 ) -> Commitment | None:
     """Replay a movement frame by frame and commit as soon as we dare.
 
     Returns None if confidence never reached the threshold, which is a real
     outcome rather than a failure: staying silent about a movement you cannot
     read is correct behaviour, and the alternative is a system that guesses.
+
+    `feature_fn` is how the body lane reuses this. Hands and bodies produce
+    different feature vectors, but committing early is the same decision in
+    both, and duplicating it would let the two drift apart.
     """
+    feature_fn = feature_fn or motion_features
     for count in range(MIN_FRAMES, len(window) + 1):
         part = window[:count]
-        index, confidence, _ = model.predict(motion_features(part))
+        index, confidence, _ = model.predict(feature_fn(part))
         if confidence >= threshold:
             return Commitment(
                 predicted=model.classes[index],

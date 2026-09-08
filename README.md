@@ -117,6 +117,49 @@ guess, and an unseen ankle comes back as a confident-looking coordinate. Zeroing
 it would be worse: that places the joint at the hip centre, which is a specific
 wrong posture rather than an absent one.
 
+### Reading a body early: punches yes, level changes no
+
+The whole pipeline, run on body features instead of abstract action labels.
+Movements are generated as postures changing over time with a bell velocity
+profile, feints included, and the classifier commits before the movement ends.
+
+At 0.85 confidence, **100 ms**, having seen about half the movement:
+
+| action | laptop webcam (legs hidden) | tripod (legs visible) |
+|---|---|---|
+| raise guard | **100%** | 100% |
+| cross, right | 98% | 100% |
+| slip left | 97% | 83% |
+| jab, left | 94% | 94% |
+| drop guard | 92% | 92% |
+| idle | 72% | 98% |
+| **crouch** | **59%** | 88% |
+| overall | **89%** | 93% |
+
+Everything above the waist survives an occluded camera. `crouch` collapses,
+because its only evidence is knee angle, and it drags `idle` down with it since
+the two become confusable. **So at laptop framing, read punches and guard and
+say nothing about level changes.** With a tripod you get all of it.
+
+### Two fixtures that lied before this number was honest
+
+Both scored around 86% on `crouch` with the legs hidden, which is an action a
+webcam physically cannot observe. Neither was caught by a test; both were
+caught by disbelieving a suspiciously good result.
+
+**The spine got shorter.** `body_pose` shortened the torso by up to 18% when
+crouching. Since `posture` normalises everything by torso length, that made
+every limb read as proportionally longer and handed the classifier a crouch cue
+that existed only in the fixture. Real crouching bends knees and hips; it does
+not compress your spine.
+
+**Occlusion was only a flag.** The second version lowered the visibility
+number but still passed the true leg coordinates, so the model read knees it
+had been told were invisible. A landmarker does not withhold an unseen joint,
+it extrapolates a plausible wrong one, so that is what is simulated now. The
+knee signal separating crouch from idle went from **1577 sigma** with legs
+visible to **0.1 sigma** hidden, which is what "cannot see" should look like.
+
 ---
 
 ## Quick start
@@ -133,7 +176,8 @@ ika live                # the terminal app: hands drawn in braille, live reads
 ika tell                # can we find a habit and call the next move?
 ika early               # how early can we commit, and what does it cost?
 ika compare             # landmarks vs a fine-tuned CNN, on real photographs
-pytest -q               # 218 tests, no camera, no network
+ika body                # can a camera read a body early, and what does it miss?
+pytest -q               # 233 tests, no camera, no network
 ```
 
 `ika live` is a dry run unless you pass `--live`. It shows everything and sends
