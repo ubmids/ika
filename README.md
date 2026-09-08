@@ -204,6 +204,7 @@ ika early               # how early can we commit, and what does it cost?
 ika compare             # landmarks vs a fine-tuned CNN, on real photographs
 ika body                # can a camera read a body early, and what does it miss?
 ika watch clip.mp4      # a whole clip: two fighters, camera motion removed
+python scripts/ut_interaction.py --fetch   # real footage, then measure on it
 pytest -q               # 414 tests, no camera, no network
 ```
 
@@ -250,6 +251,70 @@ and `pinch` is measured geometrically from thumb-to-index distance rather than
 classified. `l_shape`'s binding to "previous desktop" is therefore unreachable
 with this model.
 
+## Real footage, at last: the answer is yes, with a catch
+
+Everything in the recognise-predict-warn lane had been measured on movement
+generated with arithmetic. This is the first time any of it met video of
+people. **UT-Interaction**: 120 clips, six classes, two complete bodies on a
+static camera, `scripts/ut_interaction.py` fetches and measures it.
+
+**Pose sees them.** A body was found in **99%** of frames, and all 120 clips
+were usable, every class between 98 and 100%. That was the go/no-go and it
+passed cleanly.
+
+**Actions are recognisable, well above chance.** 5-fold, split by clip so no
+clip appears on both sides:
+
+| class | recall |
+|---|---|
+| hand shake | **90%** |
+| hug | 85% |
+| point | 70% |
+| punch | 55% |
+| push | 40% |
+| **kick** | **35%** |
+| overall | **62.5%** against 17% chance |
+
+**The catch is which classes fail.** Gross posture works at 82%. The strikes,
+which are the ones the product needs, sit at **43%**. And that is not a feature
+design problem: describing the whole clip, describing only the peak-activity
+window, and describing both together all land within four points of each other,
+while shuffling which classes suffer.
+
+| features | overall | strikes | gross posture |
+|---|---|---|---|
+| whole clip averaged | 62.5% | 43% | 82% |
+| peak-activity window | 59.2% | 53% | 65% |
+| both together | 62.5% | 48% | 77% |
+
+Localising the strike helps strikes and hurts postures, which makes sense: a
+punch is a brief event an average dilutes, and a hug is a sustained posture a
+short window truncates. But nothing moves the strikes past ~53%.
+
+**The most likely cause is a design choice of mine, not a limit.** These are
+*interactions*, and the pipeline reads one body. A punch is one person's arm
+extending toward another, and taking only the largest figure throws away the
+relationship, which is very likely where the signal is. Testing that means
+running the pair through and building features across both, which is the next
+thing worth doing.
+
+### The framing inversion
+
+The named reads flip completely between the two camera setups measured, and
+neither gives everything:
+
+| read | webcam framing | wide static shot |
+|---|---|---|
+| shoulders, hips, torso lean | 100% | 100% |
+| arms, guard height, reach | **100%** | **54-67%** |
+| knees, stance, weight | **0-4%** | **85-95%** |
+
+A laptop camera sees arms and no legs. A wide shot at ~200 px person height
+sees legs, and resolves arms far less reliably. So the camera decides what you
+can read, and at these resolutions there is no single framing that reads a
+whole fighter. That directly explains the result above: the classes that
+survive are the ones carried by the torso.
+
 ## What is proven, and what is not
 
 **Proven on real data:** the landmarkers work at the frame rates quoted, on
@@ -264,9 +329,10 @@ establishes is the *shape* of the problem. The fighters are a crude model with
 fixed action durations, no fatigue, no ring position, and no reaction to being
 read.
 
-**Not tested at all:** whether actions are recognisable from real sparring
-video. Every figure in the warn lane assumes they are. That is the next thing
-worth doing and the biggest remaining unknown.
+**Now tested:** actions are recognisable from real video at 62.5% over six
+classes against 17% chance, and pose finds a body in 99% of frames. The
+strikes specifically are weak at 43%, most likely because the pipeline reads
+one body where the footage shows an interaction between two.
 
 ---
 
