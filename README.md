@@ -196,7 +196,8 @@ pip install -e '.[dev]'
 curl -sL -o models/hand_landmarker.task \
   https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task
 
-ika train --synthetic   # a classifier from invented hands, no recording needed
+python scripts/train_from_hagrid.py   # a classifier from 2,192 real people
+ika train --synthetic   # or from invented hands, which is much worse (below)
 ika live                # the terminal app: hands drawn in braille, live reads
 ika tell                # can we find a habit and call the next move?
 ika early               # how early can we commit, and what does it cost?
@@ -224,6 +225,30 @@ at themselves, so the accuracy penalty nearly vanishes here while the speed is
 kept.
 
 ---
+
+## Nobody needs to record their own hands
+
+The shipped classifier used to be trained on hands generated with arithmetic.
+Judged on real held-out people, that model managed **46.4%** across seven
+classes. The same architecture trained on HaGRID photographs of **2,192
+different people**, split so no person appears on both sides, reaches **98.8%**
+on people it has never seen.
+
+| trained on | accuracy on real held-out people |
+|---|---|
+| synthetic hands | 46.4% |
+| **2,192 real people** | **98.8%** |
+
+So `scripts/train_from_hagrid.py` is now how the live classifier is built, and
+recording your own hands is an optional refinement rather than a prerequisite.
+It was the last thing on the list that genuinely needed a person.
+
+HaGRID names seven of our nine gestures. The two it misses are the two the
+classifier does not need: `l_shape` is `point` plus an extended thumb and the
+pair confuses in both directions, which was already a known vocabulary flaw,
+and `pinch` is measured geometrically from thumb-to-index distance rather than
+classified. `l_shape`'s binding to "previous desktop" is therefore unreachable
+with this model.
 
 ## What is proven, and what is not
 
