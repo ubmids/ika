@@ -516,6 +516,18 @@ def test_the_damage_is_counted_not_hidden(tmp_path):
     assert "skipped" in reader.timeline.describe()
 
 
+def test_damage_does_not_make_a_constant_rate_clip_look_variable(tmp_path):
+    """A hole in a clip leaves one double-width gap, and reading that as a
+    change of frame rate would raise the flag on every damaged file and train
+    callers to ignore it."""
+    pristine = _write(tmp_path / "a.avi", frames=30)
+    reader = Reader(_damage(pristine, tmp_path / "bad.avi"))
+    list(reader)
+    assert reader.timeline.skipped >= 1
+    assert not reader.timeline.variable_rate
+    assert reader.timeline.measured_fps == pytest.approx(TEST_FPS, rel=0.01)
+
+
 def test_a_frame_that_advances_but_will_not_decode_is_skipped(monkeypatch, tmp_path):
     """The other damage shape: the packet is there, the pixels are not. It has
     to cost one frame, not the remainder of the clip."""

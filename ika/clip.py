@@ -489,7 +489,8 @@ class Reader:
         blind_probes = 0
         target = 0              # our own monotone position, because POS_FRAMES is not
         recovered = False       # whether a seek-past has happened yet
-        first_decode_failed_at: int | None = None
+        previous_position: int | None = None
+        any_decode_failed = False
 
         while True:
             if self.max_frames is not None and self.timeline.yielded >= self.max_frames:
@@ -539,10 +540,12 @@ class Reader:
                 and (previous is None or stamp > previous - TIME_EPSILON)
             )
 
-            if recovered and usable and previous is not None and stamp <= previous:
-                # A seek can land before where we already were, and handing back
-                # a frame that goes backwards in time would corrupt any velocity
-                # computed from it. Drop it rather than emit it.
+            # A recovery seek can land before where we already were. Handing
+            # back a frame that goes backwards in time would corrupt any
+            # velocity computed from it, and timing it by arithmetic instead
+            # would invent a moment it does not belong to, so it is dropped.
+            if (recovered and previous is not None
+                    and np.isfinite(stamp) and stamp <= previous):
                 position += 1
                 continue
 
@@ -553,8 +556,7 @@ class Reader:
                     # The position advanced but the pixels did not arrive. The
                     # slot is still spent, so the timeline moves on and the
                     # clip does not end here.
-                    if first_decode_failed_at is None:
-                        first_decode_failed_at = position
+                    any_decode_failed = True
                     self.timeline.skipped += 1
                     position += 1
                     blind_probes = 0
@@ -566,9 +568,13 @@ class Reader:
 
             if usable:
                 at, timed_by = stamp, FROM_CONTAINER
-                if previous is not None:
+                # Only gaps between adjacent positions describe the frame rate.
+                # A gap measured across a damaged slot is two frame periods
+                # wide, and feeding that in would report every damaged constant
+                # rate clip as variable rate.
+                if previous is not None and previous_position == position - 1:
                     self._note_gap(previous, stamp)
-                previous = stamp
+                previous, previous_position = stamp, position
             else:
                 # No usable timestamp, so count from the seek origin at the
                 # best rate known. `position` counts every slot including the
@@ -585,7 +591,7 @@ class Reader:
 
             position += 1
 
-        if first_decode_failed_at is not None and self.timeline.yielded == 0:
+        if any_decode_failed and self.timeline.yielded == 0:
             raise ClipUndecodable(self.path, "every frame failed to decode")
 
     def close(self) -> None:
