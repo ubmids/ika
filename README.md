@@ -203,12 +203,25 @@ ika early               # how early can we commit, and what does it cost?
 ika compare             # landmarks vs a fine-tuned CNN, on real photographs
 ika body                # can a camera read a body early, and what does it miss?
 ika watch clip.mp4      # a whole clip: two fighters, camera motion removed
-pytest -q               # 400 tests, no camera, no network
+pytest -q               # 414 tests, no camera, no network
 ```
 
 `ika live` is a dry run unless you pass `--live`. It shows everything and sends
 nothing, which is the mode to develop in: a classifier wired to a keyboard is a
 program that types whatever it hallucinates.
+
+It **commits early rather than waiting for a gesture to be held**: 7 frames
+against 11, 233 ms against 367 ms, measured on identical streams. Two layers,
+because arming and acting want opposite things. Engagement keeps the dwell
+timer, since the machine should not go live because a hand passed through an
+open palm and 250 ms of deliberation is a feature there. Firing does not.
+`--confirm` restores the old behaviour.
+
+The split is safe in this lane for a specific reason. Committing early is
+fooled by a movement that lies about its opening, which against a fighter who
+feints is a real trade. Someone gesturing at their own computer is not feinting
+at themselves, so the accuracy penalty nearly vanishes here while the speed is
+kept.
 
 ---
 
@@ -292,14 +305,38 @@ coffee sends nothing. A test proves a flailing hand fires zero actions across
 
 ---
 
-## Off by default, and why
+## The swipe gate: safe now, still insensitive
 
-**Swipes and snaps.** Built, trained, measured at **3.3 false firings per
-minute** while catching 38% of real swipes. The cause is not the model: a fast
-straight hand movement is indistinguishable from reaching for a cup.
-Displacement cannot separate intent from traffic, and the fix is interaction
-design, gating swipes behind a pose nobody holds by accident. Needs `--dynamic`
-to enable.
+Swipes fired **3 times a minute at an idle hand** while catching half of real
+ones. Not a training problem: a fast straight hand movement is what reaching
+for a cup looks like, so displacement cannot separate intent from traffic
+however good the model gets.
+
+The fix is interaction design. A swipe only counts if the hand held a
+deliberate pose while it travelled, which is the engage gesture's trick one
+level down. The whole thing turns on **how rare that pose is**:
+
+| gate pose | share of idle | idle firings/min | swipes caught |
+|---|---|---|---|
+| none | n/a | **3.00** | 50% |
+| open_palm + point | 35% | 1.17 | 42% |
+| **pinch** | 3.3% | **0.00** | 39% |
+| thumbs_up | 0.3% | **0.00** | 33% |
+
+My first gate was `open_palm` and `point`, which together are 35% of what an
+idle hand reads as, and it only halved the problem. A gate the idle state
+already satisfies is not a gate. `pinch` is 3.3% and removes idle firings
+entirely, and it reads naturally, since pinching while moving is grab and drag
+and pinch is already the drag gesture.
+
+So the lane went from dangerous to safe, and stays **off by default** for the
+other reason: 39% detection means you swipe and nothing happens six times in
+ten. That is sensitivity in the movement classifier, not the gate. `--dynamic`
+enables it.
+
+One correction while measuring this. The earlier "3.3 false firings" figure
+conflated two errors: 3.00 idle firings, which the gate fixes, and 0.33 real
+swipes named as the wrong gesture, which it cannot.
 
 ---
 
