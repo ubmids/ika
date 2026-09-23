@@ -418,7 +418,10 @@ def _drill(args):
         print("\n  Sit at arm's length. The camera needs your head, shoulders and hands.")
     print(f"  Hold your guard still for {args.calibration:.0f}s while it learns it.")
     print("  Then drill. It reports the habit, not the punches, and once it knows")
-    print("  your habit it says so out loud just before you do it.\n")
+    print("  your habit it says so out loud just before you do it.")
+    if source == args.camera:
+        print("  Press Ctrl-C to end the round; it is summarised and saved either way.")
+    print()
     run_drill(camera=source, width=args.width,
               calibration=args.calibration, profile=args.profile,
               subject=args.subject, seconds=args.seconds, framing=framing,
@@ -454,6 +457,7 @@ def _history(args):
     # "after a jab you throw a cross" is how most people box, not a flaw.
     series.sort(key=lambda item: (not item[0].split(" -> ")[1].startswith("guard"), item[0]))
     shown_header = None
+    width = max(52, *(len(key) for key, _points in series))
     for key, points in series:
         header = "guard" if key.split(" -> ")[1].startswith("guard") else "punches"
         if header != shown_header:
@@ -465,7 +469,7 @@ def _history(args):
         if len(rated) >= 2:
             trend = ("  falling" if rated[-1] < rated[0] - 0.1
                      else "  rising" if rated[-1] > rated[0] + 0.1 else "  steady")
-        print(f"    {key:52s} {' '.join(cells)}{trend}")
+        print(f"    {key:{width}s} {' '.join(cells)}{trend}")
     standing = record.habits(now=_time.time())
     if standing:
         print("\n  standing now:")
@@ -529,7 +533,10 @@ def _bindings(_args):
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="ika", description="Control a computer with bare hands.")
+    parser = argparse.ArgumentParser(
+        prog="ika",
+        description="Shadowbox in front of a camera; it finds your habit and calls it "
+                    "before you do it.")
     sub = parser.add_subparsers(dest="command", required=True)
 
     rec = sub.add_parser("record", help="record your own gestures")

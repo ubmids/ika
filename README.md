@@ -9,8 +9,9 @@ about you, it watches for the two rights and says "right hand" while there is
 still time to keep it up.
 
 ```bash
+python3.12 -m venv .venv && . .venv/bin/activate   # ika needs Python 3.10 to 3.12
 pip install -e .
-ika drill            # stand back, hold your guard for three seconds, then box
+ika drill            # stand back, hold your guard for three seconds, then box. Ctrl-C ends the round
 ika history          # every habit, session by session, and whether it is fading
 ```
 
@@ -23,22 +24,23 @@ shot, about two metres from a laptop. This is a real round, replayed from a
 public follow-along workout (`ika drill round.mp4 --silent`), unedited:
 
 ```
-  round: 180s at 45 fps
+  round: 180s at 44 fps
   169 punches (56 a minute), guard dropped 33 times
   this session:
-    after punch_right: guard_down_left 65% of the time (normally 6%), 10.4x, seen 15/23
-    after punch_right: guard_down_right 52% of the time (normally 6%), 8.3x, seen 12/23
-    after punch_right then punch_left: punch_right 86% of the time (normally 45%), 1.9x, seen 51/59
-    after punch_right: punch_left 79% of the time (normally 50%), 1.6x, seen 59/75
-    after punch_left: punch_right 70% of the time (normally 45%), 1.6x, seen 59/84
+    after punch_right: guard_down_left 62% of the time (normally 6%), 10.0x, seen 15/24
+    after punch_right: guard_down_right 50% of the time (normally 6%), 8.0x, seen 12/24
+    after punch_right then punch_left: punch_right 84% of the time (normally 46%), 1.8x, seen 51/61
+    after punch_left: punch_right 68% of the time (normally 46%), 1.5x, seen 62/91
+    after punch_right: punch_left 79% of the time (normally 54%), 1.5x, seen 61/77
+    after punch_left then punch_left then punch_left: punch_left 78% of the time (normally 54%), 1.4x, seen 14/18
   called it 27 times; the lapse followed 6 (22%), 0.8s before the hand went down
 ```
 
 The first two lines are the read: when this person finishes on a right, both
 hands sit lower for the next second than after anything else they throw.
 Checked by eye it is a lean, not an obvious drop, so treat it as the kind of
-thing ika says rather than as proof it is right. The last three are patterns,
-true and mostly just how people box. During the round, once a guard habit is
+thing ika says rather than as proof it is right. The last four are punch
+patterns, true and mostly just how people box. During the round, once a guard habit is
 known, the call is spoken as the setup happens; "the lapse followed 22%" is
 scored against the dropped-guard event detector, which is the weak sensor
 described below, so it undercounts.

@@ -127,6 +127,7 @@ def run_drill(
     started = time.time()
     frames, last_report, clock = 0, 0.0, 0.0
     announced = False
+    nudged = -1e9
 
     from contextlib import nullcontext
 
@@ -136,55 +137,74 @@ def run_drill(
          hand_tracker as hands, \
          PoseTracker(variant=pose_variant(framing), max_bodies=1,
                      detection_confidence=0.4) as pose:
-        while True:
-            ok, bgr = capture.read()
-            if not ok:
-                break
-            clock = (capture.get(cv2.CAP_PROP_POS_MSEC) / 1000.0 if is_file
-                     else time.time() - started)
-            if seconds is not None and clock > seconds:
-                break
+        # A camera round ends when you press Ctrl-C. That is the normal way
+        # out, not an abort, so the round is still summarised and saved.
+        try:
+            while True:
+                ok, bgr = capture.read()
+                if not ok:
+                    break
+                clock = (capture.get(cv2.CAP_PROP_POS_MSEC) / 1000.0 if is_file
+                         else time.time() - started)
+                if seconds is not None and clock > seconds:
+                    break
 
-            # Shrunk to at most `width`, never enlarged. 640 because that is the
-            # width the punch reader was measured at; at 480 the pose loses
-            # enough detail that a replay of the same clip read differently.
-            if bgr.shape[1] > width:
-                scale = width / bgr.shape[1]
-                bgr = cv2.resize(bgr, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
-            rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-            stamp = int(clock * 1000)
+                # Shrunk to at most `width`, never enlarged. 640 because that is the
+                # width the punch reader was measured at; at 480 the pose loses
+                # enough detail that a replay of the same clip read differently.
+                if bgr.shape[1] > width:
+                    scale = width / bgr.shape[1]
+                    bgr = cv2.resize(bgr, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
+                rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+                stamp = int(clock * 1000)
 
-            # The hand landmarker only feeds the close reader; standing back
-            # it finds a hand in a third of frames and nothing reads it.
-            seen_hands = hands(rgb, stamp) if framing == "close" else []
-            bodies = pose(rgb, stamp)
-            frames += 1
+                # The hand landmarker only feeds the close reader; standing back
+                # it finds a hand in a third of frames and nothing reads it.
+                seen_hands = hands(rgb, stamp) if framing == "close" else []
+                bodies = pose(rgb, stamp)
+                frames += 1
 
-            for event in reader.observe(seen_hands, bodies[0] if bodies else None, clock):
-                if not quiet:
-                    _say(f"  {clock:6.1f}s  {event.name}"
-                         + (f"   {event.detail}" if event.detail else ""))
-                cue = caller.update(current_combo(reader.punches()), clock)
-                if cue and not quiet:
-                    _say(f"  {clock:6.1f}s  >> {cue.words.upper()}   "
-                         f"(after {' then '.join(cue.context)}, {cue.probability:.0%})")
+                for event in reader.observe(seen_hands, bodies[0] if bodies else None, clock):
+                    if not quiet:
+                        _say(f"  {clock:6.1f}s  {event.name}"
+                             + (f"   {event.detail}" if event.detail else ""))
+                    cue = caller.update(current_combo(reader.punches()), clock)
+                    if cue and not quiet:
+                        _say(f"  {clock:6.1f}s  >> {cue.words.upper()}   "
+                             f"(after {' then '.join(cue.context)}, {cue.probability:.0%})")
 
-            if reader.calibrated and not announced:
-                announced = True
-                _say(f"  calibrated. resting guard "
-                     f"L {reader.baseline.guard_left:+.2f} "
-                     f"R {reader.baseline.guard_right:+.2f}. go.")
+                # Silence while it waits looks like it is working. If the guard
+                # has not been learned well past the calibration time, say why.
+                if (not reader.calibrated and clock > calibration + 4.0
+                        and clock - nudged >= 8.0):
+                    nudged = clock
+                    _say("  still calibrating: "
+                         + ("I can see you, but hold your guard still with both hands in shot."
+                            if bodies else
+                            "no one in view. Step back until head to hips are in shot."))
 
-            if clock - last_report >= report_every and reader.calibrated:
-                last_report = clock
-                found = read_habits(reader)
-                # This session's own habits join the watch list as they appear.
-                caller.arm(list(standing) + list(found))
-                if not quiet:
-                    _report(found)
+                if reader.calibrated and not announced:
+                    announced = True
+                    _say(f"  calibrated. resting guard "
+                         f"L {reader.baseline.guard_left:+.2f} "
+                         f"R {reader.baseline.guard_right:+.2f}. go.")
+
+                if clock - last_report >= report_every and reader.calibrated:
+                    last_report = clock
+                    found = read_habits(reader)
+                    # This session's own habits join the watch list as they appear.
+                    caller.arm(list(standing) + list(found))
+                    if not quiet:
+                        _report(found)
+        except KeyboardInterrupt:
+            _say("\n  round over.")
 
     capture.release()
     elapsed = time.time() - started
+    if not reader.calibrated:
+        _say("\n  never calibrated, so nothing was read or saved. Stand back until the\n"
+             "  camera sees you from head to hips, then hold your guard still.")
+        return {"events": [], "found": [], "cues": [], "stats": {}, "seconds": clock}
     found = read_habits(reader)
     summary(reader, found, clock, frames / max(elapsed, 1e-6))
     stats = measure(caller.cues, list(reader.events))
