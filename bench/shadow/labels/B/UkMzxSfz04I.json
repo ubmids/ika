@@ -1,0 +1,1289 @@
+{
+ "clip": "UkMzxSfz04I",
+ "sheets": [
+  {
+   "sheet": "UkMzxSfz04I_0087.0.jpg",
+   "start": 87.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "footwork and guard movement; tile 26 lead hand reaches out low, possible light jab"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0090.0.jpg",
+   "start": 90.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "footwork, hands in guard"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0093.0.jpg",
+   "start": 93.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "footwork, hands in guard"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0096.0.jpg",
+   "start": 96.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "quick 1-2 drill, jab = image_left, cross = image_right"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0099.0.jpg",
+   "start": 99.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "quick 1-2 drill"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0102.0.jpg",
+   "start": 102.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "quick 1-2 drill"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0105.0.jpg",
+   "start": 105.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 13,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "quick 1-2 drill; cross starting at 29 peaks in next sheet tile 00"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0108.0.jpg",
+   "start": 108.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 3,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "quick 1-2 drill"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0111.0.jpg",
+   "start": 111.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 13,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "quick 1-2 drill"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0114.0.jpg",
+   "start": 114.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 10,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "quick 1-2 drill"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0117.0.jpg",
+   "start": 117.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 13,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "quick 1-2 drill; cross starting at 29 peaks in next sheet tile 00"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0120.0.jpg",
+   "start": 120.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 3,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "quick 1-2 drill"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0123.0.jpg",
+   "start": 123.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 3,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "quick 1-2 drill, near profile view; tile 00 is retraction of previous cross"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0126.0.jpg",
+   "start": 126.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 3,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "quick 1-2 drill ends around tile 28"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0129.0.jpg",
+   "start": 129.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "shakes out, then iso hold jump squats begin"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0132.0.jpg",
+   "start": 132.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "iso hold jump squats"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0135.0.jpg",
+   "start": 135.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "iso hold jump squats"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0138.0.jpg",
+   "start": 138.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "iso hold jump squats"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0141.0.jpg",
+   "start": 141.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "iso hold jump squats"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0144.0.jpg",
+   "start": 144.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "iso hold jump squats"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0147.0.jpg",
+   "start": 147.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "iso hold jump squats"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0150.0.jpg",
+   "start": 150.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "iso hold jump squats"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0153.0.jpg",
+   "start": 153.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "iso hold jump squats"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0156.0.jpg",
+   "start": 156.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "iso hold jump squats"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0159.0.jpg",
+   "start": 159.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "jump squats end, then resting"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0162.0.jpg",
+   "start": 162.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "resting / talking / walking"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0165.0.jpg",
+   "start": 165.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "resting / talking / walking"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0168.0.jpg",
+   "start": 168.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "resting / talking / walking"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0171.0.jpg",
+   "start": 171.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "resting / talking / walking"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0174.0.jpg",
+   "start": 174.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "resting / talking / walking"
+  }
+ ]
+}

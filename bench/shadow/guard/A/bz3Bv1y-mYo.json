@@ -1,0 +1,17 @@
+{"clip": "bz3Bv1y-mYo", "sheets": [
+{"sheet": "bz3Bv1y-mYo_0120.0.jpg", "start": 120.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 17},
+{"sheet": "bz3Bv1y-mYo_0123.0.jpg", "start": 123.0, "activity": "shadowboxing", "drops": [{"arm": "image_left", "from_tile": 9, "to_tile": 16, "sure": false}], "hands_up_tiles": 15},
+{"sheet": "bz3Bv1y-mYo_0126.0.jpg", "start": 126.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 15},
+{"sheet": "bz3Bv1y-mYo_0129.0.jpg", "start": 129.0, "activity": "shadowboxing", "drops": [{"arm": "image_left", "from_tile": 22, "to_tile": 29, "sure": true}], "hands_up_tiles": 12},
+{"sheet": "bz3Bv1y-mYo_0132.0.jpg", "start": 132.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 12},
+{"sheet": "bz3Bv1y-mYo_0135.0.jpg", "start": 135.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 14},
+{"sheet": "bz3Bv1y-mYo_0138.0.jpg", "start": 138.0, "activity": "shadowboxing", "drops": [{"arm": "image_left", "from_tile": 7, "to_tile": 11, "sure": false}], "hands_up_tiles": 15},
+{"sheet": "bz3Bv1y-mYo_0141.0.jpg", "start": 141.0, "activity": "shadowboxing", "drops": [{"arm": "image_left", "from_tile": 3, "to_tile": 6, "sure": false}], "hands_up_tiles": 16},
+{"sheet": "bz3Bv1y-mYo_0144.0.jpg", "start": 144.0, "activity": "shadowboxing", "drops": [{"arm": "image_left", "from_tile": 25, "to_tile": 29, "sure": false}], "hands_up_tiles": 12},
+{"sheet": "bz3Bv1y-mYo_0147.0.jpg", "start": 147.0, "activity": "shadowboxing", "drops": [{"arm": "image_left", "from_tile": 0, "to_tile": 1, "sure": false}, {"arm": "image_left", "from_tile": 15, "to_tile": 27, "sure": true}, {"arm": "image_right", "from_tile": 15, "to_tile": 27, "sure": true}], "hands_up_tiles": 6},
+{"sheet": "bz3Bv1y-mYo_0150.0.jpg", "start": 150.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 18},
+{"sheet": "bz3Bv1y-mYo_0153.0.jpg", "start": 153.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 18},
+{"sheet": "bz3Bv1y-mYo_0156.0.jpg", "start": 156.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 20},
+{"sheet": "bz3Bv1y-mYo_0159.0.jpg", "start": 159.0, "activity": "shadowboxing", "drops": [{"arm": "image_right", "from_tile": 4, "to_tile": 7, "sure": false}, {"arm": "image_left", "from_tile": 29, "to_tile": 29, "sure": false}], "hands_up_tiles": 14},
+{"sheet": "bz3Bv1y-mYo_0162.0.jpg", "start": 162.0, "activity": "shadowboxing", "drops": [{"arm": "image_left", "from_tile": 0, "to_tile": 2, "sure": false}, {"arm": "image_right", "from_tile": 26, "to_tile": 29, "sure": false}], "hands_up_tiles": 17}
+]}

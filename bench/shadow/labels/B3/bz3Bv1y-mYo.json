@@ -1,0 +1,575 @@
+{
+ "clip": "bz3Bv1y-mYo",
+ "sheets": [
+  {
+   "sheet": "bz3Bv1y-mYo_0024.0.jpg",
+   "start": 24.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "side view in middle rows; cross arm assigned image_left by body rotation"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0027.0.jpg",
+   "start": 27.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0030.0.jpg",
+   "start": 30.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0033.0.jpg",
+   "start": 33.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 13,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "side view; cross arm side inferred"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0036.0.jpg",
+   "start": 36.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0039.0.jpg",
+   "start": 39.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 3,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0042.0.jpg",
+   "start": 42.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "side view rows 3-5; 00 is follow-through of previous hook"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0045.0.jpg",
+   "start": 45.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0048.0.jpg",
+   "start": 48.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0051.0.jpg",
+   "start": 51.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0054.0.jpg",
+   "start": 54.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "side view rows 3-5"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0057.0.jpg",
+   "start": 57.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "tiles 09-10 open-hand gesture, not a punch"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0060.0.jpg",
+   "start": 60.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0063.0.jpg",
+   "start": 63.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "side view rows 3-5"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0066.0.jpg",
+   "start": 66.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "side view first two rows"
+  }
+ ]
+}

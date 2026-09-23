@@ -1,0 +1,339 @@
+{
+ "clip": "yrJE2unJ_m0",
+ "sheets": [
+  {
+   "sheet": "yrJE2unJ_m0_0003.0.jpg",
+   "start": 3.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "edited montage with camera cuts; 21-23 high cover not punch"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0006.0.jpg",
+   "start": 6.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0009.0.jpg",
+   "start": 9.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "footwork/turning only"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0012.0.jpg",
+   "start": 12.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0015.0.jpg",
+   "start": 15.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "guard and movement only"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0018.0.jpg",
+   "start": 18.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0021.0.jpg",
+   "start": 21.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0024.0.jpg",
+   "start": 24.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0027.0.jpg",
+   "start": 27.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0030.0.jpg",
+   "start": 30.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "20-22 covers"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0033.0.jpg",
+   "start": 33.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "mostly defensive movement; low hand extensions may be body jabs"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0036.0.jpg",
+   "start": 36.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0039.0.jpg",
+   "start": 39.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0042.0.jpg",
+   "start": 42.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0045.0.jpg",
+   "start": 45.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "22-24 high cover"
+  }
+ ]
+}

@@ -1,0 +1,611 @@
+{
+ "clip": "bz3Bv1y-mYo",
+ "sheets": [
+  {
+   "sheet": "bz3Bv1y-mYo_0120.0.jpg",
+   "start": 120.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "frontal body-shot combo: low body shots alternating, then lead double hook body/head"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0123.0.jpg",
+   "start": 123.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 10,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "profile view; body shot, hook, body shot, hook, jab"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0126.0.jpg",
+   "start": 126.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 13,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "frontal body-shot combo repeat"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0129.0.jpg",
+   "start": 129.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "frontal combo then profile combo"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0132.0.jpg",
+   "start": 132.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0135.0.jpg",
+   "start": 135.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 13,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "tiles 21-23 arms spread, likely gesture"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0138.0.jpg",
+   "start": 138.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 10,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "profile combo"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0141.0.jpg",
+   "start": 141.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "profile combo, then guard/bouncing from 15"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0144.0.jpg",
+   "start": 144.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0147.0.jpg",
+   "start": 147.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 3,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "from tile 12 walking/bouncing, talking, no strikes"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0150.0.jpg",
+   "start": 150.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0153.0.jpg",
+   "start": 153.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "profile; jab, straight (back to camera), jab"
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0156.0.jpg",
+   "start": 156.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0159.0.jpg",
+   "start": 159.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "bz3Bv1y-mYo_0162.0.jpg",
+   "start": 162.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "tiles 0-15 mostly bouncing in guard"
+  }
+ ]
+}

@@ -1,0 +1,747 @@
+{
+ "clip": "hjFbaQPi46U",
+ "sheets": [
+  {
+   "sheet": "hjFbaQPi46U_0063.0.jpg",
+   "start": 63.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "intro talking tiles 0-11; jab-cross drill in squat stance"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0066.0.jpg",
+   "start": 66.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "jumping-jack interlude 06-14"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0069.0.jpg",
+   "start": 69.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "jumping-jack interlude 07-14"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0072.0.jpg",
+   "start": 72.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "jumping-jack interlude 07-14"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0075.0.jpg",
+   "start": 75.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "cross starting at 29 peaks in next sheet"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0078.0.jpg",
+   "start": 78.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "jacks 05-14"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0081.0.jpg",
+   "start": 81.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "jacks 03-11, rest/talk 15-22; cross at 29 peaks next sheet"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0084.0.jpg",
+   "start": 84.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 10,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "rests from 12 on"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0087.0.jpg",
+   "start": 87.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, demonstrating guard"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0090.0.jpg",
+   "start": 90.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking; drops into guard 26-29"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0093.0.jpg",
+   "start": 93.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "jacks 15-23"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0096.0.jpg",
+   "start": 96.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "jacks 13-20"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0099.0.jpg",
+   "start": 99.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "jacks 10-18"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0102.0.jpg",
+   "start": 102.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "jacks 07-14"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0105.0.jpg",
+   "start": 105.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "jacks then scene change, talking from 11"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0108.0.jpg",
+   "start": 108.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0111.0.jpg",
+   "start": 111.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, gestures"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0114.0.jpg",
+   "start": 114.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, walking"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0117.0.jpg",
+   "start": 117.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "talking until ~16, scene cut 17-20"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0120.0.jpg",
+   "start": 120.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "jab-cross-lead uppercut-cross combos"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0123.0.jpg",
+   "start": 123.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "jogging from 20"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0126.0.jpg",
+   "start": 126.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    }
+   ],
+   "notes": "jogging 00-08, guard 09-19"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0129.0.jpg",
+   "start": 129.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "29 blurred by crossfade into next sheet"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0132.0.jpg",
+   "start": 132.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 24,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "00-02 crossfade"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0135.0.jpg",
+   "start": 135.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "cross starting at 29 peaks in next sheet"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0138.0.jpg",
+   "start": 138.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "moving/talking from 12"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0141.0.jpg",
+   "start": 141.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 10,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 13,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "side-on camera, body partly out of frame; arm sides hard to judge"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0144.0.jpg",
+   "start": 144.0,
+   "activity": "slow_demo",
+   "punches": [],
+   "notes": "legs close-up, stance demo"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0147.0.jpg",
+   "start": 147.0,
+   "activity": "slow_demo",
+   "punches": [],
+   "notes": "stance demo, then walking"
+  },
+  {
+   "sheet": "hjFbaQPi46U_0150.0.jpg",
+   "start": 150.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  }
+ ]
+}

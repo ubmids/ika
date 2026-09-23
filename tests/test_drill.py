@@ -54,6 +54,9 @@ class Session:
     """Drives a reader through a scripted session on a synthetic clock."""
 
     def __init__(self, **kw):
+        # The synthetic hands here close on a lens, so these sessions use the
+        # close reader. The stand-back pose reader is tested in test_strike.
+        kw.setdefault("framing", "close")
         self.reader = DrillReader(**kw)
         self.at = 0.0
 
@@ -77,9 +80,14 @@ class Session:
         return out
 
     def drop_guard(self):
+        # Down, held there for half a second, and back. A guard only counts as
+        # dropped once it stays down for GUARD_HOLD, so a flick is not a lapse.
         out = []
         for i in range(10):
             out += self.reader.observe([hand()], body(1.0 - i / 9), self.at)
+            self.at += 1 / FPS
+        for _ in range(15):
+            out += self.reader.observe([hand()], body(0.0), self.at)
             self.at += 1 / FPS
         for i in range(10):
             out += self.reader.observe([hand()], body(i / 9), self.at)
@@ -201,14 +209,14 @@ def test_both_hands_dropping_is_one_lapse_not_two():
 def test_one_side_dropping_alone_keeps_its_side():
     """Merging must not erase a genuinely one-sided lapse, which is exactly the
     thing a coach would want told."""
-    merged = DrillReader()
+    merged = DrillReader(framing="close")
     e = Event("guard_down_left", 10.0, 1.0)
     kept = merged._append(e)
     assert kept is not None and kept.name == "guard_down_left"
 
 
 def test_events_far_apart_are_not_merged():
-    r = DrillReader()
+    r = DrillReader(framing="close")
     r._append(Event("guard_down_left", 10.0, 1.0))
     late = r._append(Event("guard_down_right", 10.0 + SIMULTANEOUS_SECONDS + 0.1, 1.0))
     assert late is not None and late.name == "guard_down_right"
@@ -218,29 +226,39 @@ def test_events_far_apart_are_not_merged():
 
 def test_it_finds_a_habit_that_was_planted():
     """The FRIDAY read, end to end, with no trained action classifier. Plant
-    "drops the guard after two punches, 75% of the time" and see if it comes
-    back out."""
+    "drops the right hand after two rights, 75% of the time" in a fighter who
+    also throws other combos, and see if it comes back out.
+
+    Other combos matter: a guard habit is read as "lower after this setup than
+    after your others", so a fighter with only one combo has no habit of a
+    setup, only a habit."""
     s = Session()
     s.rest(CALIBRATION_SECONDS + 1.0)
     rng = np.random.default_rng(0)
-    for _ in range(40):
-        s.punch(); s.rest(0.4)
-        s.punch(); s.rest(0.4)
-        if rng.random() < 0.75:
-            s.drop_guard()
+    for _ in range(50):
+        if rng.random() < 0.5:
+            s.punch(); s.rest(0.4)
+            s.punch(); s.rest(0.4)
+            if rng.random() < 0.75:
+                s.drop_guard()
+            else:
+                s.rest(0.7)
         else:
+            s.punch(is_left=True); s.rest(0.4)
+            s.punch(); s.rest(0.4)
             s.rest(0.7)
         s.rest(0.6)
 
     found = read_habits(s.reader)
-    hits = [
-        f for f in found
-        if f.then == "guard_down_both" and "punch_right" in f.context
-    ]
+    hits = [f for f in found
+            if f.then.startswith("guard_down") and f.context[-2:] == ("punch_right", "punch_right")]
     assert hits, [f.describe() for f in found]
     best = max(hits, key=lambda f: f.probability)
-    assert 0.5 < best.probability < 0.95, best.describe()
+    assert 0.5 < best.probability <= 1.0, best.describe()
     assert best.lift > 2.0
+    # and it is not pinned on the combo that never dropped
+    assert not [f for f in found if f.then.startswith("guard_down")
+                and f.context == ("punch_left", "punch_right")]
 
 
 def test_a_subject_with_no_habit_yields_no_such_finding():
@@ -269,7 +287,7 @@ def test_the_stream_is_bounded():
     """It runs for as long as the camera does."""
     from ika.drill import STREAM_LIMIT
 
-    r = DrillReader()
+    r = DrillReader(framing="close")
     for i in range(STREAM_LIMIT + 500):
         r._append(Event(f"punch_right", i * 1.0, 1.0))
     assert len(r.events) == STREAM_LIMIT
@@ -283,3 +301,61 @@ def test_reset_clears_everything_including_the_baseline():
     assert not s.reader.calibrated
     assert s.reader.stream() == []
     assert s.reader.baseline.samples == 0
+
+
+# --- phantom habits --------------------------------------------------------
+
+def _clean_session(seed):
+    s = Session()
+    s.rest(CALIBRATION_SECONDS + 1.0)
+    rng = np.random.default_rng(seed)
+    for _ in range(40):
+        for _ in range(rng.integers(1, 4)):
+            s.punch(); s.rest(0.4)
+        if rng.random() < 0.35:
+            s.drop_guard()
+        s.rest(0.6)
+    return s
+
+
+@pytest.mark.parametrize("seed", [0, 3])
+def test_a_clean_session_reports_nothing_at_all(seed):
+    """Not just "not the planted habit": nothing. Seeds 0 and 3 are the ones
+    that used to report "after guard_down_both: guard_up_both, 100%, 7.8x",
+    which is the state machine and not a habit, since a dropped guard can
+    only come up."""
+    found = read_habits(_clean_session(seed).reader)
+    assert found == [], [f.describe() for f in found]
+
+
+def test_restorations_are_recorded_but_never_mined():
+    s = _clean_session(0)
+    assert any(n.startswith("guard_up") for n in s.reader.stream())
+    assert not any(n.startswith("guard_up") for n in s.reader.habit_stream())
+
+
+# --- a dropped guard is a hand that stays down -----------------------------
+
+def test_a_flick_below_the_guard_is_not_a_dropped_guard():
+    """Every uppercut takes the wrist below its guard on the way out. Only a
+    hand that stays down for GUARD_HOLD is a lapse."""
+    s = Session()
+    s.rest(CALIBRATION_SECONDS + 0.5)
+    out = []
+    for i in range(3):
+        out += s.reader.observe([hand()], body(0.0), s.at)
+        s.at += 1 / FPS
+    out += s.rest(1.0)
+    assert not [e for e in out if e.name.startswith("guard_down")]
+
+
+def test_the_resting_guard_keeps_being_learned_after_calibration():
+    """A baseline fixed in the first seconds caught 2 of 54 real drops,
+    because those seconds were not a guard. It has to keep learning."""
+    from ika.drill import ADAPT_SECONDS
+
+    s = Session(calibration=1.0)
+    s.rest(1.0, guard=0.2)                  # a bad calibration: hands half down
+    wrong = s.reader.baseline.guard_right
+    s.rest(ADAPT_SECONDS * 0.5, guard=1.0)  # then a real guard
+    assert s.reader.baseline.guard_right > wrong + 0.1

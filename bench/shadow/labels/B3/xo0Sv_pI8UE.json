@@ -1,0 +1,340 @@
+{
+ "clip": "xo0Sv_pI8UE",
+ "sheets": [
+  {
+   "sheet": "xo0Sv_pI8UE_0033.0.jpg",
+   "start": 33.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "turns away at end"
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0036.0.jpg",
+   "start": 36.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "crouched low punches 20-23 unclear; transitions to exercise at end"
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0039.0.jpg",
+   "start": 39.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "arm swings / jumping movement"
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0042.0.jpg",
+   "start": 42.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "00-06 wide shot, stepping in guard"
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0045.0.jpg",
+   "start": 45.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "21+ other exercise"
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0048.0.jpg",
+   "start": 48.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "00-05 exercise transition; 24+ wide shot"
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0051.0.jpg",
+   "start": 51.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 3,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "mostly bouncing in guard"
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0054.0.jpg",
+   "start": 54.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 3,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "23 gesture"
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0057.0.jpg",
+   "start": 57.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0060.0.jpg",
+   "start": 60.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0063.0.jpg",
+   "start": 63.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0066.0.jpg",
+   "start": 66.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 8,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0069.0.jpg",
+   "start": 69.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0072.0.jpg",
+   "start": 72.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "side view"
+  },
+  {
+   "sheet": "xo0Sv_pI8UE_0075.0.jpg",
+   "start": 75.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "07-12 held extension"
+  }
+ ]
+}

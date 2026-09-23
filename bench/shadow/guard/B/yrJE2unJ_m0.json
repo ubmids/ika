@@ -1,0 +1,17 @@
+{"clip": "yrJE2unJ_m0", "sheets": [
+{"sheet": "yrJE2unJ_m0_0123.0.jpg", "start": 123.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 22},
+{"sheet": "yrJE2unJ_m0_0126.0.jpg", "start": 126.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 22},
+{"sheet": "yrJE2unJ_m0_0129.0.jpg", "start": 129.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 23},
+{"sheet": "yrJE2unJ_m0_0132.0.jpg", "start": 132.0, "activity": "shadowboxing", "drops": [{"arm": "image_right", "from_tile": 7, "to_tile": 10, "sure": false}], "hands_up_tiles": 14},
+{"sheet": "yrJE2unJ_m0_0135.0.jpg", "start": 135.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 24},
+{"sheet": "yrJE2unJ_m0_0138.0.jpg", "start": 138.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 23},
+{"sheet": "yrJE2unJ_m0_0141.0.jpg", "start": 141.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 24},
+{"sheet": "yrJE2unJ_m0_0144.0.jpg", "start": 144.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 16},
+{"sheet": "yrJE2unJ_m0_0147.0.jpg", "start": 147.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 25},
+{"sheet": "yrJE2unJ_m0_0150.0.jpg", "start": 150.0, "activity": "shadowboxing", "drops": [{"arm": "image_right", "from_tile": 27, "to_tile": 29, "sure": false}], "hands_up_tiles": 20},
+{"sheet": "yrJE2unJ_m0_0153.0.jpg", "start": 153.0, "activity": "shadowboxing", "drops": [{"arm": "image_right", "from_tile": 0, "to_tile": 0, "sure": false}, {"arm": "image_right", "from_tile": 2, "to_tile": 6, "sure": true}, {"arm": "image_right", "from_tile": 8, "to_tile": 11, "sure": false}], "hands_up_tiles": 17},
+{"sheet": "yrJE2unJ_m0_0156.0.jpg", "start": 156.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 18},
+{"sheet": "yrJE2unJ_m0_0159.0.jpg", "start": 159.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 22},
+{"sheet": "yrJE2unJ_m0_0162.0.jpg", "start": 162.0, "activity": "shadowboxing", "drops": [{"arm": "image_left", "from_tile": 15, "to_tile": 18, "sure": false}], "hands_up_tiles": 21},
+{"sheet": "yrJE2unJ_m0_0165.0.jpg", "start": 165.0, "activity": "shadowboxing", "drops": [], "hands_up_tiles": 20}
+]}

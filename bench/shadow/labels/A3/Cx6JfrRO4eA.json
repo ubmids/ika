@@ -1,0 +1,312 @@
+{
+ "clip": "Cx6JfrRO4eA",
+ "sheets": [
+  {
+   "sheet": "Cx6JfrRO4eA_0000.0.jpg",
+   "start": 0.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "side view toward bag; talking to camera from tile 24"
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0003.0.jpg",
+   "start": 3.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "frontal talking demo; hook shapes slow"
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0006.0.jpg",
+   "start": 6.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 3,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 14,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0009.0.jpg",
+   "start": 9.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "tiles 6-29 talking/demo of arm position, not punches"
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0012.0.jpg",
+   "start": 12.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "frontal demo, low glove movements ambiguous"
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0015.0.jpg",
+   "start": 15.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0018.0.jpg",
+   "start": 18.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking with gestures"
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0021.0.jpg",
+   "start": 21.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking with gestures"
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0024.0.jpg",
+   "start": 24.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, gestures at end"
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0027.0.jpg",
+   "start": 27.0,
+   "activity": "other_exercise",
+   "punches": [
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "arm swings/circles tiles 0-17"
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0030.0.jpg",
+   "start": 30.0,
+   "activity": "slow_demo",
+   "punches": [],
+   "notes": "hook-form demo with forearm, gestures, no strikes"
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0033.0.jpg",
+   "start": 33.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking"
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0036.0.jpg",
+   "start": 36.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "cross starting at 29 peaks in next sheet"
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0039.0.jpg",
+   "start": 39.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "Cx6JfrRO4eA_0042.0.jpg",
+   "start": 42.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  }
+ ]
+}

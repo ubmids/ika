@@ -1,0 +1,587 @@
+{
+ "clip": "UkMzxSfz04I",
+ "sheets": [
+  {
+   "sheet": "UkMzxSfz04I_0021.0.jpg",
+   "start": 21.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 15,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0024.0.jpg",
+   "start": 24.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0027.0.jpg",
+   "start": 27.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0030.0.jpg",
+   "start": 30.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0033.0.jpg",
+   "start": 33.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 8,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0036.0.jpg",
+   "start": 36.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0039.0.jpg",
+   "start": 39.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0042.0.jpg",
+   "start": 42.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0045.0.jpg",
+   "start": 45.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0048.0.jpg",
+   "start": 48.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 24,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0051.0.jpg",
+   "start": 51.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0054.0.jpg",
+   "start": 54.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0057.0.jpg",
+   "start": 57.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0060.0.jpg",
+   "start": 60.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  },
+  {
+   "sheet": "UkMzxSfz04I_0063.0.jpg",
+   "start": 63.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "1 jab / 1-2 / 1-2-3 jab cross lead hook drill; camera angle changes often, arm side on crosses uncertain"
+  }
+ ]
+}

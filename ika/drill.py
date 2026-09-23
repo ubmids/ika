@@ -49,6 +49,25 @@ CALIBRATION_SECONDS = 3.0
 GUARD_DROP = 0.28
 GUARD_RESTORE = 0.14
 
+# After calibration the resting guard keeps being learned, as a high
+# percentile of the last ADAPT_SECONDS of guard heights. Between punches a
+# fighter's hands are mostly up, so the 75th percentile sits on their guard
+# even when they drop it a quarter of the time. Adapting at all is what makes
+# calibration survive a real session: replayed over real footage, a baseline
+# fixed in the first three seconds caught 2 of 54 labelled drops, because
+# those three seconds were not a guard and nothing ever corrected them. It
+# also follows someone who steps closer or further, which changes nothing
+# about their guard and everything about where their wrists sit in the image.
+ADAPT_SECONDS = 20.0
+ADAPT_PERCENTILE = 75.0
+
+# How long a guard has to stay down before it counts as dropped. Without this
+# every uppercut and body shot is also a dropped guard, since the wrist goes
+# below its resting height on the way out: replayed over a real workout, the
+# instantaneous rule reported 105 guard drops in three minutes of punching.
+# A dropped guard is a hand that stays down, which is what a coach means.
+GUARD_HOLD = 0.4
+
 # Minimum gap between two reported punches. A punch takes about 140 ms, and
 # without this the closing signal fires on consecutive frames of one strike.
 PUNCH_COOLDOWN = 0.30
@@ -67,6 +86,24 @@ STREAM_LIMIT = 4000
 # such phantoms alongside the one real habit. Sequential mining over
 # simultaneous events invents dependencies.
 SIMULTANEOUS_SECONDS = 0.15
+
+# Events that only end a state some earlier event opened. They are recorded,
+# and they are kept out of what the habit miner sees.
+#
+# The first run on a clean subject reported "after guard_down_both:
+# guard_up_both, 100% of the time, 7.8x" as a habit. It is not one. A guard
+# that is down can only come up, so the miner was rediscovering the state
+# machine, and "after guard_up_both: punch_right" followed for the same reason
+# from the other side. Mining lapses and strikes alone asks the only question
+# a coach cares about, which is what comes before a lapse.
+RESTORES = ("guard_up_",)
+
+# What the sequence miner reads. Punches only, since the replay on real
+# footage showed the dropped-guard event is too unreliable to mine: labellers
+# agreed on half the drops, the detector caught 30% of those, and a simulation
+# at those error rates named a planted habit 22% of the time in 24 minutes.
+# Guard habits are read by `sag`, from the continuous guard height, instead.
+MINED = ("punch_",)
 
 
 @dataclass(frozen=True)
@@ -87,6 +124,18 @@ class Baseline:
     guard_right: float = 0.0
     samples: int = 0
     ready: bool = False
+    recent: deque = field(default_factory=deque)
+
+    def track(self, at: float, left: float, right: float) -> None:
+        """Keep learning after calibration. See ADAPT_SECONDS."""
+        self.recent.append((at, left, right))
+        while self.recent and at - self.recent[0][0] > ADAPT_SECONDS:
+            self.recent.popleft()
+        # Until a few seconds have been seen, the calibration mean stands.
+        if len(self.recent) >= 60:
+            values = np.asarray([(l, r) for _, l, r in self.recent])
+            self.guard_left, self.guard_right = np.percentile(
+                values, ADAPT_PERCENTILE, axis=0).tolist()
 
     def observe(self, left: float, right: float) -> None:
         # Running mean, so calibration costs no storage and cannot be skewed
@@ -110,6 +159,12 @@ class DrillReader:
     drop: float = GUARD_DROP
     restore: float = GUARD_RESTORE
     cooldown: float = PUNCH_COOLDOWN
+    hold: float = GUARD_HOLD
+    # "stand" reads punches from the pose, for shadowboxing a couple of metres
+    # back; "close" reads a palm closing on the lens, at arm's length. See
+    # `strike.py` for why the close reader fails at shadowboxing distance.
+    framing: str = "stand"
+    aspect: float = 1.0
 
     baseline: Baseline = field(default_factory=Baseline, init=False)
     events: deque[Event] = field(default_factory=lambda: deque(maxlen=STREAM_LIMIT),
@@ -118,6 +173,18 @@ class DrillReader:
     _guard_down: dict[str, bool] = field(default_factory=dict, init=False)
     _last_punch: dict[str, float] = field(default_factory=dict, init=False)
     _started: float | None = field(default=None, init=False)
+    _below_since: dict[str, float] = field(default_factory=dict, init=False)
+    _strike: object = field(default=None, init=False)
+    guard_track: object = field(default=None, init=False)
+
+    def __post_init__(self) -> None:
+        if self.framing not in ("stand", "close"):
+            raise ValueError(f"framing is 'stand' or 'close', not {self.framing!r}")
+        if self.framing == "stand":
+            from .strike import StrikeReader
+            self._strike = StrikeReader(aspect=self.aspect)
+        from .sag import GuardTrack
+        self.guard_track = GuardTrack(aspect=self.aspect)
 
     @property
     def calibrated(self) -> bool:
@@ -129,7 +196,11 @@ class DrillReader:
         self._approach.clear()
         self._guard_down.clear()
         self._last_punch.clear()
+        self._below_since.clear()
         self._started = None
+        if self._strike is not None:
+            self._strike.reset()
+        self.guard_track.reset()
 
     def observe(self, hands, body, at: float) -> list[Event]:
         """One frame in, any events it produced out.
@@ -144,6 +215,7 @@ class DrillReader:
             self._started = at
 
         found: list[Event] = []
+        self.guard_track.update(body, at)
 
         guard = self._guard_heights(body)
         if guard is not None:
@@ -153,6 +225,7 @@ class DrillReader:
                 return []
             if not self.baseline.ready:
                 self.baseline.ready = True
+            self.baseline.track(at, left, right)
             found += self._guard_events(left, right, at)
 
         found += self._punch_events(hands, body, at)
@@ -172,8 +245,20 @@ class DrillReader:
         if side in ("left", "right") and self.events:
             previous = self.events[-1]
             other = "right" if side == "left" else "left"
-            if (previous.name == f"{stem}_{other}"
-                    and event.at - previous.at <= SIMULTANEOUS_SECONDS):
+            simultaneous = (previous.name == f"{stem}_{other}"
+                            and event.at - previous.at <= SIMULTANEOUS_SECONDS)
+            if simultaneous and stem == "punch":
+                # Nobody throws both hands at once. Two arms firing together is
+                # one punch and the other arm swinging with the body's turn,
+                # which is the commonest false punch on real footage, so the
+                # stronger call stands and the other is dropped. Merging them
+                # into a "punch_both" put an event in the stream that no one
+                # ever throws.
+                if event.confidence > previous.confidence:
+                    self.events[-1] = event
+                    return event
+                return None
+            if simultaneous:
                 merged = Event(f"{stem}_both", previous.at,
                                min(previous.confidence, event.confidence),
                                "both sides")
@@ -207,10 +292,17 @@ class DrillReader:
                                   ("right", right, self.baseline.guard_right)):
             fallen = rest - value
             was_down = self._guard_down.get(side, False)
-            if not was_down and fallen > self.drop:
+            if fallen > self.drop:
+                self._below_since.setdefault(side, at)
+            else:
+                self._below_since.pop(side, None)
+            held = at - self._below_since.get(side, at)
+            if not was_down and fallen > self.drop and held >= self.hold:
                 self._guard_down[side] = True
-                out.append(Event(f"guard_down_{side}", at, min(1.0, fallen / self.drop),
-                                 f"{fallen:.2f} below rest"))
+                # Stamped when the hand went down, not when the hold was
+                # satisfied, so the stream keeps the real order of events.
+                out.append(Event(f"guard_down_{side}", self._below_since[side],
+                                 min(1.0, fallen / self.drop), f"{fallen:.2f} below rest"))
             elif was_down and fallen < self.restore:
                 self._guard_down[side] = False
                 out.append(Event(f"guard_up_{side}", at, 1.0, ""))
@@ -220,6 +312,9 @@ class DrillReader:
         if body is None:
             # Deliberate: see observe(). A lean is not a punch.
             return []
+        if self._strike is not None:
+            return [Event(f"punch_{s.side}", s.at, s.score, "")
+                    for s in self._strike.observe(body, at)]
         out = []
         for hand in hands or []:
             side = "left" if getattr(hand, "is_left", False) else "right"
@@ -238,6 +333,32 @@ class DrillReader:
         """Event names in order, which is what the habit miner consumes."""
         return [event.name for event in self.events]
 
+    def habit_stream(self) -> list[str]:
+        """The stream the sequence miner reads: the punches, in order."""
+        return [event.name for event in self.events if event.name.startswith(MINED)]
+
+    def punches(self) -> list[tuple[float, str]]:
+        return [(event.at, event.name[len("punch_"):]) for event in self.events
+                if event.name.startswith("punch_")]
+
+    def rate(self, habit) -> tuple[int, int]:
+        """How often a known habit happened this session, as (hits, support).
+
+        Counted the way the habit was found: a punch pattern from the stream, a
+        guard habit from where the hand sat after each occasion of its setup.
+        A session where the setup came up and the habit did not is a zero, not
+        a silence, which is what lets `ika history` show a habit fading.
+        """
+        from .profile import rate_in
+        from . import sag
+
+        if habit.then.startswith("punch_"):
+            return rate_in(self.habit_stream(), tuple(habit.context), habit.then)
+        side = habit.then.rsplit("_", 1)[1]
+        mine = [o for o in sag.occasions(self.guard_track, self.punches())
+                if o.context == tuple(habit.context) and o.side == side]
+        return sum(o.down for o in mine), len(mine)
+
     def counts(self) -> dict[str, int]:
         out: dict[str, int] = {}
         for event in self.events:
@@ -246,11 +367,15 @@ class DrillReader:
 
 
 def read_habits(reader: DrillReader, fdr: float = 0.05):
-    """Mine the events so far. Returns findings from `tell.habits`.
+    """Every habit the session supports: punch patterns and guard habits.
 
     Kept as a function rather than a method so the reader stays a sensor and
-    the statistics stay where the tests for them already live.
+    the statistics stay where the tests for them already live. Both kinds come
+    back as `tell.habits.Finding`, held to the same false-discovery rate.
     """
+    from . import sag
     from .tell.habits import mine
 
-    return mine(reader.stream(), fdr=fdr)
+    found = mine(reader.habit_stream(), fdr=fdr) + sag.read(reader.guard_track,
+                                                           reader.punches(), fdr=fdr)
+    return sorted(found, key=lambda f: -f.lift)

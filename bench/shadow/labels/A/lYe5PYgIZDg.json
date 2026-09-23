@@ -1,0 +1,278 @@
+{
+ "clip": "lYe5PYgIZDg",
+ "sheets": [
+  {
+   "sheet": "lYe5PYgIZDg_0030.0.jpg",
+   "start": 30.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "footwork and head movement, hands low"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0033.0.jpg",
+   "start": 33.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "footwork, ducking, no strikes"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0036.0.jpg",
+   "start": 36.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "rolls/ducks, no strikes"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0039.0.jpg",
+   "start": 39.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "rolls/ducks, no strikes"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0042.0.jpg",
+   "start": 42.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "footwork/rolls then guard up; body jab at 26"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0045.0.jpg",
+   "start": 45.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "fast, blurry, close range; low confidence"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0048.0.jpg",
+   "start": 48.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "14 = body jab"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0051.0.jpg",
+   "start": 51.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 24,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "camera turns to side view from ~52.2s"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0054.0.jpg",
+   "start": 54.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "side view, lead hand at image_right"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0057.0.jpg",
+   "start": 57.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    }
+   ],
+   "notes": "stops and starts talking from ~58.8s"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0060.0.jpg",
+   "start": 60.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, arm gestures/shaking out"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0063.0.jpg",
+   "start": 63.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, pointing"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0066.0.jpg",
+   "start": 66.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, transition effect"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0069.0.jpg",
+   "start": 69.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, gesturing"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0072.0.jpg",
+   "start": 72.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, gesturing"
+  }
+ ]
+}

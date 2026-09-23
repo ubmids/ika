@@ -1,0 +1,155 @@
+{
+ "clip": "xxn4pgsy1Sc",
+ "sheets": [
+  {
+   "sheet": "xxn4pgsy1Sc_0111.0.jpg",
+   "start": 111,
+   "activity": "resting",
+   "punches": "walking",
+   "notes": ""
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0114.0.jpg",
+   "start": 114,
+   "activity": "resting",
+   "punches": "walking toward camera",
+   "notes": ""
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0117.0.jpg",
+   "start": 117,
+   "activity": "resting",
+   "punches": "walking, close-up",
+   "notes": ""
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0120.0.jpg",
+   "start": 120,
+   "activity": "resting",
+   "punches": "walking away",
+   "notes": ""
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0123.0.jpg",
+   "start": 123,
+   "activity": "resting",
+   "punches": "walking",
+   "notes": ""
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0126.0.jpg",
+   "start": 126,
+   "activity": "resting",
+   "punches": "walking, camera cuts",
+   "notes": ""
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0129.0.jpg",
+   "start": 129,
+   "activity": "resting",
+   "punches": "walking, camera pans",
+   "notes": ""
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0132.0.jpg",
+   "start": 132,
+   "activity": "resting",
+   "punches": "walking",
+   "notes": ""
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0135.0.jpg",
+   "start": 135,
+   "activity": "other_exercise",
+   "punches": [
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "loose arm swinging / footwork dance; 23 and 29 show an open arm reaching forward, possibly light punches"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0138.0.jpg",
+   "start": 138,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "loose arm swings then walking"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0141.0.jpg",
+   "start": 141,
+   "activity": "resting",
+   "punches": "walking",
+   "notes": ""
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0144.0.jpg",
+   "start": 144,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "side view, raising guard, no clear punch"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0147.0.jpg",
+   "start": 147,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "side profile facing image-left; jab then cross"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0150.0.jpg",
+   "start": 150,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "guard, head movement; tiles 18-19 hands blurred, maybe small feints"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0153.0.jpg",
+   "start": 153,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "side profile; 17-18 one extended punch, arm uncertain"
+  }
+ ]
+}

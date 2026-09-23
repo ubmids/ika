@@ -1,0 +1,246 @@
+{
+ "clip": "so_bEQS91hE",
+ "sheets": [
+  {
+   "sheet": "so_bEQS91hE_0036.0.jpg",
+   "start": 36.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    }
+   ],
+   "notes": "repeated rear uppercuts to head; low fist between is the chamber"
+  },
+  {
+   "sheet": "so_bEQS91hE_0039.0.jpg",
+   "start": 39.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    },
+    {
+     "tile": 10,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    }
+   ],
+   "notes": "14-18 body turned, lead arm extended to the side, count of punches in that flurry unclear"
+  },
+  {
+   "sheet": "so_bEQS91hE_0042.0.jpg",
+   "start": 42.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "so_bEQS91hE_0045.0.jpg",
+   "start": 45.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "24-29 transition into jumping jacks"
+  },
+  {
+   "sheet": "so_bEQS91hE_0048.0.jpg",
+   "start": 48.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "jumping jacks"
+  },
+  {
+   "sheet": "so_bEQS91hE_0051.0.jpg",
+   "start": 51.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "jumping jacks then walking"
+  },
+  {
+   "sheet": "so_bEQS91hE_0054.0.jpg",
+   "start": 54.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "walking"
+  },
+  {
+   "sheet": "so_bEQS91hE_0057.0.jpg",
+   "start": 57.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "jumping jacks"
+  },
+  {
+   "sheet": "so_bEQS91hE_0060.0.jpg",
+   "start": 60.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "jumping jacks then walking off"
+  },
+  {
+   "sheet": "so_bEQS91hE_0063.0.jpg",
+   "start": 63.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, gesturing"
+  },
+  {
+   "sheet": "so_bEQS91hE_0066.0.jpg",
+   "start": 66.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking"
+  },
+  {
+   "sheet": "so_bEQS91hE_0069.0.jpg",
+   "start": 69.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking"
+  },
+  {
+   "sheet": "so_bEQS91hE_0072.0.jpg",
+   "start": 72.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, bouncing"
+  },
+  {
+   "sheet": "so_bEQS91hE_0075.0.jpg",
+   "start": 75.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, gesturing"
+  },
+  {
+   "sheet": "so_bEQS91hE_0078.0.jpg",
+   "start": 78.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "crouched low fast hand pumping drill, no clear punches"
+  }
+ ]
+}

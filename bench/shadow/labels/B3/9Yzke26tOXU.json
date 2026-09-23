@@ -1,0 +1,285 @@
+{
+ "clip": "9Yzke26tOXU",
+ "sheets": [
+  {
+   "sheet": "9Yzke26tOXU_0003.0.jpg",
+   "start": 3.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "jab demos, arm held out several frames; 27-28 unclear arm sweep not labeled"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0006.0.jpg",
+   "start": 6.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "camera cut at tile 12; 14-16 arm swings out then across for hook"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0009.0.jpg",
+   "start": 9.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "slow hook demos"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0012.0.jpg",
+   "start": 12.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "jab, foreshortened cross, hook"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0015.0.jpg",
+   "start": 15.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "hook, then side-on straights; tile 29 extension continues into next sheet tile 00"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0018.0.jpg",
+   "start": 18.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "27-29 image_left arm rising high, uppercut peak labeled on next sheet tile 01"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0021.0.jpg",
+   "start": 21.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": true
+    }
+   ],
+   "notes": "uppercut held into next sheet"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0024.0.jpg",
+   "start": 24.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": true
+    }
+   ],
+   "notes": "00-13 holding uppercut position from previous sheet, not a new punch"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0027.0.jpg",
+   "start": 27.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    }
+   ],
+   "notes": "19-28 arm hangs low while explaining"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0030.0.jpg",
+   "start": 30.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "9Yzke26tOXU_0033.0.jpg",
+   "start": 33.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "cross held 00-05"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0036.0.jpg",
+   "start": 36.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "9Yzke26tOXU_0039.0.jpg",
+   "start": 39.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking/explaining"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0042.0.jpg",
+   "start": 42.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "arm spreads and arm swings, no punches"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0045.0.jpg",
+   "start": 45.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "00-11 loosening arm swings; jab at end"
+  }
+ ]
+}

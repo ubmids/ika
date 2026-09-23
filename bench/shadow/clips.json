@@ -1,0 +1,140 @@
+{
+ "note": "Public follow-along shadowboxing workouts on YouTube. Each entry is a three-minute section, fetched and cached locally by scripts/shadow_fetch.py; the video itself is never committed. One clip is one person, which is what makes leave-one-clip-out mean leave-one-person-out. Two clips come from one coach (Precision Striking), so they share a person and are always held out together.",
+ "clips": [
+  {
+   "id": "9Yzke26tOXU",
+   "section": [
+    180,
+    360
+   ],
+   "channel": "NateBowerFitness",
+   "person": "9Yzke26tOXU"
+  },
+  {
+   "id": "bz3Bv1y-mYo",
+   "section": [
+    180,
+    360
+   ],
+   "channel": "El Yuyu",
+   "person": "bz3Bv1y-mYo"
+  },
+  {
+   "id": "fX_w_srV70Y",
+   "section": [
+    180,
+    360
+   ],
+   "channel": "Gabriel Varga",
+   "person": "fX_w_srV70Y"
+  },
+  {
+   "id": "lYe5PYgIZDg",
+   "section": [
+    180,
+    360
+   ],
+   "channel": "Oracle Boxing",
+   "person": "lYe5PYgIZDg"
+  },
+  {
+   "id": "MrzGlecbLxU",
+   "section": [
+    180,
+    360
+   ],
+   "channel": "Jeff Chan MMAShredded",
+   "person": "MrzGlecbLxU"
+  },
+  {
+   "id": "oFKZQVw9rno",
+   "section": [
+    180,
+    360
+   ],
+   "channel": "Spring Sia",
+   "person": "oFKZQVw9rno"
+  },
+  {
+   "id": "so_bEQS91hE",
+   "section": [
+    180,
+    360
+   ],
+   "channel": "Tony Jeffries",
+   "person": "so_bEQS91hE"
+  },
+  {
+   "id": "xxn4pgsy1Sc",
+   "section": [
+    180,
+    360
+   ],
+   "channel": "Precision Striking",
+   "person": "precision-striking"
+  },
+  {
+   "id": "yrJE2unJ_m0",
+   "section": [
+    180,
+    360
+   ],
+   "channel": "Precision Striking",
+   "person": "precision-striking"
+  },
+  {
+   "id": "Cx6JfrRO4eA",
+   "section": [
+    240,
+    420
+   ],
+   "channel": "FightCamp",
+   "person": "Cx6JfrRO4eA"
+  },
+  {
+   "id": "TkWl5Yspi2Y",
+   "section": [
+    240,
+    420
+   ],
+   "channel": "Boxing Ready",
+   "person": "TkWl5Yspi2Y"
+  },
+  {
+   "id": "UkMzxSfz04I",
+   "section": [
+    240,
+    420
+   ],
+   "channel": "Sylvia Nasser",
+   "person": "UkMzxSfz04I"
+  },
+  {
+   "id": "e4c8DrlZMlY",
+   "section": [
+    240,
+    420
+   ],
+   "channel": "Spence Crosby",
+   "person": "e4c8DrlZMlY"
+  },
+  {
+   "id": "hjFbaQPi46U",
+   "section": [
+    240,
+    420
+   ],
+   "channel": "Laura Wells Fitness",
+   "person": "hjFbaQPi46U"
+  },
+  {
+   "id": "xo0Sv_pI8UE",
+   "section": [
+    240,
+    420
+   ],
+   "channel": "Well+Good",
+   "person": "xo0Sv_pI8UE"
+  }
+ ]
+}

@@ -13,3 +13,8 @@ checkpoints/
 models/*.task
 *.zip
 *.npz
+
+# The one exception: the stand-back punch model ships with the package,
+# because it was fitted on footage that is fetched, not committed, so it
+# cannot be rebuilt from the repository alone. It is 20 KB.
+!ika/weights/*.npz

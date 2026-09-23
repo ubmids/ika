@@ -1,0 +1,413 @@
+{
+ "clip": "yrJE2unJ_m0",
+ "sheets": [
+  {
+   "sheet": "yrJE2unJ_m0_0123.0.jpg",
+   "start": 123.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 15,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "guard/footwork 0-14, combo 15-20 facing image-left"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0126.0.jpg",
+   "start": 126.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "combo 21-28 facing image-right; 23-24 treated as one punch"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0129.0.jpg",
+   "start": 129.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "mostly footwork in profile"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0132.0.jpg",
+   "start": 132.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "camera cut at tile 04"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0135.0.jpg",
+   "start": 135.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    }
+   ],
+   "notes": "mostly guard/head movement"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0138.0.jpg",
+   "start": 138.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "mostly movement/defense"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0141.0.jpg",
+   "start": 141.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 3,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    }
+   ],
+   "notes": "body jab at 03"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0144.0.jpg",
+   "start": 144.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "back to camera 01-08"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0147.0.jpg",
+   "start": 147.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    }
+   ],
+   "notes": "mostly defensive movement"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0150.0.jpg",
+   "start": 150.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    }
+   ],
+   "notes": "hand-to-head moves at 22-24 not counted"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0153.0.jpg",
+   "start": 153.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "mostly guard/footwork"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0156.0.jpg",
+   "start": 156.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0159.0.jpg",
+   "start": 159.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    }
+   ],
+   "notes": "hands at head 11-13 not counted; 24-29 low/up combo, arms guessed"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0162.0.jpg",
+   "start": 162.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "mostly guard/footwork"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0165.0.jpg",
+   "start": 165.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    }
+   ],
+   "notes": "back to camera much of sheet"
+  }
+ ]
+}

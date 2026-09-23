@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ika"
 version = "0.1.0"
-description = "Control a computer with bare hands"
+description = "Shadowbox in front of a camera; it finds your habit and calls it before you do it"
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
 license = { text = "MIT" }
@@ -31,6 +31,9 @@ ika = "ika.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["ika*"]
+
+[tool.setuptools.package-data]
+ika = ["weights/*.npz"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

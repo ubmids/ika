@@ -1,0 +1,364 @@
+{
+ "clip": "xxn4pgsy1Sc",
+ "sheets": [
+  {
+   "sheet": "xxn4pgsy1Sc_0000.0.jpg",
+   "start": 0.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "tiles 00-05 intro shot; 19-20 horizontal arm across chest, possibly hook"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0003.0.jpg",
+   "start": 3.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "guard, head movement, feints only"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0006.0.jpg",
+   "start": 6.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "continuous jab-cross flurry; lead arm has wristband"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0009.0.jpg",
+   "start": 9.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "continuous jab-cross flurry"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0012.0.jpg",
+   "start": 12.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "guard/footwork, camera cut to back view"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0015.0.jpg",
+   "start": 15.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "back view; 20-22 big lean, maybe hook or roll"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0018.0.jpg",
+   "start": 18.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "far shot; light flicks"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0021.0.jpg",
+   "start": 21.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "guard and footwork"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0024.0.jpg",
+   "start": 24.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 10,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 13,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "facing image left"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0027.0.jpg",
+   "start": 27.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "footwork, guard"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0030.0.jpg",
+   "start": 30.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "mostly footwork"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0033.0.jpg",
+   "start": 33.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "cut at tile 19"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0036.0.jpg",
+   "start": 36.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "guard pumping, no clear extension"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0039.0.jpg",
+   "start": 39.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "frontal, fists pumping low/at chest; could be short body uppercuts, not labeled"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0042.0.jpg",
+   "start": 42.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "bouncing with low arm pumping; close-up from 17"
+  }
+ ]
+}

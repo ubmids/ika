@@ -1,0 +1,186 @@
+{
+ "clip": "so_bEQS91hE",
+ "sheets": [
+  {
+   "sheet": "so_bEQS91hE_0135.0.jpg",
+   "start": 135.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "so_bEQS91hE_0138.0.jpg",
+   "start": 138.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "woman labeled (central subject); man walking"
+  },
+  {
+   "sheet": "so_bEQS91hE_0141.0.jpg",
+   "start": 141.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": ""
+  },
+  {
+   "sheet": "so_bEQS91hE_0144.0.jpg",
+   "start": 144.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "so_bEQS91hE_0147.0.jpg",
+   "start": 147.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "extension persists into next sheet tile 00; counted once here"
+  },
+  {
+   "sheet": "so_bEQS91hE_0150.0.jpg",
+   "start": 150.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "tile 00 is tail of prior sheet's jab"
+  },
+  {
+   "sheet": "so_bEQS91hE_0153.0.jpg",
+   "start": 153.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": ""
+  },
+  {
+   "sheet": "so_bEQS91hE_0156.0.jpg",
+   "start": 156.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "so_bEQS91hE_0159.0.jpg",
+   "start": 159.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "so_bEQS91hE_0162.0.jpg",
+   "start": 162.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 15,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "so_bEQS91hE_0165.0.jpg",
+   "start": 165.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": ""
+  },
+  {
+   "sheet": "so_bEQS91hE_0168.0.jpg",
+   "start": 168.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "so_bEQS91hE_0171.0.jpg",
+   "start": 171.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "so_bEQS91hE_0174.0.jpg",
+   "start": 174.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": ""
+  },
+  {
+   "sheet": "so_bEQS91hE_0177.0.jpg",
+   "start": 177.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": ""
+  }
+ ]
+}

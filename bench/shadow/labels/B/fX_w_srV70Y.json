@@ -1,0 +1,277 @@
+{
+ "clip": "fX_w_srV70Y",
+ "sheets": [
+  {
+   "sheet": "fX_w_srV70Y_0015.0.jpg",
+   "start": 15.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "talking first half; 18-29 guard-up movement/footwork, no clear punch"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0018.0.jpg",
+   "start": 18.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, then knee/footwork movement 15-23"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0021.0.jpg",
+   "start": 21.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, raising guard"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0024.0.jpg",
+   "start": 24.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "06/09 could be horizontal elbows; knees 16-19; 24-29 elbows"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0027.0.jpg",
+   "start": 27.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "spinning backfist-like arm extensions with back to camera after kick; 00-01 elbow"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0030.0.jpg",
+   "start": 30.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "17,22-23 elbows; knee 25-27"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0033.0.jpg",
+   "start": 33.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "03,09-10 elbows; kick 14-17; spinning backfist-like extensions"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0036.0.jpg",
+   "start": 36.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "mostly holding guard"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0039.0.jpg",
+   "start": 39.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "04-05,14-15 elbows; knee 07-10; kick 25-28"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0042.0.jpg",
+   "start": 42.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "back to camera spinning arm extensions; 12-29 talking"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0045.0.jpg",
+   "start": 45.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking then guard"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0048.0.jpg",
+   "start": 48.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "07-08 elbows; knee 10-12; 20-29 elbows and spin"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0051.0.jpg",
+   "start": 51.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "kick 01-05; spinning arm extensions; guard after"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0054.0.jpg",
+   "start": 54.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "22-23 elbows; knee 25-27"
+  },
+  {
+   "sheet": "fX_w_srV70Y_0057.0.jpg",
+   "start": 57.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "02-04,09-11 elbows; kick 13-17; spinning arm extensions"
+  }
+ ]
+}

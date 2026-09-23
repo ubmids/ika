@@ -193,6 +193,12 @@ class Profile:
 
     subject: str
     observations: list[Observation] = field(default_factory=list)
+    # One row per session, for `ika history`: when, how long, what happened,
+    # and for every habit known at the time, how often it happened that day.
+    # Kept apart from `observations` because those are only the miner's
+    # findings, and a history needs the sessions where a habit did NOT show,
+    # which is the whole point of showing it fade.
+    log: list[dict] = field(default_factory=list)
 
     # --- recording --------------------------------------------------------
 
@@ -215,6 +221,48 @@ class Profile:
                     base=float(finding.base),
                 )
             )
+
+    def record_session(self, at: float, seconds: float, counts: dict[str, int],
+                       rates=()) -> dict:
+        """Log one session: its counts, and each known habit's rate in it.
+
+        `rates` is (habit, hits, support) for every habit known at the time,
+        counted from this session and not taken from the miner, so a session
+        where the habit never showed still records a zero out of however many
+        times the setup came up.
+        """
+        rates = {_habit_key(h.context, h.then): [int(a), int(b)] for h, a, b in rates}
+        row = {"at": float(at), "seconds": float(seconds),
+               "counts": dict(counts), "habits": rates}
+        self.log.append(row)
+        return row
+
+    def tracked(self) -> list[tuple[tuple[str, ...], str]]:
+        """Every habit this profile has ever logged or observed, as (context, then).
+
+        A session logs its rate for all of these, not only for what it found
+        itself, or a habit that stopped happening would simply stop appearing
+        in the log and `ika history` could never show it fading.
+        """
+        seen = {(tuple(o.context), o.then) for o in self.observations}
+        for row in self.log:
+            for key in row["habits"]:
+                context, _, then = key.partition(" -> ")
+                seen.add((tuple(context.split(" then ")) if context else (), then))
+        return sorted(seen)
+
+    def history(self) -> list[tuple[str, list[tuple[float, int, int]]]]:
+        """Each habit ever logged, with (session time, hits, support) per session."""
+        keys: dict[str, list[tuple[float, int, int]]] = {}
+        for row in self.log:
+            for key in row["habits"]:
+                keys.setdefault(key, [])
+        for key, series in keys.items():
+            for row in self.log:
+                if key in row["habits"]:
+                    hits, support = row["habits"][key]
+                    series.append((row["at"], int(hits), int(support)))
+        return sorted(keys.items())
 
     def sessions(self) -> int:
         """Separate sessions on the record. Sessions share a timestamp."""
@@ -339,6 +387,7 @@ class Profile:
                 }
                 for o in self.observations
             ],
+            "log": self.log,
         }
         path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
@@ -359,7 +408,23 @@ class Profile:
                 )
                 for row in payload["observations"]
             ],
+            log=list(payload.get("log", [])),
         )
+
+
+def _habit_key(context, then) -> str:
+    return " then ".join(context) + " -> " + then
+
+
+def rate_in(stream: list[str], context: tuple[str, ...], then: str) -> tuple[int, int]:
+    """How often `then` directly followed `context` in one stream."""
+    n = len(context)
+    support = hits = 0
+    for i in range(len(stream) - n):
+        if tuple(stream[i:i + n]) == context:
+            support += 1
+            hits += stream[i + n] == then
+    return hits, support
 
 
 def _as_counts(weighted_hits: float, weighted_support: float) -> tuple[int, int]:

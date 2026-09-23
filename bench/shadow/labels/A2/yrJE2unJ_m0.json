@@ -1,0 +1,339 @@
+{
+ "clip": "yrJE2unJ_m0",
+ "sheets": [
+  {
+   "sheet": "yrJE2unJ_m0_0078.0.jpg",
+   "start": 78.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "side-on, faces image-left; 17-18 turning away"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0081.0.jpg",
+   "start": 81.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "mostly footwork and guard"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0084.0.jpg",
+   "start": 84.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "faces camera"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0087.0.jpg",
+   "start": 87.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "back to camera 24-29"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0090.0.jpg",
+   "start": 90.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "guard/footwork; punch starting at 29 peaks on next sheet"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0093.0.jpg",
+   "start": 93.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "uppercut",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0096.0.jpg",
+   "start": 96.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "camera cut at 24"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0099.0.jpg",
+   "start": 99.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "back to camera 9-18"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0102.0.jpg",
+   "start": 102.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0105.0.jpg",
+   "start": 105.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 8,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "fast combo 06-12, hard to separate"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0108.0.jpg",
+   "start": 108.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "12-14 hands up by head (guard)"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0111.0.jpg",
+   "start": 111.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "back to camera 4-13"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0114.0.jpg",
+   "start": 114.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0117.0.jpg",
+   "start": 117.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "guard and footwork only"
+  },
+  {
+   "sheet": "yrJE2unJ_m0_0120.0.jpg",
+   "start": 120.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 14,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 25,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "camera cut at 08"
+  }
+ ]
+}

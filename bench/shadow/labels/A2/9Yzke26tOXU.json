@@ -1,0 +1,272 @@
+{
+ "clip": "9Yzke26tOXU",
+ "sheets": [
+  {
+   "sheet": "9Yzke26tOXU_0129.0.jpg",
+   "start": 129.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "tiles 12-16 duck/weave with blurred hands, no clear punch"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0132.0.jpg",
+   "start": 132.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "13-17 weave; 20-22 low hands unclear"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0135.0.jpg",
+   "start": 135.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "09-13 high block"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0138.0.jpg",
+   "start": 138.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "arm held extended to image right, slow demo"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0141.0.jpg",
+   "start": 141.0,
+   "activity": "slow_demo",
+   "punches": [],
+   "notes": "guard/block demo close-up"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0144.0.jpg",
+   "start": 144.0,
+   "activity": "slow_demo",
+   "punches": [],
+   "notes": "guard demo, talking"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0147.0.jpg",
+   "start": 147.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "14-16 block"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0150.0.jpg",
+   "start": 150.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "00-11 weave, 12-20 hands low talking"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0153.0.jpg",
+   "start": 153.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 3,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "05-07 block; hook starting at 29 peaks in next sheet"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0156.0.jpg",
+   "start": 156.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "profile view, arm held extended 00-06"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0159.0.jpg",
+   "start": 159.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 10,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "profile jab demos"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0162.0.jpg",
+   "start": 162.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "14-16 block"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0165.0.jpg",
+   "start": 165.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "9Yzke26tOXU_0168.0.jpg",
+   "start": 168.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "04-06 block"
+  },
+  {
+   "sheet": "9Yzke26tOXU_0171.0.jpg",
+   "start": 171.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "07-08 block; 16-18 duck, possible body shot not counted"
+  }
+ ]
+}

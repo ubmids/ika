@@ -393,23 +393,129 @@ def _watch(args):
 
 
 def _drill(args):
-    """Watch someone drill at their laptop and report the habit."""
-    _preflight()
+    """Watch someone drill and report the habit, then call it as it happens."""
+    if args.close:
+        _preflight()     # standing back, the hand landmarker is never used
     from .body import MODELS, POSE_URLS
     from .hands import ModelMissing
 
-    model = MODELS / "pose_landmarker_lite.task"
+    from .drill_app import pose_variant, run_drill
+
+    framing = "close" if args.close else "stand"
+    variant = pose_variant(framing)
+    model = MODELS / f"pose_landmarker_{variant}.task"
     if not model.exists():
-        raise ModelMissing(model, POSE_URLS["lite"])
+        # One command from a fresh clone: fetch what is missing, then drill.
+        print("\n  first run: fetching the pose models.")
+        import argparse as _argparse
+        if _setup(_argparse.Namespace(camera=args.camera, no_camera=True)) != 0:
+            raise ModelMissing(model, POSE_URLS[variant])
 
-    from .drill_app import run_drill
-
-    print("\n  Stand where the camera sees your head, shoulders and hands.")
-    print(f"  Hold still for {args.calibration:.0f}s while it learns your resting guard.")
-    print("  Then drill. It reports the habit, not the punches.\n")
-    run_drill(camera=args.camera, width=args.width,
+    source = args.source if args.source is not None else args.camera
+    if framing == "stand":
+        print("\n  Stand back until the camera sees you from head to hips, hands included.")
+    else:
+        print("\n  Sit at arm's length. The camera needs your head, shoulders and hands.")
+    print(f"  Hold your guard still for {args.calibration:.0f}s while it learns it.")
+    print("  Then drill. It reports the habit, not the punches, and once it knows")
+    print("  your habit it says so out loud just before you do it.\n")
+    run_drill(camera=source, width=args.width,
               calibration=args.calibration, profile=args.profile,
-              subject=args.subject, seconds=args.seconds)
+              subject=args.subject, seconds=args.seconds, framing=framing,
+              voice=not args.silent, save=not args.no_save, quiet=args.quiet)
+    return 0
+
+
+def _history(args):
+    """Each habit's rate, session by session, so a fading habit is visible."""
+    import time as _time
+    from pathlib import Path
+
+    from .profile import Profile
+
+    store = Path(args.profile) / f"{args.subject}.json"
+    if not store.exists():
+        print(f"\n  no sessions for {args.subject} yet. Run `ika drill` first.")
+        return 1
+    record = Profile.load(store)
+    print(f"\n  {args.subject}: {len(record.log)} logged session(s)\n")
+    for row in record.log[-args.last:]:
+        when = _time.strftime("%Y-%m-%d %H:%M", _time.localtime(row["at"]))
+        counts = row["counts"]
+        punches = sum(v for k, v in counts.items() if k.startswith("punch_"))
+        drops = sum(v for k, v in counts.items() if k.startswith("guard_down_"))
+        print(f"  {when}  {row['seconds'] / 60:4.1f} min  {punches:4d} punches  "
+              f"{drops:3d} guard drops")
+    series = record.history()
+    if not series:
+        print("\n  no habit has been found yet.")
+        return 0
+    # Guard habits first: they are the read. Punch patterns are true too, but
+    # "after a jab you throw a cross" is how most people box, not a flaw.
+    series.sort(key=lambda item: (not item[0].split(" -> ")[1].startswith("guard"), item[0]))
+    shown_header = None
+    for key, points in series:
+        header = "guard" if key.split(" -> ")[1].startswith("guard") else "punches"
+        if header != shown_header:
+            print("\n  where your hands go:" if header == "guard" else "\n  punch patterns:")
+            shown_header = header
+        cells = [f"{h / s:4.0%}" if s else "   -" for _at, h, s in points[-args.last:]]
+        rated = [h / s for _a, h, s in points if s]
+        trend = ""
+        if len(rated) >= 2:
+            trend = ("  falling" if rated[-1] < rated[0] - 0.1
+                     else "  rising" if rated[-1] > rated[0] + 0.1 else "  steady")
+        print(f"    {key:52s} {' '.join(cells)}{trend}")
+    standing = record.habits(now=_time.time())
+    if standing:
+        print("\n  standing now:")
+        for habit in standing[:6]:
+            print(f"    {habit.describe(now=_time.time())}")
+    return 0
+
+
+def _setup(args):
+    """Fetch what the drill needs, then check the camera. One command."""
+    import urllib.request
+
+    from .body import MODELS, POSE_URLS
+
+    MODELS.mkdir(parents=True, exist_ok=True)
+    for variant in ("full", "lite"):
+        target = MODELS / f"pose_landmarker_{variant}.task"
+        if target.exists() and target.stat().st_size > 1_000_000:
+            print(f"  pose model present: {target.name}")
+            continue
+        print(f"  fetching the {variant} pose model (Google MediaPipe)...")
+        partial = target.with_suffix(".part")
+        urllib.request.urlretrieve(POSE_URLS[variant], partial)
+        # Size, not existence: a truncated download passes every existence
+        # check and fails much later, where the cause is invisible.
+        if partial.stat().st_size < 1_000_000:
+            partial.unlink()
+            print("  the download came back truncated. Try again.")
+            return 1
+        partial.rename(target)
+        print(f"  saved {target.name}")
+
+    from .strike import WEIGHTS
+    print(f"  punch model {'present' if WEIGHTS.exists() else 'MISSING'}: {WEIGHTS}")
+    if not WEIGHTS.exists():
+        return 1
+
+    if args.no_camera:
+        print("\n  ready. Run `ika drill`.")
+        return 0
+    import cv2
+
+    capture = cv2.VideoCapture(args.camera)
+    ok = capture.isOpened() and capture.read()[0]
+    capture.release()
+    if not ok:
+        print(f"\n  camera {args.camera} did not give a frame. On macOS your terminal "
+              "needs camera access:\n  System Settings > Privacy & Security > Camera.")
+        return 1
+    print(f"  camera {args.camera} works.\n\n  ready. Run `ika drill`.")
     return 0
 
 
@@ -531,22 +637,46 @@ def build_parser() -> argparse.ArgumentParser:
     wa.add_argument("--no-stabilise", action="store_true", dest="no_stabilise")
     wa.set_defaults(func=_watch)
 
-    dr = sub.add_parser("drill", help="watch a drill session and find the habit")
+    dr = sub.add_parser("drill", help="drill, find the habit, and call it out loud")
+    dr.add_argument("source", nargs="?", default=None,
+                    help="a video file to replay instead of the camera")
     dr.add_argument("--camera", type=int, default=0)
-    dr.add_argument("--width", type=int, default=480)
+    dr.add_argument("--close", action="store_true",
+                    help="sitting at arm's length rather than standing back")
+    dr.add_argument("--width", type=int, default=640)
     dr.add_argument("--calibration", type=float, default=3.0)
     dr.add_argument("--subject", default="me")
     dr.add_argument("--profile", default=_default("data", "profiles"),
                     help="where habits accumulate between sessions")
     dr.add_argument("--seconds", type=float, default=None,
                     help="stop after this long, for a bounded session")
+    dr.add_argument("--silent", action="store_true", help="print cues, do not speak them")
+    dr.add_argument("--quiet", action="store_true", help="no per-event lines")
+    dr.add_argument("--no-save", action="store_true", dest="no_save",
+                    help="do not add this session to the profile")
     dr.set_defaults(func=_drill)
+
+    hi = sub.add_parser("history", help="each habit's rate, session by session")
+    hi.add_argument("--subject", default="me")
+    hi.add_argument("--profile", default=_default("data", "profiles"))
+    hi.add_argument("--last", type=int, default=12)
+    hi.set_defaults(func=_history)
+
+    se = sub.add_parser("setup", help="fetch the models and check the camera")
+    se.add_argument("--camera", type=int, default=0)
+    se.add_argument("--no-camera", action="store_true", dest="no_camera")
+    se.set_defaults(func=_setup)
 
     sub.add_parser("bindings", help="show what each gesture does").set_defaults(func=_bindings)
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
+    # MediaPipe's native logging prints telemetry failures to the terminal in
+    # the middle of a session. Quiet it before anything imports mediapipe.
+    import os
+    os.environ.setdefault("GLOG_minloglevel", "3")
+    os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
     args = build_parser().parse_args(argv)
     try:
         return args.func(args)

@@ -1,0 +1,359 @@
+{
+ "clip": "MrzGlecbLxU",
+ "sheets": [
+  {
+   "sheet": "MrzGlecbLxU_0135.0.jpg",
+   "start": 135.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "camera orbits; back view; several elbow-like raises (02,05,11-13) excluded; knee/kick 18-21"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0138.0.jpg",
+   "start": 138.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 18,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "kick 22-24"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0141.0.jpg",
+   "start": 141.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "knee 24-26"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0144.0.jpg",
+   "start": 144.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "kick 26-27"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0147.0.jpg",
+   "start": 147.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "elbow-like arm raises 25-26 excluded"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0150.0.jpg",
+   "start": 150.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "knee 01-04"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0153.0.jpg",
+   "start": 153.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "kick 08-09"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0156.0.jpg",
+   "start": 156.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "elbows 09-11 excluded; kick 16-19"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0159.0.jpg",
+   "start": 159.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 9,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "spinning kick 12-20"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0162.0.jpg",
+   "start": 162.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "drill caption HOOK - DOUBLE STEP LOW KICK; kick 10-13"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0165.0.jpg",
+   "start": 165.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 10,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "hook + low kick drill; kick 11-13"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0168.0.jpg",
+   "start": 168.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": true
+    }
+   ],
+   "notes": "kick 09-12; person partially out of frame 17-23"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0171.0.jpg",
+   "start": 171.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 10,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "kick 12-14; post-kick arm swings excluded"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0174.0.jpg",
+   "start": 174.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 28,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "kick 12-14"
+  },
+  {
+   "sheet": "MrzGlecbLxU_0177.0.jpg",
+   "start": 177.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "spinning kick 05-10"
+  }
+ ]
+}

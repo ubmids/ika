@@ -1,0 +1,278 @@
+{
+ "clip": "lYe5PYgIZDg",
+ "sheets": [
+  {
+   "sheet": "lYe5PYgIZDg_0030.0.jpg",
+   "start": 30.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "walking forward, then crouched weave/roll starts; no strikes"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0033.0.jpg",
+   "start": 33.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "repeated duck/weave (rolls) under an imaginary punch, hands low; no strikes"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0036.0.jpg",
+   "start": 36.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "rolls/weaves only"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0039.0.jpg",
+   "start": 39.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "rolls/weaves only"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0042.0.jpg",
+   "start": 42.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "rolls until ~44.1s then guard up; 26 = jab at chest/body height toward camera; 21 = possible punch coming out of roll, blurred"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0045.0.jpg",
+   "start": 45.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "uppercut",
+     "sure": false
+    },
+    {
+     "tile": 8,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": "fast low-res combos, many body-level shots heavily blurred; arms hard to separate"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0048.0.jpg",
+   "start": 48.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 13,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "13 = jab to body toward camera; 1/4 low body shots blurred"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0051.0.jpg",
+   "start": 51.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 1,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "hook",
+     "sure": false
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "camera angle changes to 3/4 side view at ~53.0s; 24 = lead jab extended toward image right"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0054.0.jpg",
+   "start": 54.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 7,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "3/4 side view, facing image right; 7 and 16 lead jabs; 19 likely rear cross (arm assignment unsure in profile)"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0057.0.jpg",
+   "start": 57.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 5,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 12,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 14,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "side view; 2 jab, 5 cross, 12 jab, 14 low rear hand possibly body shot; from ~58.8s stops and starts talking"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0060.0.jpg",
+   "start": 60.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking to camera, gesturing"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0063.0.jpg",
+   "start": 63.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, pointing"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0066.0.jpg",
+   "start": 66.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, transition flash at start"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0069.0.jpg",
+   "start": 69.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, gesturing/pointing"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0072.0.jpg",
+   "start": 72.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, hand gestures"
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+{"clip": "so_bEQS91hE", "sheets": [
+{"sheet": "so_bEQS91hE_0036.0.jpg", "start": 36.0, "activity": "shadowboxing", "punches": [
+ {"tile": 1, "arm": "image_left", "kind": "uppercut", "sure": false},
+ {"tile": 8, "arm": "image_left", "kind": "uppercut", "sure": false},
+ {"tile": 14, "arm": "image_left", "kind": "uppercut", "sure": false},
+ {"tile": 21, "arm": "image_left", "kind": "uppercut", "sure": false},
+ {"tile": 27, "arm": "image_left", "kind": "uppercut", "sure": false}],
+ "notes": "repeated image_left arm driving up with elbow high beside head; could be high uppercuts or overhand-style, fast and blurred"},
+{"sheet": "so_bEQS91hE_0039.0.jpg", "start": 39.0, "activity": "shadowboxing", "punches": [
+ {"tile": 3, "arm": "image_left", "kind": "uppercut", "sure": false},
+ {"tile": 10, "arm": "image_left", "kind": "hook", "sure": false},
+ {"tile": 15, "arm": "image_left", "kind": "straight", "sure": false},
+ {"tile": 18, "arm": "image_left", "kind": "straight", "sure": false},
+ {"tile": 23, "arm": "image_left", "kind": "uppercut", "sure": false},
+ {"tile": 29, "arm": "image_left", "kind": "uppercut", "sure": false}],
+ "notes": "14-18 body turned sideways, arm extended to image left; 29 may peak in next sheet"},
+{"sheet": "so_bEQS91hE_0042.0.jpg", "start": 42.0, "activity": "shadowboxing", "punches": [
+ {"tile": 5, "arm": "image_left", "kind": "uppercut", "sure": false},
+ {"tile": 11, "arm": "image_left", "kind": "uppercut", "sure": false},
+ {"tile": 17, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 22, "arm": "image_left", "kind": "hook", "sure": false},
+ {"tile": 27, "arm": "image_left", "kind": "straight", "sure": true}]},
+{"sheet": "so_bEQS91hE_0045.0.jpg", "start": 45.0, "activity": "shadowboxing", "punches": [
+ {"tile": 2, "arm": "image_left", "kind": "straight", "sure": false},
+ {"tile": 7, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 12, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 17, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 21, "arm": "image_left", "kind": "hook", "sure": false},
+ {"tile": 22, "arm": "image_right", "kind": "hook", "sure": false}],
+ "notes": "01-03 one continuous image_left motion, straight then bent horizontal; counted once. Switches to jumping jacks from ~24"},
+{"sheet": "so_bEQS91hE_0048.0.jpg", "start": 48.0, "activity": "other_exercise", "punches": [], "notes": "jumping jacks"},
+{"sheet": "so_bEQS91hE_0051.0.jpg", "start": 51.0, "activity": "other_exercise", "punches": [], "notes": "jumping jacks then walking"},
+{"sheet": "so_bEQS91hE_0054.0.jpg", "start": 54.0, "activity": "resting", "punches": [], "notes": "walking around"},
+{"sheet": "so_bEQS91hE_0057.0.jpg", "start": 57.0, "activity": "other_exercise", "punches": [], "notes": "jumping jacks"},
+{"sheet": "so_bEQS91hE_0060.0.jpg", "start": 60.0, "activity": "other_exercise", "punches": [], "notes": "jumping jacks then walking"},
+{"sheet": "so_bEQS91hE_0063.0.jpg", "start": 63.0, "activity": "resting", "punches": [], "notes": "walking, talking, gesturing"},
+{"sheet": "so_bEQS91hE_0066.0.jpg", "start": 66.0, "activity": "resting", "punches": [], "notes": "talking"},
+{"sheet": "so_bEQS91hE_0069.0.jpg", "start": 69.0, "activity": "resting", "punches": [], "notes": "talking"},
+{"sheet": "so_bEQS91hE_0072.0.jpg", "start": 72.0, "activity": "other_exercise", "punches": [], "notes": "light jogging/bouncing in place while talking"},
+{"sheet": "so_bEQS91hE_0075.0.jpg", "start": 75.0, "activity": "resting", "punches": [], "notes": "talking with gestures"},
+{"sheet": "so_bEQS91hE_0078.0.jpg", "start": 78.0, "activity": "other_exercise", "punches": [], "notes": "crouched fast arm pumping at waist height (speed drill), not counted as punches"}
+]}

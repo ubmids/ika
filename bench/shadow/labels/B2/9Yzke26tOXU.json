@@ -1,0 +1,47 @@
+{"clip": "9Yzke26tOXU", "sheets": [
+{"sheet": "9Yzke26tOXU_0129.0.jpg", "start": 129.0, "activity": "shadowboxing", "punches": [], "notes": "guard and bouncing; tiles 12-16 are a duck/level change with hands low, not counted as body shots"},
+{"sheet": "9Yzke26tOXU_0132.0.jpg", "start": 132.0, "activity": "shadowboxing", "punches": [
+ {"tile": 1, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 3, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 7, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 28, "arm": "image_right", "kind": "straight", "sure": true}], "notes": "13-17 duck/weave with hands low, not counted"},
+{"sheet": "9Yzke26tOXU_0135.0.jpg", "start": 135.0, "activity": "shadowboxing", "punches": [
+ {"tile": 1, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 4, "arm": "image_right", "kind": "straight", "sure": true}], "notes": "10-13 cover/block; rest guard"},
+{"sheet": "9Yzke26tOXU_0138.0.jpg", "start": 138.0, "activity": "shadowboxing", "punches": [
+ {"tile": 7, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 11, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 14, "arm": "image_right", "kind": "straight", "sure": true}], "notes": "third jab held extended 14-23 (freeze/demo); cut to close-up at 27"},
+{"sheet": "9Yzke26tOXU_0141.0.jpg", "start": 141.0, "activity": "slow_demo", "punches": [], "notes": "close-up guard/cover demo"},
+{"sheet": "9Yzke26tOXU_0144.0.jpg", "start": 144.0, "activity": "slow_demo", "punches": [], "notes": "guard demo, hand adjustments"},
+{"sheet": "9Yzke26tOXU_0147.0.jpg", "start": 147.0, "activity": "shadowboxing", "punches": [
+ {"tile": 6, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 9, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 12, "arm": "image_right", "kind": "straight", "sure": true}], "notes": "14-16 block; 26-29 level change"},
+{"sheet": "9Yzke26tOXU_0150.0.jpg", "start": 150.0, "activity": "shadowboxing", "punches": [
+ {"tile": 27, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 29, "arm": "image_left", "kind": "straight", "sure": true}], "notes": "3-7 duck; 12-20 hands low while talking"},
+{"sheet": "9Yzke26tOXU_0153.0.jpg", "start": 153.0, "activity": "shadowboxing", "punches": [
+ {"tile": 2, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 29, "arm": "image_left", "kind": "straight", "sure": true}], "notes": "tile 0 is tail of previous sheet's punch; 5-7 block; camera angle changes to profile; 29 jab continues into next sheet"},
+{"sheet": "9Yzke26tOXU_0156.0.jpg", "start": 156.0, "activity": "shadowboxing", "punches": [
+ {"tile": 2, "arm": "image_left", "kind": "straight", "sure": false},
+ {"tile": 5, "arm": "image_left", "kind": "straight", "sure": false}], "notes": "profile view facing image-left; repeated lead jabs, tile 0 is the 153-29 jab still extended; rest guard/talking"},
+{"sheet": "9Yzke26tOXU_0159.0.jpg", "start": 159.0, "activity": "shadowboxing", "punches": [
+ {"tile": 5, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 7, "arm": "image_left", "kind": "straight", "sure": false},
+ {"tile": 10, "arm": "image_right", "kind": "straight", "sure": true}], "notes": "profile; crosses from near (image-right) shoulder with torso rotation; 21-29 talking"},
+{"sheet": "9Yzke26tOXU_0162.0.jpg", "start": 162.0, "activity": "shadowboxing", "punches": [
+ {"tile": 7, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 9, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 12, "arm": "image_right", "kind": "straight", "sure": true}], "notes": "14-16 block; rest guard"},
+{"sheet": "9Yzke26tOXU_0165.0.jpg", "start": 165.0, "activity": "shadowboxing", "punches": [
+ {"tile": 26, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 28, "arm": "image_left", "kind": "straight", "sure": false}], "notes": "3/4 view facing image-left; 0-25 guard/footwork"},
+{"sheet": "9Yzke26tOXU_0168.0.jpg", "start": 168.0, "activity": "shadowboxing", "punches": [
+ {"tile": 1, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 29, "arm": "image_right", "kind": "straight", "sure": true}], "notes": "4-6 block; 29 continues into next sheet tile 0"},
+{"sheet": "9Yzke26tOXU_0171.0.jpg", "start": 171.0, "activity": "shadowboxing", "punches": [
+ {"tile": 2, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 4, "arm": "image_right", "kind": "straight", "sure": true}], "notes": "tile 0 is tail of 168-29; 7-8 block; 16-18 duck and turn to profile, not punches"}
+]}

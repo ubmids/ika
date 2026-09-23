@@ -1,0 +1,363 @@
+{
+ "clip": "xxn4pgsy1Sc",
+ "sheets": [
+  {
+   "sheet": "xxn4pgsy1Sc_0066.0.jpg",
+   "start": 66.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "profile facing image-left; lead arm = image_left; rest of sheet guard/footwork"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0069.0.jpg",
+   "start": 69.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 3,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 7,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "back partly to camera at start"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0072.0.jpg",
+   "start": 72.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 16,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 21,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 23,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "hook",
+     "sure": false
+    }
+   ],
+   "notes": ""
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0075.0.jpg",
+   "start": 75.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 27,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "camera cut at tile 17"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0078.0.jpg",
+   "start": 78.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 9,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 11,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 13,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 18,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 27,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 29,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    },
+    {
+     "tile": 25,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "rapid straight punches with motion blur; arm assignment by alternation, low confidence on arm"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0081.0.jpg",
+   "start": 81.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 0,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 2,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 4,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 6,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 8,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 10,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 13,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 15,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 17,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 20,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 22,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 24,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "rapid straights continue; arm by alternation"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0084.0.jpg",
+   "start": 84.0,
+   "activity": "shadowboxing",
+   "punches": [
+    {
+     "tile": 2,
+     "arm": "image_left",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "back view then cut to wide shot, guard + footwork only"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0087.0.jpg",
+   "start": 87.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "guard briefly then walks"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0090.0.jpg",
+   "start": 90.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "walks off frame"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0093.0.jpg",
+   "start": 93.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "walks back, talking/gesturing"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0096.0.jpg",
+   "start": 96.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "walking"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0099.0.jpg",
+   "start": 99.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "close-up torso, arm swings/footwork, no punches"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0102.0.jpg",
+   "start": 102.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "close-up, loose arm swings, no clear punches"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0105.0.jpg",
+   "start": 105.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "close-up arm swings then walking"
+  },
+  {
+   "sheet": "xxn4pgsy1Sc_0108.0.jpg",
+   "start": 108.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "walking"
+  }
+ ]
+}

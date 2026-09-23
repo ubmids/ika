@@ -1,18 +1,260 @@
 # ika
 
-**Read movement, find the habit, and call the next move while there is still
-time to use it.**
+**Shadowbox in front of your laptop. It finds your habit, then says it out
+loud a beat before you do it.**
 
-Not gesture recognition. Gesture recognition answers "what is this hand doing",
-which is a solved and largely uninteresting problem. This answers a different
-question: *what is this person about to do, and can I say so before it
-happens.*
+Not "you threw a jab". You know that. The read is the thing you cannot see
+yourself: *after two rights, your right hand comes down*. Once it knows that
+about you, it watches for the two rights and says "right hand" while there is
+still time to keep it up.
 
-The difference is the whole project. Recognising a punch after it lands is
-trivia. Naming the habit that produces it, a quarter of a second before it
-starts, is a read.
+```bash
+pip install -e .
+ika drill            # stand back, hold your guard for three seconds, then box
+ika history          # every habit, session by session, and whether it is fading
+```
+
+The first `ika drill` fetches the two pose models it needs (15 MB, Google
+MediaPipe). `ika setup` does the same and also checks the camera. Nothing else
+is needed: no account, no network after that, no recording of your own.
+
+Stand back until the camera sees you from head to hips with both hands in
+shot, about two metres from a laptop. This is a real round, replayed from a
+public follow-along workout (`ika drill round.mp4 --silent`), unedited:
+
+```
+  round: 180s at 45 fps
+  169 punches (56 a minute), guard dropped 33 times
+  this session:
+    after punch_right: guard_down_left 65% of the time (normally 6%), 10.4x, seen 15/23
+    after punch_right: guard_down_right 52% of the time (normally 6%), 8.3x, seen 12/23
+    after punch_right then punch_left: punch_right 86% of the time (normally 45%), 1.9x, seen 51/59
+    after punch_right: punch_left 79% of the time (normally 50%), 1.6x, seen 59/75
+    after punch_left: punch_right 70% of the time (normally 45%), 1.6x, seen 59/84
+  called it 27 times; the lapse followed 6 (22%), 0.8s before the hand went down
+```
+
+The first two lines are the read: when this person finishes on a right, both
+hands sit lower for the next second than after anything else they throw.
+Checked by eye it is a lean, not an obvious drop, so treat it as the kind of
+thing ika says rather than as proof it is right. The last three are patterns,
+true and mostly just how people box. During the round, once a guard habit is
+known, the call is spoken as the setup happens; "the lapse followed 22%" is
+scored against the dropped-guard event detector, which is the weak sensor
+described below, so it undercounts.
+
+`--silent` prints the call instead of speaking it, `--quiet` drops the
+per-event lines, and `ika drill some_round.mp4` replays a recorded round
+instead of the camera, which is how everything below was measured.
 
 ---
+
+## What it can honestly do
+
+Everything in this table was measured on real people, on footage none of the
+code was tuned on, except where it says simulated.
+
+| | measured | against |
+|---|---|---|
+| a body is found | **95 to 100%** of frames, all 15 clips | |
+| punches caught, on people the model never saw | **47%**, with **5.6** false punches a minute | the labellers themselves: 90% and 4.9 |
+| the same, front-facing people only | **51%**, **3.8** false a minute | |
+| the original palm-on-lens reader, standing back | **0%** | |
+| a phantom guard habit on shuffled real footage | **3%** of shuffles | should be under 5% |
+| a strong guard habit named, with sensors as measured (simulated) | **40%** of fighters by 12 six-minute sessions | 93% in one 12-minute session with perfect sensors |
+| a fighter with no habit told they have one (simulated) | **2%** after 12 sessions | |
+| the call, when the habit is real (simulated) | lands **0.8 s** before the hand drops, right as often as the habit is | |
+
+So: the loop works end to end, from a camera to a spoken call, and it rarely
+makes things up. It is also slow to be sure of anything, because the punch
+reader misses about half of what is thrown, and a two-punch setup needs both
+punches caught. For a strong habit that means a couple of weeks of short daily
+rounds, and even then only for some people. A subtle one mostly does not show
+up at all.
+
+That is the finished state, measured and stated rather than tuned to look
+better. [`DONE.md`](DONE.md) has the criteria it was held to and where each
+one landed.
+
+### How it was measured without anyone standing in front of a camera
+
+Public follow-along shadowboxing workouts: 15 clips, 14 people (13 with punches both
+labellers agreed on), three minutes each, fetched by `scripts/shadow_fetch.py` and never committed.
+Most face the camera; a few are side-on, one circles the fighter, and two are
+Muay Thai. `bench/shadow/clips.json` lists them.
+
+Punches were labelled from contact sheets, 3 seconds of video per sheet at 10
+frames a second, cropped to the fighter, one tile per punch at full extension.
+**The labellers are not people.** Each clip was labelled twice, by two
+separate instances of a vision-language model (Claude) working from the same
+written instructions and never seeing each other's labels. That is what made
+labelling twenty minutes of footage twice possible, and it is why agreement
+is measured rather than assumed. On whether a punch happened they agree 81 to
+100% per clip, except 55% on a Muay Thai elbow drill. On which arm threw it
+they agree far less, 58% on a fighter seen side-on, so arm is scored
+separately and never counts against catching the punch.
+
+A punch counts as the truth when both labellers marked it within 0.2 s of
+each other. A detection is a hit if it lands within 0.2 s of one, false if
+neither labeller saw anything there, and neither if only one did. The
+labellers scored against each other set the ceiling in the table: 90% of the
+other's punches, with 4.9 a minute the other did not mark.
+
+The punch model is scored leaving one person out at a time: fitted on
+everyone else, thresholded on everyone else, scored on the one it never saw.
+Two clips turned out to be the same coach in two settings, so they are one
+person and are always held out together.
+
+```bash
+python scripts/shadow_fetch.py        # the footage, then landmarks cached from it
+python scripts/shadow_score.py        # labeller agreement, the ceiling, the unfitted readers
+python scripts/train_strike.py --quick   # the fitted reader, held out by person
+python scripts/shadow_guard.py        # dropped guards, as events, against labels
+python scripts/sag_check.py           # the guard read on real footage, and its shuffled null
+python scripts/robustness.py          # does the habit read survive these sensors?
+python scripts/cue_check.py           # the call: how early, how often right
+```
+
+---
+
+## What the real footage changed
+
+Before this, every number in the predict-and-warn lane had been measured on
+movement generated with arithmetic. Several things broke on contact with real
+people, and each one changed the design.
+
+### A palm closing on the lens is the wrong physics standing back
+
+The drill read a punch as a palm growing in the image on its way to the lens.
+That is right at arm's length from a laptop and wrong for shadowboxing, which
+nobody does 60 cm from a screen. Two metres back, a jab that travels half a
+metre grows the palm by a third, under the firing threshold, from a hand
+twenty pixels across that the hand landmarker found in 14 to 92% of frames.
+Replayed over the labelled footage it caught **1 punch in 1,448**.
+
+The pose, meanwhile, was there in 95 to 100% of frames. So standing back, a
+punch is read from the arm (`ika/strike.py`): how far the wrist and elbow have
+left this arm's own guard, how fast and in which direction, with MediaPipe's
+inferred depth standing in for the straight thrown at the camera that barely
+moves in the image. A hand-built rule on that ("the wrist left its guard by a
+third of a torso") caught 60% but fired 48 false punches a minute, because a
+body rotating into one arm's punch swings the other arm too, and every roll,
+bob and guard reset moves a wrist a long way. A small network over the same
+features, fitted on the labels, gets to the table's 47% at 5.6.
+
+`ika drill --close` keeps the palm reader for sitting at arm's length.
+
+### More labels helped, and then stopped helping
+
+Held out, front-facing people, `full` pose model:
+
+| labelled | people | recall | false a minute |
+|---|---|---|---|
+| 7 minutes | 7 | 49% | 6.3 |
+| 13 minutes | 12 | 59% | 5.6 |
+| 19 minutes | 13 | 55% | 4.5 |
+
+More people was worth about ten points. More minutes of the same people was
+worth nothing. Neither a longer time window, a wider network, an ensemble,
+normalising each person against their own movement, nor MediaPipe's `heavy`
+pose model moved it either (heavy: 45% against 49% on the same three people,
+at three to four times the cost). `full` beat `lite` by 5 to 9 points and is
+what the drill uses. What limits the reader now is what the landmarks can
+show of a fist coming at the camera from two metres, at the 360p these
+workouts were published at.
+
+### A dropped guard is not an event
+
+The first design counted a dropped guard as an event: a wrist crossing a
+threshold and staying there. On real footage it is the weakest thing in the
+loop. The two labellers agreed on only about half of each other's drops. The
+detector found 30% of the agreed ones at 4.5 false a minute, and no threshold,
+reference point or hold time did better. Put those error rates into a
+simulation and a habit planted 80% of the time was named in 12% of fighters
+after twelve minutes, against 97% within three with a perfect sensor.
+
+So the guard is now read the way a coach would watch it (`ika/sag.py`): not
+"was there a drop", but "how high was that hand, on average, in the second
+after this combo, compared with the second after your other combos". Per
+frame, a wrist in a labelled drop sits 1.16 standard deviations below one in
+guard; averaged over a second, and then over every time the setup comes up,
+most of the noise that ruined the event detector cancels. Guard height is the
+wrist's height above the nose in torso lengths, against the 75th percentile
+of this person's last twenty seconds, since between punches hands are mostly
+up. Frames where that arm is itself punching are left out, or every one-two
+would look like a sagging guard.
+
+A setup lives inside one combo. Matching "two rights" across the gap between
+combos made calls fire a combo early and then blocked the right one; bounded
+by the combo, a call is right as often as the habit is.
+
+Across the people on the bench, the read reports a guard habit for one, the
+round shown at the top. By eye that one is a lean rather than an obvious
+drop. An earlier version of the punch reader surfaced a different person
+whose habit was plainly visible (after a left, both hands came down into the
+squat-and-jump of that workout); the final reader catches fewer of her
+combo endings and no longer clears the bar. Why has not been checked;
+the likeliest reason is the reader's recall, but that is a guess.
+
+### Three statistical bugs, each found by a null that should have been clean
+
+- **Rediscovering the state machine.** A clean session reported "after
+  guard_down_both: guard_up_both, 100% of the time, 7.8x". A guard that is down
+  can only come up. Restorations are recorded and never mined.
+- **Filtering on effect size before correcting for multiple tests.** The
+  correction only ever saw the candidates that already looked strong, so it
+  never paid for having looked at the rest. 25% of shuffled real sessions
+  reported a habit. Everything tested now goes into the correction.
+- **Treating an estimated base rate as known.** Even corrected, a binomial
+  against the other combos' rate let 14% through, because that rate is itself
+  estimated from twenty or thirty combos. The guard read now uses a rank test
+  on the heights themselves: calibrated (5.1% under a simulated null, 3% on
+  shuffled real footage), and it keeps the magnitude that counting "down or
+  not" threw away, which raised the planted-habit hit rate from 73% to 93% at
+  twelve minutes with perfect sensors.
+
+### What each sensor costs the read
+
+Simulated at the measured rates, a strong habit (80%), six-minute sessions:
+
+| punches | guard | named after 12 minutes |
+|---|---|---|
+| perfect | perfect, as events | 100% |
+| as measured | perfect, as events | 98% |
+| perfect | as measured, as events | 45% |
+| as measured | as measured, as events | 12% |
+| perfect | as measured, as sag | 93% |
+| as measured | as measured, as sag | 23% |
+
+The guard read was the first bottleneck and is no longer the worst one. The
+punch reader is: a two-punch setup survives both punches being caught about a
+fifth of the time. That is the one number that would change what ika can do,
+and the bench to measure it on is in `bench/shadow`.
+
+### Limits, plainly
+
+- **Framing.** It needs head to hips in shot. At laptop distance legs are
+  invisible, so footwork, level changes and weight shift are not read at all.
+- **Resolution.** The bench is 360p YouTube video; a 720p webcam at two
+  metres gives the pose more to work with, but that has not been measured.
+- **Side-on fighters** read worse, and which arm threw a punch is unreliable
+  whenever the shoulders overlap.
+- **The labels are a model's labels.** Two instances agreeing is evidence, not
+  proof, and they may share blind spots two people would not.
+- **The habit and the call were measured in simulation**, at the error rates
+  measured on real footage, because nobody on the bench comes with a known
+  habit. The first real test of the whole promise is someone who knows their
+  own habit standing in front of it.
+
+---
+
+# The research that led here
+
+Everything below is how the project got to the drill: reading hands, reading
+bodies, predicting from habits, and a two-fighter lane on real fight footage.
+It is kept as it was written, as findings. The glasses, fight-footage
+analysis, cursor control and swipe lanes are frozen: working where they work,
+not being pushed further.
 
 ## The flow
 
@@ -185,11 +427,11 @@ it extrapolates a plausible wrong one, so that is what is simulated now. The
 knee signal separating crouch from idle went from **1577 sigma** with legs
 visible to **0.1 sigma** hidden, which is what "cannot see" should look like.
 
-## The drill loop: the whole idea, on a laptop, today
+## The first drill loop, before real footage
 
-```
-ika drill
-```
+This is the drill as first built, on synthetic bodies and the palm-on-lens
+punch reader. Real footage replaced both halves (see the top of this README);
+it is kept because the flaw it exposed still shapes the miner.
 
 Stand where the camera sees your head, shoulders and hands. Hold still for
 three seconds while it learns your resting guard. Then drill. It reports the
@@ -240,11 +482,14 @@ two never cross the threshold on the same frame.
 
 Three findings still survive that are true but useless, of the form "you raise
 your guard after dropping it". Those are state machine necessities rather than
-habits, and filtering them is not done yet.
+habits. They are now recorded and never mined, so they cannot be reported.
 
 ---
 
-## Quick start
+## Research commands
+
+The commands behind the findings below. The drill itself only needs
+`ika setup`; these fetch or train what each experiment used.
 
 ```bash
 pip install -e '.[dev]'
@@ -263,7 +508,7 @@ ika compare             # landmarks vs a fine-tuned CNN, on real photographs
 ika body                # can a camera read a body early, and what does it miss?
 ika watch clip.mp4      # a whole clip: two fighters, camera motion removed
 python scripts/ut_interaction.py --fetch   # real footage, then measure on it
-pytest -q               # 414 tests, no camera, no network
+pytest -q               # the whole suite, no camera, no network
 ```
 
 `ika live` is a dry run unless you pass `--live`. It shows everything and sends
@@ -563,16 +808,14 @@ swipes named as the wrong gesture, which it cannot.
 
 ---
 
-## Next
+## Frozen
 
-1. **Point the pose lane at real video.** Replaces the largest assumption in
-   the project with evidence. `ika/body.py` reads bodies at 108 fps; nothing
-   yet turns those landmarks into actions.
-2. **Feed early commitment back into `ika live`**, which still confirms rather
-   than commits, and is therefore running the 7% strategy.
-3. **Gate the swipes** behind a pose, if hand gestures stay part of the product.
-4. **Record real hands** with `ika record`, four seconds per gesture, to replace
-   the synthetic classifier that ships today.
+These lanes work where they work and are not being pushed further:
+
+- **Glasses**: reading movement from a head-worn camera.
+- **Fight-footage analysis**: `ika watch`, two fighters from broadcast video.
+- **Cursor control**: `ika live --live`, hands driving the computer.
+- **Swipes**: gated behind a pose, safe, still insensitive.
 
 ## Attribution
 
@@ -583,6 +826,12 @@ curl -L -o data/hagrid/export_100.zip \
   "https://huggingface.co/datasets/GestureDetectionConnoisseurs/hagrid_subsets/resolve/main/hagrid-export_100_images.zip"
 cd data/hagrid && unzip -q export_100.zip
 ```
+
+The shadowboxing bench is built from public follow-along workouts on YouTube,
+by Boxing Ready, El Yuyu, FightCamp, Gabriel Varga, Jeff Chan MMAShredded, Laura Wells Fitness, NateBowerFitness, Oracle Boxing, Precision Striking, Spence Crosby, Spring Sia, Sylvia Nasser, Tony Jeffries and Well+Good. The
+video is fetched locally by `scripts/shadow_fetch.py` and never committed;
+`bench/shadow/clips.json` lists each clip and section. Only the labels made
+from it are in the repo.
 
 Hand and pose landmarkers are Google MediaPipe releases. Everything else in
 here is MIT, see LICENSE.

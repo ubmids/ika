@@ -1,0 +1,162 @@
+{
+ "clip": "so_bEQS91hE",
+ "sheets": [
+  {
+   "sheet": "so_bEQS91hE_0087.0.jpg",
+   "start": 87.0,
+   "activity": "other_exercise",
+   "punches": [],
+   "notes": "arm swinging / light movement, no clear punches"
+  },
+  {
+   "sheet": "so_bEQS91hE_0090.0.jpg",
+   "start": 90.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking and gesturing"
+  },
+  {
+   "sheet": "so_bEQS91hE_0093.0.jpg",
+   "start": 93.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "walking and gesturing while talking"
+  },
+  {
+   "sheet": "so_bEQS91hE_0096.0.jpg",
+   "start": 96.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking with hand gestures"
+  },
+  {
+   "sheet": "so_bEQS91hE_0099.0.jpg",
+   "start": 99.0,
+   "activity": "shadowboxing",
+   "punches": [],
+   "notes": "talking then takes guard and bounces from tile 14, no strikes thrown"
+  },
+  {
+   "sheet": "so_bEQS91hE_0102.0.jpg",
+   "start": 102.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 21,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    }
+   ],
+   "notes": "guard and footwork, single demo punch"
+  },
+  {
+   "sheet": "so_bEQS91hE_0105.0.jpg",
+   "start": 105.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 11,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 19,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 28,
+     "arm": "image_right",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "tile 28 looks like a low jab to the body"
+  },
+  {
+   "sheet": "so_bEQS91hE_0108.0.jpg",
+   "start": 108.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 6,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": true
+    },
+    {
+     "tile": 16,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    },
+    {
+     "tile": 17,
+     "arm": "image_right",
+     "kind": "unsure",
+     "sure": false
+    }
+   ],
+   "notes": "16 may be a low body shot and 17 a head shot, or one motion"
+  },
+  {
+   "sheet": "so_bEQS91hE_0111.0.jpg",
+   "start": 111.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "standing, talking"
+  },
+  {
+   "sheet": "so_bEQS91hE_0114.0.jpg",
+   "start": 114.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, gesturing"
+  },
+  {
+   "sheet": "so_bEQS91hE_0117.0.jpg",
+   "start": 117.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, gesturing"
+  },
+  {
+   "sheet": "so_bEQS91hE_0120.0.jpg",
+   "start": 120.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, gesturing"
+  },
+  {
+   "sheet": "so_bEQS91hE_0123.0.jpg",
+   "start": 123.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "hands on hips talking; second person's arm enters frame at 27-28"
+  },
+  {
+   "sheet": "so_bEQS91hE_0126.0.jpg",
+   "start": 126.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "standing; second person walks in"
+  },
+  {
+   "sheet": "so_bEQS91hE_0129.0.jpg",
+   "start": 129.0,
+   "activity": "slow_demo",
+   "punches": [
+    {
+     "tile": 26,
+     "arm": "image_left",
+     "kind": "straight",
+     "sure": false
+    }
+   ],
+   "notes": "two people; woman becomes central subject, back to camera, extended arm at 26-27"
+  }
+ ]
+}

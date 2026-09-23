@@ -1,0 +1,110 @@
+{
+ "clip": "lYe5PYgIZDg",
+ "sheets": [
+  {
+   "sheet": "lYe5PYgIZDg_0093.0.jpg",
+   "start": 93.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking to camera, hand gestures"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0096.0.jpg",
+   "start": 96.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, pointing gestures"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0099.0.jpg",
+   "start": 99.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, arms at sides"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0102.0.jpg",
+   "start": 102.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, open-hand gesture"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0105.0.jpg",
+   "start": 105.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, open-hand gestures"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0108.0.jpg",
+   "start": 108.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, gesturing"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0111.0.jpg",
+   "start": 111.0,
+   "activity": "slow_demo",
+   "punches": [],
+   "notes": "talking; from tile 20 slowly extends image_left arm sideways at shoulder height and holds it (demonstration pose, not a strike)"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0114.0.jpg",
+   "start": 114.0,
+   "activity": "slow_demo",
+   "punches": [],
+   "notes": "holding the sideways arm pose, then lowers it; gestures"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0117.0.jpg",
+   "start": 117.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "walking/turning side-on, talking"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0120.0.jpg",
+   "start": 120.0,
+   "activity": "slow_demo",
+   "punches": [],
+   "notes": "walking, stance/footwork demonstration with open hands"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0123.0.jpg",
+   "start": 123.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "walking, pointing gestures"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0126.0.jpg",
+   "start": 126.0,
+   "activity": "slow_demo",
+   "punches": [],
+   "notes": "talking, open-hand arm extension demo (not a strike)"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0129.0.jpg",
+   "start": 129.0,
+   "activity": "slow_demo",
+   "punches": [],
+   "notes": "stance/footwork demo; slow low image_right hand extension ~tile 22 at waist height, judged a gesture not a punch"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0132.0.jpg",
+   "start": 132.0,
+   "activity": "slow_demo",
+   "punches": [],
+   "notes": "stance demo then talking with hands"
+  },
+  {
+   "sheet": "lYe5PYgIZDg_0135.0.jpg",
+   "start": 135.0,
+   "activity": "resting",
+   "punches": [],
+   "notes": "talking, finger-raising gestures"
+  }
+ ]
+}

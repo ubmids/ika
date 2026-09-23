@@ -1,0 +1,57 @@
+{"clip": "oFKZQVw9rno", "sheets": [
+{"sheet": "oFKZQVw9rno_0123.0.jpg", "start": 123.0, "activity": "shadowboxing", "punches": [
+ {"tile": 20, "arm": "image_left", "kind": "straight", "sure": true}],
+ "notes": "Muay Thai: elbow 00-01, knee 03-06, arm reach at 08 treated as frame/push not punch; profile view facing left"},
+{"sheet": "oFKZQVw9rno_0126.0.jpg", "start": 126.0, "activity": "shadowboxing", "punches": [
+ {"tile": 6, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 10, "arm": "image_right", "kind": "straight", "sure": false}],
+ "notes": "facing left, back partly to camera; 18-23 spin, arm out at 18 not counted (possible spinning backfist/elbow)"},
+{"sheet": "oFKZQVw9rno_0129.0.jpg", "start": 129.0, "activity": "shadowboxing", "punches": [],
+ "notes": "arm swing 00-04 then kick 05-10, rest talking/walking"},
+{"sheet": "oFKZQVw9rno_0132.0.jpg", "start": 132.0, "activity": "shadowboxing", "punches": [
+ {"tile": 19, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 23, "arm": "image_left", "kind": "straight", "sure": false},
+ {"tile": 29, "arm": "image_right", "kind": "unsure", "sure": false}],
+ "notes": "facing image right; 23 assumed rear-hand cross; 29 low arm extension, possibly body shot"},
+{"sheet": "oFKZQVw9rno_0135.0.jpg", "start": 135.0, "activity": "shadowboxing", "punches": [],
+ "notes": "elbows 08-11, knee 11-15, guard"},
+{"sheet": "oFKZQVw9rno_0138.0.jpg", "start": 138.0, "activity": "slow_demo", "punches": [
+ {"tile": 13, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 16, "arm": "image_left", "kind": "hook", "sure": false}],
+ "notes": "front-facing demo; 00-11 talking with hands at face"},
+{"sheet": "oFKZQVw9rno_0141.0.jpg", "start": 141.0, "activity": "shadowboxing", "punches": [],
+ "notes": "elbow 01-03, knee 04-07, then guard/footwork"},
+{"sheet": "oFKZQVw9rno_0144.0.jpg", "start": 144.0, "activity": "shadowboxing", "punches": [
+ {"tile": 3, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 7, "arm": "image_right", "kind": "straight", "sure": false},
+ {"tile": 12, "arm": "image_left", "kind": "hook", "sure": false},
+ {"tile": 21, "arm": "image_right", "kind": "unsure", "sure": false}],
+ "notes": "spin 14-18; elbow 22-23; knee/kick 24-29"},
+{"sheet": "oFKZQVw9rno_0147.0.jpg", "start": 147.0, "activity": "shadowboxing", "punches": [
+ {"tile": 11, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 27, "arm": "image_left", "kind": "straight", "sure": false}],
+ "notes": "facing right; punch starting at 29 peaks at next sheet tile 00"},
+{"sheet": "oFKZQVw9rno_0150.0.jpg", "start": 150.0, "activity": "shadowboxing", "punches": [
+ {"tile": 0, "arm": "image_right", "kind": "straight", "sure": false},
+ {"tile": 4, "arm": "image_right", "kind": "uppercut", "sure": false}],
+ "notes": "elbow 14-16, knee 17-20"},
+{"sheet": "oFKZQVw9rno_0153.0.jpg", "start": 153.0, "activity": "slow_demo", "punches": [
+ {"tile": 10, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 14, "arm": "image_left", "kind": "straight", "sure": true}],
+ "notes": "front-facing explanation, talking 00-08"},
+{"sheet": "oFKZQVw9rno_0156.0.jpg", "start": 156.0, "activity": "shadowboxing", "punches": [
+ {"tile": 4, "arm": "image_left", "kind": "straight", "sure": false}],
+ "notes": "elbow 05-07, knee 09-11, guard after"},
+{"sheet": "oFKZQVw9rno_0159.0.jpg", "start": 159.0, "activity": "shadowboxing", "punches": [
+ {"tile": 9, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 13, "arm": "image_right", "kind": "straight", "sure": false},
+ {"tile": 19, "arm": "image_left", "kind": "hook", "sure": false},
+ {"tile": 28, "arm": "image_right", "kind": "unsure", "sure": false}],
+ "notes": "spin 20-24"},
+{"sheet": "oFKZQVw9rno_0162.0.jpg", "start": 162.0, "activity": "shadowboxing", "punches": [],
+ "notes": "elbow 00-01, knee 02-05, guard"},
+{"sheet": "oFKZQVw9rno_0165.0.jpg", "start": 165.0, "activity": "shadowboxing", "punches": [
+ {"tile": 2, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 5, "arm": "image_left", "kind": "straight", "sure": false}],
+ "notes": "elbow 21-23, knee 24-27"}
+]}

@@ -1,0 +1,65 @@
+{"clip": "yrJE2unJ_m0", "sheets": [
+{"sheet": "yrJE2unJ_m0_0123.0.jpg", "start": 123.0, "activity": "shadowboxing", "punches": [
+ {"tile": 15, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 17, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 18, "arm": "image_left", "kind": "hook", "sure": false},
+ {"tile": 20, "arm": "image_left", "kind": "uppercut", "sure": false}], "notes": "0-14 guard/footwork; faces image-left from 12"},
+{"sheet": "yrJE2unJ_m0_0126.0.jpg", "start": 126.0, "activity": "shadowboxing", "punches": [
+ {"tile": 21, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 24, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 26, "arm": "image_right", "kind": "uppercut", "sure": false}], "notes": ""},
+{"sheet": "yrJE2unJ_m0_0129.0.jpg", "start": 129.0, "activity": "shadowboxing", "punches": [
+ {"tile": 29, "arm": "image_left", "kind": "straight", "sure": false}], "notes": "mostly footwork, side-on; 29 back to camera, arm extended right"},
+{"sheet": "yrJE2unJ_m0_0132.0.jpg", "start": 132.0, "activity": "shadowboxing", "punches": [
+ {"tile": 5, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 18, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 23, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 26, "arm": "image_right", "kind": "hook", "sure": false}], "notes": "00 is retraction of punch from previous sheet; 04-05 same jab"},
+{"sheet": "yrJE2unJ_m0_0135.0.jpg", "start": 135.0, "activity": "shadowboxing", "punches": [
+ {"tile": 23, "arm": "image_left", "kind": "straight", "sure": false},
+ {"tile": 26, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 28, "arm": "image_left", "kind": "hook", "sure": false}], "notes": "16-17 hand raised to head looks like a block, not counted"},
+{"sheet": "yrJE2unJ_m0_0138.0.jpg", "start": 138.0, "activity": "shadowboxing", "punches": [
+ {"tile": 1, "arm": "image_left", "kind": "uppercut", "sure": false},
+ {"tile": 18, "arm": "image_right", "kind": "hook", "sure": false}], "notes": "mostly footwork; 18-19 arm horizontal at head height, could be a frame/block"},
+{"sheet": "yrJE2unJ_m0_0141.0.jpg", "start": 141.0, "activity": "shadowboxing", "punches": [
+ {"tile": 1, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 3, "arm": "image_left", "kind": "straight", "sure": false},
+ {"tile": 4, "arm": "image_right", "kind": "hook", "sure": false},
+ {"tile": 8, "arm": "image_right", "kind": "uppercut", "sure": false}], "notes": "03 looks like a body straight; 12-29 guard/footwork"},
+{"sheet": "yrJE2unJ_m0_0144.0.jpg", "start": 144.0, "activity": "shadowboxing", "punches": [
+ {"tile": 6, "arm": "image_left", "kind": "hook", "sure": false},
+ {"tile": 26, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 28, "arm": "image_right", "kind": "straight", "sure": false}], "notes": "back to camera for much of it; 11-12 hands on head (roll/cover)"},
+{"sheet": "yrJE2unJ_m0_0147.0.jpg", "start": 147.0, "activity": "shadowboxing", "punches": [
+ {"tile": 1, "arm": "image_left", "kind": "uppercut", "sure": false}], "notes": "rest is guard and footwork"},
+{"sheet": "yrJE2unJ_m0_0150.0.jpg", "start": 150.0, "activity": "shadowboxing", "punches": [
+ {"tile": 11, "arm": "image_right", "kind": "hook", "sure": false},
+ {"tile": 14, "arm": "image_left", "kind": "straight", "sure": false},
+ {"tile": 16, "arm": "image_right", "kind": "uppercut", "sure": false},
+ {"tile": 29, "arm": "image_left", "kind": "straight", "sure": false}], "notes": "11 and 14 low (body level); 03 raised open hand = parry/gesture; 22-24 hands on head"},
+{"sheet": "yrJE2unJ_m0_0153.0.jpg", "start": 153.0, "activity": "shadowboxing", "punches": [
+ {"tile": 4, "arm": "image_left", "kind": "straight", "sure": false},
+ {"tile": 27, "arm": "image_right", "kind": "straight", "sure": false}], "notes": "00-04 low hand in front of belly, possibly body shots or low guard"},
+{"sheet": "yrJE2unJ_m0_0156.0.jpg", "start": 156.0, "activity": "shadowboxing", "punches": [
+ {"tile": 0, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 7, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 8, "arm": "image_left", "kind": "straight", "sure": false},
+ {"tile": 10, "arm": "image_right", "kind": "hook", "sure": false},
+ {"tile": 12, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 13, "arm": "image_right", "kind": "hook", "sure": false},
+ {"tile": 23, "arm": "image_right", "kind": "straight", "sure": true},
+ {"tile": 27, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 28, "arm": "image_right", "kind": "hook", "sure": false}], "notes": "08 low body shot; 10 back to camera"},
+{"sheet": "yrJE2unJ_m0_0159.0.jpg", "start": 159.0, "activity": "shadowboxing", "punches": [
+ {"tile": 0, "arm": "image_right", "kind": "uppercut", "sure": false},
+ {"tile": 26, "arm": "image_right", "kind": "uppercut", "sure": false},
+ {"tile": 27, "arm": "image_left", "kind": "uppercut", "sure": false},
+ {"tile": 29, "arm": "image_right", "kind": "uppercut", "sure": false}], "notes": "00 may be tail of a hook from previous sheet; 11-13 hands on head"},
+{"sheet": "yrJE2unJ_m0_0162.0.jpg", "start": 162.0, "activity": "shadowboxing", "punches": [
+ {"tile": 1, "arm": "image_left", "kind": "hook", "sure": false}], "notes": "rest guard/footwork"},
+{"sheet": "yrJE2unJ_m0_0165.0.jpg", "start": 165.0, "activity": "shadowboxing", "punches": [
+ {"tile": 2, "arm": "image_left", "kind": "straight", "sure": false},
+ {"tile": 5, "arm": "image_left", "kind": "straight", "sure": true},
+ {"tile": 8, "arm": "image_left", "kind": "uppercut", "sure": false}], "notes": "back to camera 04-06; 06 may be a hook or the retraction"}
+]}
