@@ -40,20 +40,24 @@ chin, so without this every one-two would look like a sagging guard.
 
 A setup is named when a rank test on the heights, corrected for every setup
 and side looked at, is sure they sit lower than after the other combos, and
-the difference is big enough to matter: a height after the setup sits below
-one after the others in at least MIN_EFFECT of all pairs (`effect`). The
-older size bar counted occasions below a fixed "down" line and asked for 1.35
-times the other combos' share. On real sags that bar threw away what the rank
-test found: they are shallow, so both sides of the comparison mostly sit near
-the line, and an 80% habit gave a lift near 1.3 while the test was sure.
-Every null was measured under both bars (`scripts/guard_nulls.py`) and moved
-by under a point.
+the share of occasions with the hand below a fixed "down" line is at least
+MIN_LIFT times the other combos' share. An effect size on the heights
+themselves (`effect`, the share of pairs where the setup's height is lower)
+was measured as a replacement and did not earn its place: at a floor of 0.6
+it names an 80% coach habit as often as the lift bar does (61% against 60%
+in twelve minutes, simulated from guard heights measured on the planted
+bench), less often across pooled sessions (59% against 69%), and lets
+slightly more clean fighters through (6.1% against 5.7%); at 0.65 the floor
+sits on an 80% habit's own effect and names it a third of the time. The
+lift bar had looked like the cap on coach mode only because the simulation
+drew guard heights from a normal curve; drawn from the measured heights,
+which have a long low tail, it is not. `rule="effect"` stays for comparison
+(scripts/guard_nulls.py).
 
 Output is counts, in the same shape as the miner's findings, so the profile
 pools it across sessions with the same statistics and the caller can arm it
 the same way. An occasion counts as "hand down" when the window's average sits
-more than DOWN below the guard. The profile still pools those counts with its
-own lift bar (`profile.MIN_LIFT`); only the single-session read uses `effect`.
+more than DOWN below the guard.
 """
 
 from __future__ import annotations
@@ -99,12 +103,13 @@ REFERENCE = "shoulders"
 MIN_SUPPORT = 10
 
 # How big a difference has to be before it is a habit, once the rank test is
-# sure it is there. "effect": the setup's heights sit below the other combos'
-# in at least MIN_EFFECT of all pairs (the rank test's own statistic, as an
-# effect size). "lift": the older bar, the share of occasions below -DOWN at
-# least MIN_LIFT times the other combos' share, kept for comparison.
-RULES = ("effect", "lift")
-RULE = "effect"
+# sure it is there. "lift": the share of occasions below -DOWN at least
+# MIN_LIFT times the other combos' share. "effect": the setup's heights sit
+# below the other combos' in at least MIN_EFFECT of all pairs (the rank
+# test's own statistic, as an effect size); measured as a replacement, no
+# better, and kept so the two can be compared. See the module docstring.
+RULES = ("lift", "effect")
+RULE = "lift"
 MIN_EFFECT = 0.6
 MIN_LIFT = 1.35
 

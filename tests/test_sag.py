@@ -78,7 +78,7 @@ def test_a_tiny_difference_is_not_a_habit_however_sure_the_test_is():
     assert not sag.read_occasions(occ, rule="effect")
 
 
-def test_a_shallow_consistent_sag_the_lift_bar_missed_is_named_by_its_size():
+def test_the_effect_rule_names_a_shallow_sag_the_lift_bar_misses():
     # Both setups mostly sit below the "down" line, so counting hands below
     # it gives a lift under 1.35; the heights still differ by half a
     # standard deviation, consistently.
@@ -89,7 +89,7 @@ def test_a_shallow_consistent_sag_the_lift_bar_missed_is_named_by_its_size():
     assert not sag.read_occasions(occ, rule="lift")
 
 
-def test_the_shipped_rule_is_the_effect_size():
-    assert sag.RULE == "effect" and sag.REFERENCE == "shoulders"
+def test_the_shipped_read_is_the_shoulders_and_the_lift_bar():
+    assert sag.RULE == "lift" and sag.REFERENCE == "shoulders"
     occ = _occasions(np.random.default_rng(1), -0.40, -0.30, 0.19, 300)
-    assert sag.read_occasions(occ) == sag.read_occasions(occ, rule="effect")
+    assert sag.read_occasions(occ) == sag.read_occasions(occ, rule="lift")
