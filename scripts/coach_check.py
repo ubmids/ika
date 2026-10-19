@@ -50,6 +50,16 @@ from ika.profile import Profile  # noqa: E402
 
 FPS = 30.0
 UP, DOWN, SPREAD = -0.08, -0.34, 0.30
+
+# Two guard models, as (up, down, spread) for the window average after a
+# combo. SIM is what robustness.py assumed from the labelled drop frames.
+# REAL is what a planted-habit test on real footage measured: sags planted
+# into real guard tracks averaged -0.25 against -0.16 after other combos,
+# sd 0.19, about half SIM's separation in standard deviations (0.47 against
+# 0.87). With labelled punches, which is the setup knowledge coach mode has,
+# that test named an 80% habit in 6% of 12-minute composites. REAL is the
+# one to believe; SIM is kept so the two can be compared.
+GUARD = {"sim": (UP, DOWN, SPREAD), "real": (-0.16, -0.25, 0.19)}
 FRAME_NOISE = 0.10
 UNREAD = 0.03
 PUNCH_DEPTH = -0.5
@@ -85,7 +95,8 @@ def calls_for(combos, minutes: float, seed: int) -> list[coach.Call]:
     return out
 
 
-def person(rng, calls, habit_combo, habit: float, pace=(0.7, 0.3)):
+def person(rng, calls, habit_combo, habit: float, pace=(0.7, 0.3), guard="sim"):
+    UP, DOWN, SPREAD = GUARD[guard]
     """What a fighter following the calls does: true punches, and guard
     heights frame by frame."""
     end_time = calls[-1].at + coach.gap(calls[-1].combo) + 2.0
@@ -133,9 +144,10 @@ def sensed(rng, punches, seconds: float, rates) -> list[tuple[float, str]]:
     return sorted(seen)
 
 
-def session(rng, combos, habit_combo, habit, minutes, rates, seed, pace=(0.7, 0.3)):
+def session(rng, combos, habit_combo, habit, minutes, rates, seed, pace=(0.7, 0.3),
+            guard="sim"):
     calls = calls_for(combos, minutes, seed)
-    t, h, punches = person(rng, calls, habit_combo, habit, pace)
+    t, h, punches = person(rng, calls, habit_combo, habit, pace, guard)
     detected = sensed(rng, punches, float(t[-1]), rates)
     return coach.align(calls, SimTrack(t, h), detected)
 
@@ -145,14 +157,14 @@ def named(found, habit_combo) -> bool:
                for f in found)
 
 
-def single(minutes, habit, rates, trials, seed=0, pace=(0.7, 0.3)):
+def single(minutes, habit, rates, trials, seed=0, pace=(0.7, 0.3), guard="sim"):
     """One session whose combos include the habit's: named (or, with no habit,
     any habit reported), plus how many calls were answered and read."""
     rng = np.random.default_rng(seed)
     hits, answered, total = 0, 0, 0
     for trial in range(trials):
         combos = coach.choose(seed=seed * 7919 + trial)
-        reps = session(rng, combos, combos[0], habit, minutes, rates, trial, pace)
+        reps = session(rng, combos, combos[0], habit, minutes, rates, trial, pace, guard)
         found = coach.read(reps)
         hits += named(found, combos[0]) if habit else bool(found)
         answered += sum(r.read for r in reps)
@@ -160,7 +172,7 @@ def single(minutes, habit, rates, trials, seed=0, pace=(0.7, 0.3)):
     return hits / trials, answered / max(total, 1)
 
 
-def pooled(habit, sessions, rates, trials, minutes=6.0, seed=1):
+def pooled(habit, sessions, rates, trials, minutes=6.0, seed=1, guard="sim"):
     """Sessions into one profile, the way `ika coach` records them
     (`coach.evidence`), with the curriculum `coach.plan` picks from what the
     profile holds. The habit's combo is fixed per fighter and is only in a
@@ -177,11 +189,11 @@ def pooled(habit, sessions, rates, trials, minutes=6.0, seed=1):
             combos = coach.plan(record, now, seed=seed * 100003 + trial * 101 + day)
             called += habit_combo in combos
             reps = session(rng, combos, habit_combo, habit, minutes, rates,
-                           trial * 1000 + day)
+                           trial * 1000 + day, guard=guard)
             record.add(coach.evidence(reps, record), at=now)
-        guard = [s for s in record.habits(now=sessions * 86400.0)
-                 if coach.is_coach(s.context)]
-        hits += named(guard, habit_combo) if habit else bool(guard)
+        standing = [s for s in record.habits(now=sessions * 86400.0)
+                    if coach.is_coach(s.context)]
+        hits += named(standing, habit_combo) if habit else bool(standing)
     return hits / trials, called / (trials * sessions)
 
 
@@ -221,44 +233,68 @@ def bench_null(schedules=40):
     return false / trials, trials, read / max(total, 1), per_clip
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--quick", action="store_true")
-    ap.add_argument("--no-bench", action="store_true", dest="no_bench")
-    args = ap.parse_args()
-    n = 40 if args.quick else 200
-    npool = 20 if args.quick else 100
-
+def report(guard: str, n: int, npool: int) -> None:
+    up, down, spread = GUARD[guard]
+    title = ("REAL-MEASURED guard model" if guard == "real"
+             else "OLD SIM guard model (optimistic)")
+    print(f"=== {title}: after the habit combo {down:+.2f}, after others {up:+.2f}, "
+          f"sd {spread:.2f} ===\n")
     print("a planted habit (right hand drops after one called combo, 80%), one session"
           " whose three combos include it:")
     print(f"  {'minutes':>7s} {'perfect':>8s} {'measured':>9s} {'calls read':>11s}")
     for minutes in (3, 6, 12):
-        p, _ = single(minutes, 0.8, PERFECT, n)
-        m, read = single(minutes, 0.8, MEASURED, n)
+        p, _ = single(minutes, 0.8, PERFECT, n, guard=guard)
+        m, read = single(minutes, 0.8, MEASURED, n, guard=guard)
         print(f"  {minutes:7d} {p:8.0%} {m:9.0%} {read:11.0%}")
     print("\nthe same at a 50% habit, measured sensors:")
     for minutes in (3, 6, 12):
-        m, _ = single(minutes, 0.5, MEASURED, n)
+        m, _ = single(minutes, 0.5, MEASURED, n, guard=guard)
         print(f"  {minutes:7d} min  {m:4.0%}")
+    if guard == "real":
+        print("\nhow long one session (same three combos, --rounds) takes, 80% habit,"
+              " measured sensors:")
+        for minutes in (24, 48, 96, 192):
+            m, _ = single(minutes, 0.8, MEASURED, max(n // 2, 20), guard=guard)
+            print(f"  {minutes:7d} min  {m:4.0%}")
+        # Why it levels off rather than climbing: sag's read also needs the
+        # share of "hand down" occasions (window mean below -DOWN) to be
+        # MIN_LIFT times the other combos'. At this separation an 80% habit
+        # gives about 56% against 43%, a lift near 1.3, so with more minutes
+        # the rank test grows certain and the lift bar still turns it away.
     print("\nno habit at all, how often one is reported anyway (measured sensors):")
     for minutes in (3, 12):
-        m, _ = single(minutes, 0.0, MEASURED, n * 2)
+        m, _ = single(minutes, 0.0, MEASURED, n * 2, guard=guard)
         print(f"  {minutes:7d} min  {m:4.0%}  of {n * 2}")
     print("\nno habit, a slower fighter than the alignment expects (first punch at 1.0 s,"
           " then every 0.45 s):")
     for minutes in (3, 12):
-        m, _ = single(minutes, 0.0, MEASURED, n * 2, pace=(1.0, 0.45))
+        m, _ = single(minutes, 0.0, MEASURED, n * 2, pace=(1.0, 0.45), guard=guard)
         print(f"  {minutes:7d} min  {m:4.0%}  of {n * 2}")
     print("\nacross six-minute sessions into one profile, curriculum from coach.plan"
           " (measured sensors):")
     for habit in (0.8, 0.0):
         cells = []
         for k in (4, 8, 12):
-            rate, called = pooled(habit, k, MEASURED, npool)
+            rate, called = pooled(habit, k, MEASURED, npool, guard=guard)
             cells.append(f"{k} sessions {rate:4.0%} (habit combo called in {called:.0%})"
                          if habit else f"{k} sessions {rate:4.0%}")
         label = "80% habit named" if habit else "no habit, told one"
         print(f"  {label:18s} " + "   ".join(cells))
+    print()
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--quick", action="store_true")
+    ap.add_argument("--no-bench", action="store_true", dest="no_bench")
+    ap.add_argument("--guard", nargs="+", default=["real", "sim"], choices=sorted(GUARD),
+                    help="guard model(s): real-measured separation, or the older sim one")
+    args = ap.parse_args()
+    n = 40 if args.quick else 200
+    npool = 20 if args.quick else 100
+
+    for guard in args.guard:
+        report(guard, n, npool)
 
     if not args.no_bench:
         result = bench_null()
