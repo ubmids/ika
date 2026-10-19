@@ -23,7 +23,8 @@ def _known_habit(tmp_path, combo="1-2"):
     """A profile where the right hand dropping after the call `combo` stands."""
     record = Profile("me")
     now = time.time()
-    for days in (2, 1):
+    # Three sessions: the first proposes it, the next two confirm it.
+    for days in (3, 2, 1):
         record.add([Finding((f"coach_{combo}",), "guard_down_right", 20, 16, 0.8, 0.1, 1e-6)],
                    at=now - days * 86400)
     store = tmp_path / "profiles" / "me.json"

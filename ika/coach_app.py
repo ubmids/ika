@@ -173,7 +173,7 @@ def run_coach(
 
     if save and reps:
         stamp = time.time()
-        record.add(coach.read(reps, fdr=sag.PROPOSAL_FDR), at=stamp)
+        record.add(coach.evidence(reps, record), at=stamp)
         known = {(tuple(h.context), h.then) for h in list(standing) + list(found)}
         known |= {(c, t) for c, t in record.tracked() if coach.is_coach(c)}
         from .tell.habits import Finding

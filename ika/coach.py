@@ -31,6 +31,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from . import sag
+from .tell.habits import Finding
 
 NAMES = {1: "jab", 2: "cross", 3: "lead hook", 4: "rear hook",
          5: "lead uppercut", 6: "rear uppercut"}
@@ -332,6 +333,35 @@ def rate(reps: list[Rep], context, then: str) -> tuple[int, int]:
     side = then.rsplit("_", 1)[1]
     mine = [o for o in occasions(reps) if o.context == tuple(context) and o.side == side]
     return sum(o.down for o in mine), len(mine)
+
+
+def evidence(reps: list[Rep], record) -> list:
+    """What one session puts on the profile.
+
+    What the drill puts there: candidates read at sag.PROPOSAL_FDR, a
+    shortlist and not a verdict. Plus one thing the drill cannot give. A combo
+    the profile already has a hunch about, called again this session and not
+    proposed again, is recorded with this session's plain counts, however
+    unremarkable. The drill only ever records what looked strong, so a hunch
+    is pooled from selected extremes and absence arrives as silence. Coach
+    mode knows exactly how often it called each combo, so a follow-up that
+    came to nothing is evidence against the hunch, and it is recorded as such.
+    """
+    proposed = read(reps, fdr=sag.PROPOSAL_FDR)
+    have = {(f.context, f.then) for f in proposed}
+    tracked = {(tuple(o.context), o.then) for o in record.observations if is_coach(o.context)}
+    occ = occasions(reps)
+    extra = []
+    for context, then in sorted(tracked - have):
+        side = then.rsplit("_", 1)[1]
+        inside = [o for o in occ if o.context == context and o.side == side]
+        rest = [o for o in occ if o.context != context and o.side == side]
+        if not inside or not rest:
+            continue
+        hits = sum(o.down for o in inside)
+        base = max(sum(o.down for o in rest) / len(rest), 1.0 / (len(rest) + 1))
+        extra.append(Finding(context, then, len(inside), hits, hits / len(inside), base, 1.0))
+    return list(proposed) + extra
 
 
 def reminders(habits) -> dict[str, str]:

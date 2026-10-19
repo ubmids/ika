@@ -296,8 +296,22 @@ class Profile:
         for observation in self.observations:
             pooled[(observation.context, observation.then)].append(observation)
 
+        from .coach import is_coach
+
         candidates: list[Standing] = []
         for (context, then), group in pooled.items():
+            if is_coach(context):
+                # A coach habit is proposed by one session and confirmed by the
+                # ones after it. The proposing session is the one that looked
+                # strong because it was picked for looking strong, so it is
+                # not counted: pooling it in, simulated with no habit at all,
+                # told 6 to 10% of fighters after twelve sessions that they had
+                # one. Later sessions record their plain counts for a combo
+                # with a hunch on it (`coach.evidence`), so what is pooled here
+                # was never selected.
+                group = sorted(group, key=lambda o: o.at)[1:]
+                if not group:
+                    continue
             weights = [observation.weight(now, half_life) for observation in group]
             weighted_support = sum(w * o.support for w, o in zip(weights, group))
             if weighted_support < MIN_WEIGHTED_SUPPORT:

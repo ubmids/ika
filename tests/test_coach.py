@@ -318,3 +318,46 @@ def test_both_hands_on_one_combo_say_hands_up():
     habits = [Finding(("coach_1-2",), "guard_down_right", 20, 15, 0.75, 0.1, 1e-6),
               Finding(("coach_1-2",), "guard_down_left", 20, 15, 0.75, 0.1, 1e-6)]
     assert coach.reminders(habits) == {"1-2": "hands up"}
+
+
+# --- what a session puts on the profile ---------------------------------------
+
+def test_a_follow_up_that_came_to_nothing_is_recorded_against_the_hunch():
+    """The drill can only record what looked strong. Coach mode knows how often
+    it called each combo, so a hunch called again and not seen again is
+    recorded with its plain counts."""
+    combos = [coach.Combo.parse(n) for n in ("1-2", "1-2-3", "2-3-2")]
+    calls = coach.schedule(combos, 180.0, seed=0)
+    track, punches = answered_session(calls)
+    reps = coach.align(calls, track, punches)
+    record = Profile("x")
+    record.add([Finding(("coach_1-2",), "guard_down_right", 15, 9, 0.6, 0.1, 0.01)], at=1.0)
+    added = coach.evidence(reps, record)
+    follow, = added
+    assert follow.context == ("coach_1-2",) and follow.then == "guard_down_right"
+    assert follow.hits == 0
+    assert follow.support == sum(c.combo.name == "1-2" for c in calls)
+    # Nothing is recorded for a combo with no hunch on it and nothing to propose.
+    assert coach.evidence(reps, Profile("y")) == []
+
+
+def test_the_session_that_proposed_a_coach_habit_does_not_confirm_it():
+    """Picked for looking strong, so it is not counted. Two more sessions are."""
+    strong = Finding(("coach_1-2",), "guard_down_right", 20, 16, 0.8, 0.1, 1e-6)
+    record = Profile("x")
+    day = 86400.0
+    record.add([strong], at=1 * day)
+    record.add([strong], at=2 * day)
+    assert record.habits(now=2 * day) == []
+    record.add([strong], at=3 * day)
+    standing, = record.habits(now=3 * day)
+    assert standing.sessions == 2
+    assert standing.support == pytest.approx(40, abs=2)
+
+
+def test_drill_habits_still_count_every_session():
+    strong = Finding(("punch_right",), "guard_down_right", 20, 16, 0.8, 0.1, 1e-6)
+    record = Profile("x")
+    record.add([strong], at=86400.0)
+    record.add([strong], at=2 * 86400.0)
+    assert len(record.habits(now=2 * 86400.0)) == 1
