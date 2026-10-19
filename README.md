@@ -24,11 +24,11 @@ shot, about two metres from a laptop. This is a real round, replayed from a
 public follow-along workout (`ika drill round.mp4 --silent`), unedited:
 
 ```
-  round: 180s at 44 fps
+  round: 180s at 45 fps
   169 punches (56 a minute), guard dropped 33 times
   this session:
-    after punch_right: guard_down_left 62% of the time (normally 6%), 10.0x, seen 15/24
-    after punch_right: guard_down_right 50% of the time (normally 6%), 8.0x, seen 12/24
+    after punch_right: guard_down_left 58% of the time (normally 12%), 4.7x, seen 14/24
+    after punch_right: guard_down_right 46% of the time (normally 12%), 3.7x, seen 11/24
     after punch_right then punch_left: punch_right 84% of the time (normally 46%), 1.8x, seen 51/61
     after punch_left: punch_right 68% of the time (normally 46%), 1.5x, seen 62/91
     after punch_right: punch_left 79% of the time (normally 54%), 1.5x, seen 61/77
@@ -70,35 +70,42 @@ schedule, `--combos 1-2,2-3-2` picks them, and `ika history` lists coach
 and drill sessions apart.
 
 Measured in simulation (`scripts/coach_check.py`) at the punch reader's
-measured error rates, under two guard models. The first is the one to
-believe: a test that planted sags into real guard tracks found them sitting
-at -0.25 against -0.16 after other combos (sd 0.19), about half the
-separation the older simulation assumed (-0.34 against -0.08, sd 0.30).
-That same real-footage test, with labelled punches, named an 80% habit in
-only 6% of 12-minute composites, so even the first column is likely an upper
-bound.
+measured error rates. The guard heights the simulated person leaves after
+each combo are drawn from heights measured on real footage: a test that
+planted sags made of real labelled drops into real rounds and read them
+with the real pipeline (`scripts/planted_check.py`, below). Earlier
+versions drew them from a normal curve fitted to that test's means and
+spread, and before that from an older, optimistic guess; both are kept
+for comparison. The planted test itself, read through the drill's punch
+reader, still names a planted habit almost never, so the coach numbers
+below are what the measured guard heights allow when the setup is known,
+not a measurement of anyone following ika's calls.
 
-| | coach, real-measured guard | coach, old sim guard | drill, old sim guard |
-|---|---|---|---|
-| a strong habit (80%) named in one 12-minute session | **27%** | 80% | 23% |
-| the same with perfect punch sensors | 34% | 91% | 93% |
-| named across 12 six-minute sessions, pooled | **14%** | 67% | 40% |
-| longest single session tried, 192 minutes | 22% (peak 37% at 24 min) | | |
-| a fighter with no habit told one, one session | 5 to 6% | 5 to 6% | 5% |
-| the same, after 12 pooled sessions | 2% | 2% | 2% |
-| a habit reported on random schedules over real bench footage | **1%** of 600 | | 3% of shuffles |
+| | now: guard from the shoulders, measured heights | guard from the nose, measured heights | before: nose, normal curve | old optimistic guess |
+|---|---|---|---|---|
+| a strong habit (80%) named in one 12-minute session | **60%** | 34% | 27% | 80% |
+| the same with perfect punch sensors | 66% | 42% | 34% | 91% |
+| a 50% habit, 12 minutes | 16% | 8% | 10% | |
+| one longer session: 24 / 48 / 96 minutes | 88% / 99% / 100% | 67% / 87% / 95% | 37% / 36% / 35% | |
+| named across 12 six-minute sessions, pooled | **69%** | 37% | 14% | 67% |
+| a fighter with no habit told one, one 12-minute session | 6% (5.7% of 1,000) | 6% | 6% | 5 to 6% |
+| the same, a fighter slower than the read expects | 6% (5.1% of 1,000) | 6% | 4% | |
+| the same, after 12 pooled sessions | 3% (4.3% of 300) | 2% | 2% | 2% |
+| a habit reported on random schedules over real bench footage | **1%** of 600 | 1% | 1% | |
 
-Under the real-measured guard, more minutes do not get coach mode to half
-of fighters named. It levels off near 36% and then falls, because the read
-also asks that the share of calls followed by a hand below the "down" line
-be 1.35 times the other combos' share, and at this separation an 80% habit
-gives about 56% against 43%, a lift near 1.3. The rank test becomes very
-sure and the lift bar still turns it away. That bar is shared with the
-drill and was not changed to make this look better. What coach mode does
-reliably buy is surviving the punch reader: with perfect sensors and the
-old guard model the two are level, and with measured sensors coach keeps
-almost all of it. The person in the simulation answers 95% of calls, an
-assumption, and nobody has yet stood in front of it.
+Two things moved the first column, and only one of them is ika getting
+better. The guard is now read from the shoulders rather than the nose
+(next section), which on the same measured heights takes a twelve-minute
+session from 34% to 60%. The rest is the simulation getting more honest:
+real guard heights after a combo have a long low tail, which a rank test
+uses and a normal curve with the same mean and spread hides, so the
+normal-curve column understated what the measured separation allows. The
+lift bar the read also asks for (the share of calls followed by a hand
+below the "down" line, 1.35 times the other combos') looked like the cap
+on coach mode under the normal curve; under the measured heights it is
+not, and an effect-size bar tried in its place did no better (see below).
+The person in the simulation answers 95% of calls, an assumption, and
+nobody has yet stood in front of it.
 
 ---
 
@@ -113,12 +120,14 @@ code was tuned on, except where it says simulated.
 | punches caught, on people the model never saw | **47%**, with **5.6** false punches a minute | the labellers themselves: 90% and 4.9 |
 | the same, front-facing people only | **51%**, **3.8** false a minute | |
 | the original palm-on-lens reader, standing back | **0%** | |
-| a phantom guard habit on shuffled real footage | **3%** of shuffles | should be under 5% |
+| a phantom guard habit on shuffled real footage | **3 to 4%** of shuffles | should be under 5% |
 | a strong guard habit named, with sensors as measured (simulated) | **40%** of fighters by 12 six-minute sessions | 93% in one 12-minute session with perfect sensors |
 | a fighter with no habit told they have one (simulated) | **2%** after 12 sessions | |
 | the call, when the habit is real (simulated) | lands **0.8 s** before the hand drops, right as often as the habit is | |
-| a habit planted in real rounds from real drops, read by the real pipeline | named in **0%** of composite fighters by 12 minutes, at 80% strength | the simulation said 42% for the same habit |
+| a habit planted in real rounds from real drops, read by the real pipeline | named in **0%** of composite fighters by 12 minutes, at 80% strength, with the guard read from the nose or the shoulders | the simulation said 42% for the same habit |
+| the same, with the labelled punches in place of the reader | **8%** by 12 minutes (6% read from the nose) | |
 | the call, on those planted rounds | **0.9 s** early, but only **12%** of calls followed by a planted drop | |
+| coach mode, a strong habit named in one 12-minute session (simulated, guard heights measured on the planted rounds) | **60%** | 34% with the guard read from the nose |
 
 So: the loop works end to end, from a camera to a spoken call, and it rarely
 makes things up. It is also slow to be sure of anything, because the punch
@@ -237,21 +246,23 @@ after this combo, compared with the second after your other combos". Per
 frame, a wrist in a labelled drop sits 1.16 standard deviations below one in
 guard; averaged over a second, and then over every time the setup comes up,
 most of the noise that ruined the event detector cancels. Guard height is the
-wrist's height above the nose in torso lengths, against the 75th percentile
-of this person's last twenty seconds, since between punches hands are mostly
-up. Frames where that arm is itself punching are left out, or every one-two
+wrist's height above the shoulders in torso lengths (above the nose until the
+change described in "Reading the guard from the shoulders" below), against
+the 75th percentile of this person's last twenty seconds, since between
+punches hands are mostly up. Frames where that arm is itself punching are left out, or every one-two
 would look like a sagging guard.
 
 A setup lives inside one combo. Matching "two rights" across the gap between
 combos made calls fire a combo early and then blocked the right one; bounded
 by the combo, a call is right as often as the habit is.
 
-Across the people on the bench, the read reports a guard habit for one, the
-round shown at the top. By eye that one is a lean rather than an obvious
-drop. An earlier version of the punch reader surfaced a different person
-whose habit was plainly visible (after a left, both hands came down into the
-squat-and-jump of that workout); the final reader catches fewer of her
-combo endings and no longer clears the bar. Why has not been checked;
+Across the people on the bench, the read reported a guard habit for one, the
+round shown at the top (read from the shoulders, two; see below). By eye
+that one is a lean rather than an obvious drop. An earlier version of the
+punch reader surfaced a different person whose habit was plainly visible
+(after a left, both hands came down into the squat-and-jump of that
+workout); the final reader catches fewer of her combo endings and no longer
+clears the bar. Why has not been checked;
 the likeliest reason is the reader's recall, but that is a guess.
 
 ### Three statistical bugs, each found by a null that should have been clean
@@ -372,6 +383,125 @@ regular, or tied to the setup in ways a transplanted drop is not, and the
 donors are three people. It does show that on the movement the bench has,
 the read does not find a habit of the size real drops have, in any
 session length the bench can build.
+
+### Reading the guard from the shoulders
+
+The planted test left the guard read as the thing to improve: the second
+after a habit combo was barely lower than after the others, and the size
+bar on "hand down" counts turned away what the rank test found. So the
+per-frame guard signal was rebuilt from candidates and measured
+(`scripts/guard_signal.py`), each one per person and three ways:
+
+- **frames**: frames inside a drop both guard labellers marked, against
+  frames in guard on the same arm, clear of that arm's punches. Real drops,
+  five people. The primary metric.
+- **after a combo**: the read's own window, after a labelled combo ending,
+  with an agreed drop in it against one with no drop marked by anyone.
+  Real, but only 19 drop windows, 12 of them one person.
+- **planted**: the same window on the planted bench, after an 80% habit's
+  plants against after every other combo, labelled punches, 11 people.
+
+The number is the chance a drop sits lower than a guard (AUC, 0.5 is no
+better than a coin), averaged over people, worst person in brackets.
+
+| guard height | frames | after a combo | planted |
+|---|---|---|---|
+| wrist above the nose (the read until now) | 0.91 [0.80] | 0.86 | 0.64 [0.24] |
+| **wrist above the shoulders** | 0.89 [0.75] | **0.93** | **0.68** [0.40] |
+| wrist above its own shoulder | 0.89 | 0.93 | 0.67 |
+| wrist above the mouth | 0.90 | 0.89 | 0.64 |
+| hand points above the nose | 0.91 | 0.89 | 0.64 |
+| wrist and elbow together | 0.90 | 0.79 | 0.70 |
+| elbow above the shoulder | 0.63 | 0.52 | 0.57 |
+| distance from wrist to face | 0.88 | 0.90 | 0.63 |
+| forearm angle | 0.78 | 0.78 | 0.60 |
+| MediaPipe world (metric) coordinates, wrist above nose | 0.89 | 0.82 | 0.61 |
+| world, 3D distance to the face | 0.84 | 0.77 | 0.58 |
+| depth (image z) | 0.61 | 0.56 | 0.50 |
+| nose, no rolling baseline | 0.90 | 0.88 | 0.62 |
+| nose, 90th percentile baseline | 0.92 | 0.86 | 0.61 |
+| nose, smoothed over 0.1 s | 0.92 | 0.80 | 0.63 |
+| nose, lowest quarter of the window instead of its mean | 0.91 | 0.92 | 0.65 |
+| nose, robust z against the last 20 s | 0.88 | 0.85 | 0.71 |
+| shoulders, robust z | 0.87 | 0.89 | 0.73 |
+| a small model fitted on the drops, held out by person | 0.86 | | |
+
+Nothing beats the old read on the labelled frames by more than a point or
+two; the drops two labellers could see are already well separated frame by
+frame. Where the
+candidates differ is after a combo, which is where the read looks, and
+there the shoulders win on both real drops and plants, better or level
+for 10 of 11 planted people. The nose moves on its own when the head
+does, a bob or a slip, and read from the nose that is a change of guard.
+The shoulders are what the read uses now.
+
+Two cautions about the planted column. A plant moves only the elbow, wrist
+and hand points, in the image and in world coordinates; it never moves the
+nose, the shoulders or image depth. So depth sees no plant at all (its 0.50
+is by construction), and a plant is the same size whether read from the nose
+or the shoulders: what the shoulders change there is the noise around it,
+not the plant. The other is robust z, which divides by how much the hand has
+been moving lately. It has the best planted number and a worse one on the
+real drops; a fixed-size plant stands out most in a calm stretch, which may
+be the plant rather than the signal, so it was not taken.
+
+**The decision rule.** An effect-size bar was measured in place of the lift
+bar: a habit when a height after the setup sits below one after the others
+in at least 60% of pairs, which, unlike counts below a line, does not depend
+on where the line is. Every null was run under both (`scripts/guard_nulls.py`):
+
+| a habit reported where none exists | lift bar (kept) | effect 0.6 | effect 0.65 |
+|---|---|---|---|
+| drill, simulated clean fighter, 12 min (1,000) | 5.1% | 4.5% | 3.7% |
+| drill, 12 pooled sessions (300) | 2.3% | 2.7% | 2.3% |
+| drill, shuffled real sessions (600) | 3.0% | 3.0% | 3.0% |
+| coach, clean fighter, 3 / 12 min (1,000) | 3.5% / 5.7% | 3.5% / 6.1% | 3.5% / 0.9% |
+| coach, slower fighter, 3 / 12 min (1,000) | 4.8% / 5.1% | 4.8% / 5.5% | 4.8% / 0.7% |
+| coach, 12 pooled sessions (300) | 4.3% | 3.7% | 5.3% |
+| coach, random schedules on the bench (600) | 1.0% | 1.0% | 1.0% |
+
+At 0.6 it names an 80% coach habit as often as the lift bar (61% against
+60% in twelve minutes), less often pooled (59% against 69%), with a clean
+fighter told a habit slightly more often. At 0.65, the first floor with
+every null near 5%, the floor sits on an 80% habit's own effect and names
+it in 34%. Neither beats the lift bar, so the lift bar stays; `rule="effect"`
+is kept only to compare. Under the normal-curve simulation the lift bar
+looked like the cap on coach mode; with the measured heights it is not.
+
+**End to end on the planted bench**, the drill's real pipeline, 300
+composite fighters a cell, after a right the left sags (`planted_check.py
+--reference nose` is the old read):
+
+| named, labelled minutes 3 / 6 / 12 | from the nose | from the shoulders |
+|---|---|---|
+| 80% habit | 3% / 1% / 0% | 3% / 1% / 0% |
+| 50% and 30% habits | 0% at every length | 0 to 1% |
+| two rights, 80% | 0 to 1% | 1% / 5% / 2% |
+| 80%, labelled punches in place of the reader | 1% / 1% / 6% | 1% / 2% / 8% |
+| 80%, labelled punches, drops twice as deep | 5% / 6% / 11% | 13% / 14% / 26% |
+| shuffled drops (null) | 15% / 11% / 3% | 16% / 13% / 2% |
+| nothing planted (null) | 13% / 16% / 4% | 15% / 13% / 1% |
+| the call: followed by a planted drop, how early | 12%, 0.9 s | 12%, 0.9 s |
+
+On the drill the change is real but small, and the reader still hides it:
+with labelled punches and drops twice the labelled depth the shoulder read
+names the habit more than twice as often, and through the punch reader it
+is still none. The call does not use the guard, so it is unchanged. The
+short-composite nulls are the same one person as before, in most draws.
+On the bench rounds as they are, the shoulder read reports a guard habit
+for two of fifteen clips: the round at the top, and one other (after a
+right then a left, the left hand down 5 of 10 times) that nobody has
+checked by eye.
+
+Coach mode, which knows the setup, is where the better signal shows: the
+coach table above, 34% to 60% in a twelve-minute session on the same
+measured guard heights. That number is a simulation built on measured
+heights, not a person, and the drill's own planted test with labelled
+punches, which is the closest real-footage analogue, names 8%. The gap is
+partly design (coach deals each called combo evenly and the habit is on
+80% of its calls, where the drill's setup carried a plant on about half
+its occurrences, mixed across 13 people in one composite), and partly not
+understood. Treat 60% as an upper bound.
 
 ### Limits, plainly
 
