@@ -202,6 +202,7 @@ class Job:
     seed: int
     depth: float = 1.0    # the drops scaled by this; 1 is as the labellers' drops were
     perfect: bool = False  # read the labelled punches instead of the reader's
+    reference: str = sag.REFERENCE   # what guard height is measured from
 
 
 def _scaled(lib, k):
@@ -242,7 +243,7 @@ def run(job: Job) -> dict:
     planted = plant.apply(clip, plants, lib) if plants else clip
     if job.perfect:
         # The punch reader replaced by the labels: what the guard read alone does.
-        track = sag.GuardTrack(aspect=clip.aspect)
+        track = sag.GuardTrack(aspect=clip.aspect, reference=job.reference)
         for at, _hands, body in planted.frames():
             track.update(body, at)
         punches = [(p.at, p.side) for p in truth.agreed if p.side in ("left", "right")]
@@ -254,6 +255,7 @@ def run(job: Job) -> dict:
     model = StrikeModel.load(CACHE / "lopo" / f"{person_of(job.clip)}.npz")
     reader = DrillReader(framing="stand", aspect=clip.aspect)
     reader._strike = StrikeReader(model=model, aspect=clip.aspect)
+    reader.guard_track = sag.GuardTrack(aspect=clip.aspect, reference=job.reference)
     caller = Caller([Finding(setup, f"guard_down_{side}", 10, 8, 0.8, 0.1, 0.0)])
     spans = plant._spans(truth.windows)
     for at, hands, body in planted.frames():
@@ -421,7 +423,15 @@ def main() -> int:
     parser.add_argument("--seeds", type=int, default=10)
     parser.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 2))
     parser.add_argument("--trials", type=int, default=300, help="composites per cell")
+    parser.add_argument("--reference", default=sag.REFERENCE, choices=sag.REFERENCES,
+                        help="guard height measured from the shoulders (shipped) or the nose (old)")
+    parser.add_argument("--rule", default=sag.RULE, choices=sag.RULES,
+                        help="the read's size bar: effect (shipped) or lift (old)")
+    parser.add_argument("--heights", action="store_true",
+                        help=f"write the measured guard heights to {HEIGHTS.name} and stop")
     args = parser.parse_args()
+    sag.RULE = args.rule
+    print(f"guard reference {args.reference}, decision rule {args.rule}")
 
     names = [n for n in bench_names()]
     lib = library()
@@ -437,14 +447,16 @@ def main() -> int:
           f"{sum(sum(b - a for a, b in truth_of(Clip.load(n))[0].windows) for n in names) / 60:.1f} "
           f"labelled minutes")
 
-    cache = CACHE / f"runs_{args.seeds}.json"
+    cache = CACHE / f"runs_{args.seeds}_{args.reference}.json"
     if cache.exists():
         results = json.loads(cache.read_text())
     else:
-        jobs = [Job(n, "one punch", "none", 0) for n in names]
+        ref = args.reference
+        jobs = [Job(n, "one punch", "none", 0, reference=ref) for n in names]
         for habit in HABITS:
             for cond in (*[str(s) for s in STRENGTHS], "shuffled"):
-                jobs += [Job(n, habit, cond, s) for n in names for s in range(args.seeds)]
+                jobs += [Job(n, habit, cond, s, reference=ref)
+                         for n in names for s in range(args.seeds)]
         print(f"replaying {len(jobs)} rounds on {args.workers} workers", flush=True)
         with ProcessPoolExecutor(args.workers) as pool:
             results = list(pool.map(run, jobs, chunksize=2))
@@ -453,17 +465,67 @@ def main() -> int:
     for r in results:
         r["occasions"] = [(tuple(c), s, h) for c, s, h in r["occasions"]]
 
+    if args.heights:
+        export_heights(results, args.reference)
+        return 0
     report(results, names, people, args.trials)
     sanity(results, lib)
     where_lost(names, args)
     return 0
 
 
+HEIGHTS = HERE / "bench" / "shadow" / "guard_heights.json"
+
+
+def export_heights(results, reference) -> None:
+    """The guard heights the 80% one-punch habit left, as quantiles, for
+    scripts/coach_check.py to draw from instead of assuming a normal shape.
+
+    "planted": the window after a read combo ending a plant landed in;
+    "rest": after every other read combo ending. Left hand, all seeds, the
+    real punch reader. Quantiles rather than raw heights, so the file is
+    small and holds no landmarks."""
+    per = defaultdict(lambda: ([], []))
+    for r in results:
+        if r["habit"] != "one punch" or r["condition"] != "0.8":
+            continue
+        for _c, h, hit in r["ends"]:
+            if h is not None:
+                per[person_of(r["clip"])][0 if hit else 1].append(h)
+    # Each person's heights centred on their own median after other combos.
+    # A session is one person, so how high one person's guard sits against
+    # another's is not part of what the read sees; left in, it is spread the
+    # rank test never meets. Centred, the effect is 0.70 (shoulders) where
+    # pooling people raw gives 0.72 and pairing only within a person 0.78:
+    # the lowest of the three, so the simulation errs low.
+    planted_h, other_h = [], []
+    for planted, rest in per.values():
+        if planted and rest:
+            mid = float(np.median(rest))
+            planted_h += [h - mid for h in planted]
+            other_h += [h - mid for h in rest]
+    q = np.linspace(0, 100, 201)
+    data = json.loads(HEIGHTS.read_text()) if HEIGHTS.exists() else {}
+    data["about"] = ("Guard heights in the second after a combo on the planted bench "
+                     "(scripts/planted_check.py --heights): 80% 'after a right, the left "
+                     "sags', read with the held-out punch reader. Each person centred on their own "
+                     "median after other combos. Quantiles, torso lengths.")
+    data[reference] = {
+        "planted": [round(float(v), 4) for v in np.percentile(planted_h, q)],
+        "rest": [round(float(v), 4) for v in np.percentile(other_h, q)],
+        "n_planted": len(planted_h), "n_rest": len(other_h),
+        "effect": round(sag.effect(planted_h, other_h), 3),
+    }
+    HEIGHTS.write_text(json.dumps(data, indent=1) + "\n")
+    print(f"wrote {reference} heights to {HEIGHTS}: {len(planted_h)} planted, "
+          f"{len(other_h)} rest, effect {data[reference]['effect']}")
+
+
 def where_lost(names, args) -> None:
     """The same 80% one-punch habit with each weakness taken away in turn:
     the punch reader replaced by the labels, and the planted drops made twice
     as deep as the labelled ones. A diagnosis, not a claim about anyone."""
-    cache = CACHE / f"lost_{args.seeds}.json"
+    cache = CACHE / f"lost_{args.seeds}_{args.reference}.json"
     variants = {"reader, drops as labelled": (1.0, False),
                 "reader, drops twice as deep": (2.0, False),
                 "labelled punches, drops as labelled": (1.0, True),
@@ -471,7 +533,8 @@ def where_lost(names, args) -> None:
     if cache.exists():
         got = json.loads(cache.read_text())
     else:
-        jobs = {v: [Job(n, "one punch", "0.8", s, d, p) for n in names for s in range(args.seeds)]
+        jobs = {v: [Job(n, "one punch", "0.8", s, d, p, args.reference)
+                    for n in names for s in range(args.seeds)]
                 for v, (d, p) in variants.items() if v != "reader, drops as labelled"}
         got = {}
         with ProcessPoolExecutor(args.workers) as pool:
@@ -479,7 +542,7 @@ def where_lost(names, args) -> None:
                 got[v] = list(pool.map(run, js, chunksize=2))
         cache.write_text(json.dumps(got))
     got["reader, drops as labelled"] = [
-        r for r in json.loads((CACHE / f"runs_{args.seeds}.json").read_text())
+        r for r in json.loads((CACHE / f"runs_{args.seeds}_{args.reference}.json").read_text())
         if r["habit"] == "one punch" and r["condition"] == "0.8"]
     print("\nwhere it is lost: the 80% one-punch habit, composite fighters, named:")
     print(f"  {'':40s} " + " ".join(f"{m:>4d} min" for m in MINUTES))
@@ -546,9 +609,10 @@ def report(results, names, people, trials) -> None:
                 if h is not None:
                     (planted_h if hit else other_h).append(h)
         if planted_h:
-            print(f"  guard height after a combo, {side} hand: planted {np.mean(planted_h):+.2f}, "
-                  f"the rest {np.mean(other_h):+.2f} (sd {np.std(other_h):.2f}); the simulation "
-                  f"assumes -0.34 against -0.08, sd 0.30")
+            print(f"  guard height after a combo, {side} hand: planted {np.mean(planted_h):+.2f} "
+                  f"(sd {np.std(planted_h):.2f}), the rest {np.mean(other_h):+.2f} "
+                  f"(sd {np.std(other_h):.2f}); effect {sag.effect(planted_h, other_h):.2f}; "
+                  f"the simulation assumes -0.34 against -0.08, sd 0.30")
 
         print("composite fighters, one round per person until the minutes are reached "
               f"({trials} composites a cell), named:")
