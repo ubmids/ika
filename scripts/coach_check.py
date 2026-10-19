@@ -338,10 +338,11 @@ def main() -> int:
     ap.add_argument("--guard", nargs="+", default=["real", "sim"], choices=sorted(GUARD),
                     help="guard model(s): real-measured separation, or the older sim one")
     ap.add_argument("--rule", default=sag.RULE, choices=sag.RULES,
-                    help="the guard read's size bar: effect (shipped) or lift (old)")
+                    help="the guard read's size bar: lift (shipped) or effect (measured, not adopted)")
+    ap.add_argument("--min-effect", type=float, default=sag.MIN_EFFECT, dest="min_effect")
     args = ap.parse_args()
-    sag.RULE = args.rule
-    print(f"decision rule: {args.rule}\n")
+    sag.RULE, sag.MIN_EFFECT = args.rule, args.min_effect
+    print(f"decision rule: {args.rule}" + (f" {args.min_effect}" if args.rule == "effect" else "") + "\n")
     n = 40 if args.quick else 200
     npool = 20 if args.quick else 100
 

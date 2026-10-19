@@ -1,16 +1,16 @@
 """Every null the guard read's decision rule has to pass, in one place.
 
-    python scripts/guard_nulls.py                  # the shipped rule and the old one
+    python scripts/guard_nulls.py                  # the shipped lift bar and the effect size
     python scripts/guard_nulls.py --quick          # fewer trials
 
 The guard read (`ika/sag.py`) names a habit when a rank test, corrected for
 every setup and side it looked at, is sure a setup's heights sit lower than
 the other combos', AND the difference is big enough to matter. "Big enough"
-was a lift bar on counts of occasions below a fixed line (1.35x); it is now
-an effect size on the heights themselves (`sag.effect`, the share of pairs
-where the setup's height is lower, at least sag.MIN_EFFECT). This runs every
-null either rule has to pass, side by side, so loosening anything is only
-ever done with its null measured:
+is a lift bar on counts of occasions below a fixed line (1.35x). An effect
+size on the heights themselves (`sag.effect`, the share of pairs where the
+setup's height is lower, at least sag.MIN_EFFECT) was measured as a
+replacement. This runs every null either rule has to pass, side by side, so
+nothing is loosened without its null measured:
 
   drill, simulated clean fighter    scripts/robustness.py's fighter, no habit, 12 min
   drill, 12 pooled sessions         the same into one profile
@@ -40,7 +40,7 @@ sys.path.insert(0, str(HERE / "scripts"))
 
 from ika import coach, sag  # noqa: E402
 
-RULES = {"lift (old)": ("lift", sag.MIN_EFFECT), "effect 0.6": ("effect", 0.6)}
+RULES = {"lift": ("lift", sag.MIN_EFFECT), f"effect {sag.MIN_EFFECT}": ("effect", sag.MIN_EFFECT)}
 
 
 def use(rule):
@@ -115,9 +115,15 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true")
     ap.add_argument("--reference", default=sag.REFERENCE, choices=sag.REFERENCES)
+    ap.add_argument("--effects", type=float, nargs="*", default=[],
+                    help="also run the effect rule at these floors")
+    ap.add_argument("--trials", type=int, default=400, help="simulated sessions a cell")
+    ap.add_argument("--pooled", type=int, default=100, help="simulated profiles a cell")
     args = ap.parse_args()
-    n = 100 if args.quick else 400
-    npool = 30 if args.quick else 100
+    for e in args.effects:
+        RULES[f"effect {e}"] = ("effect", e)
+    n = 100 if args.quick else args.trials
+    npool = 30 if args.quick else args.pooled
     print(f"guard reference: {args.reference}; a habit reported where none exists, should be "
           "about 5% or under")
     rows, shipped = {}, (sag.RULE, sag.MIN_EFFECT)

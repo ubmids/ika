@@ -426,12 +426,14 @@ def main() -> int:
     parser.add_argument("--reference", default=sag.REFERENCE, choices=sag.REFERENCES,
                         help="guard height measured from the shoulders (shipped) or the nose (old)")
     parser.add_argument("--rule", default=sag.RULE, choices=sag.RULES,
-                        help="the read's size bar: effect (shipped) or lift (old)")
+                        help="the read's size bar: lift (shipped) or effect (measured, not adopted)")
     parser.add_argument("--heights", action="store_true",
                         help=f"write the measured guard heights to {HEIGHTS.name} and stop")
+    parser.add_argument("--min-effect", type=float, default=sag.MIN_EFFECT, dest="min_effect")
     args = parser.parse_args()
-    sag.RULE = args.rule
-    print(f"guard reference {args.reference}, decision rule {args.rule}")
+    sag.RULE, sag.MIN_EFFECT = args.rule, args.min_effect
+    print(f"guard reference {args.reference}, decision rule {args.rule}"
+          + (f" {args.min_effect}" if args.rule == "effect" else ""))
 
     names = [n for n in bench_names()]
     lib = library()
@@ -498,18 +500,21 @@ def export_heights(results, reference) -> None:
     # rank test never meets. Centred, the effect is 0.70 (shoulders) where
     # pooling people raw gives 0.72 and pairing only within a person 0.78:
     # the lowest of the three, so the simulation errs low.
+    # Centred on the pooled median rather than zero, so a height still sits
+    # where it does against sag.DOWN, which the "lift" rule counts against.
+    centre = float(np.median([h for _p, rest in per.values() for h in rest]))
     planted_h, other_h = [], []
     for planted, rest in per.values():
         if planted and rest:
-            mid = float(np.median(rest))
+            mid = float(np.median(rest)) - centre
             planted_h += [h - mid for h in planted]
             other_h += [h - mid for h in rest]
     q = np.linspace(0, 100, 201)
     data = json.loads(HEIGHTS.read_text()) if HEIGHTS.exists() else {}
     data["about"] = ("Guard heights in the second after a combo on the planted bench "
                      "(scripts/planted_check.py --heights): 80% 'after a right, the left "
-                     "sags', read with the held-out punch reader. Each person centred on their own "
-                     "median after other combos. Quantiles, torso lengths.")
+                     "sags', read with the held-out punch reader. Each person's own median after other "
+                     "combos moved to the pooled one. Quantiles, torso lengths.")
     data[reference] = {
         "planted": [round(float(v), 4) for v in np.percentile(planted_h, q)],
         "rest": [round(float(v), 4) for v in np.percentile(other_h, q)],
