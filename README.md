@@ -69,25 +69,36 @@ call ends with a reminder: "one, two... right hand up". `--seed` repeats a
 schedule, `--combos 1-2,2-3-2` picks them, and `ika history` lists coach
 and drill sessions apart.
 
-Simulated at the measured sensor rates (`scripts/coach_check.py`), against
-the drill measured the same way:
+Measured in simulation (`scripts/coach_check.py`) at the punch reader's
+measured error rates, under two guard models. The first is the one to
+believe: a test that planted sags into real guard tracks found them sitting
+at -0.25 against -0.16 after other combos (sd 0.19), about half the
+separation the older simulation assumed (-0.34 against -0.08, sd 0.30).
+That same real-footage test, with labelled punches, named an 80% habit in
+only 6% of 12-minute composites, so even the first column is likely an upper
+bound.
 
-| | coach | drill |
-|---|---|---|
-| a strong habit (80%) named in one 12-minute session | **80%** | 23% |
-| the same with perfect sensors | 91% | 93% |
-| named across 12 six-minute sessions, pooled | **67%** | 40% |
-| a fighter with no habit told one, one session | 5 to 6% | 5% |
-| the same, after 12 pooled sessions | 2% | 2% |
-| a habit reported on random schedules over real bench footage | **1%** of 600 | 3% of shuffles |
+| | coach, real-measured guard | coach, old sim guard | drill, old sim guard |
+|---|---|---|---|
+| a strong habit (80%) named in one 12-minute session | **27%** | 80% | 23% |
+| the same with perfect punch sensors | 34% | 91% | 93% |
+| named across 12 six-minute sessions, pooled | **14%** | 67% | 40% |
+| longest single session tried, 192 minutes | 22% (peak 37% at 24 min) | | |
+| a fighter with no habit told one, one session | 5 to 6% | 5 to 6% | 5% |
+| the same, after 12 pooled sessions | 2% | 2% | 2% |
+| a habit reported on random schedules over real bench footage | **1%** of 600 | | 3% of shuffles |
 
-The gain is all in surviving the sensor: with perfect punch knowledge the
-two are level. A 3-minute round alone names a strong habit 16% of the time,
-so this is still a few rounds' worth of evidence, and a 50% habit is named
-32% of the time in 12 minutes. Across sessions the habit's combo has to be
-drawn into a session before it can be found at all, which is most of the
-gap between 80% and 67%. The person in the simulation answers 95% of calls,
-which is an assumption, and nobody has yet stood in front of it.
+Under the real-measured guard, more minutes do not get coach mode to half
+of fighters named. It levels off near 36% and then falls, because the read
+also asks that the share of calls followed by a hand below the "down" line
+be 1.35 times the other combos' share, and at this separation an 80% habit
+gives about 56% against 43%, a lift near 1.3. The rank test becomes very
+sure and the lift bar still turns it away. That bar is shared with the
+drill and was not changed to make this look better. What coach mode does
+reliably buy is surviving the punch reader: with perfect sensors and the
+old guard model the two are level, and with measured sensors coach keeps
+almost all of it. The person in the simulation answers 95% of calls, an
+assumption, and nobody has yet stood in front of it.
 
 ---
 
