@@ -20,8 +20,9 @@ rear. For an orthodox stance the lead is the left.
     1 jab   2 cross   3 lead hook   4 rear hook   5 lead uppercut   6 rear uppercut
 
 Defensive calls (slip, roll) are left out on purpose. Guard height is read
-relative to the nose, and a slip or a roll at the end of a combo moves the
-nose, so it would show up as a change of guard that is not one.
+relative to the shoulders, and a slip or a roll at the end of a combo tilts
+and lowers them with the hands in ways nobody has measured, so it could show
+up as a change of guard that is not one.
 """
 
 from __future__ import annotations
@@ -246,8 +247,8 @@ def align(calls: list[Call], track, punches: list[tuple[float, str]]) -> list[Re
     window and when this person's last punch of this combo usually lands
     (`pace`). The later, because a reader that missed the last punch would
     otherwise end the response early, and the guard window would then sit on
-    top of that punch: a straight is thrown below the nose, so it reads as a
-    dropped hand. The guard read itself is `sag.GuardTrack.after`, exactly as
+    top of that punch: a straight is thrown below a guard held at the chin,
+    so it reads as a dropped hand. The guard read itself is `sag.GuardTrack.after`, exactly as
     the drill reads it, frames of an arm that is itself punching left out.
     """
     ordered = sorted(punches)

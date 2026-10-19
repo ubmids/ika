@@ -17,20 +17,43 @@ wrist in a labelled drop sits 1.16 standard deviations below one in guard;
 averaged over the window after a punch, and then over every time the setup
 happens, the noise that ruined the event detector mostly cancels.
 
-Guard height is read in the image, as the wrist's height above the nose in
-torso lengths, and relative to this person's own recent guard: the 75th
-percentile of the last twenty seconds, since between punches hands are mostly
-up. The image and not MediaPipe's world coordinates, because on the labelled
-footage the image signal separated drops from guard better (1.16 against 0.88).
+Guard height is read in the image, as the wrist's height above the midpoint
+of the shoulders in torso lengths, and relative to this person's own recent
+guard: the 75th percentile of the last twenty seconds, since between punches
+hands are mostly up. The image and not MediaPipe's world coordinates, because
+on the labelled footage the image signal separated drops from guard better
+(1.16 against 0.88). The shoulders and not the nose, which is what it first
+used, because the head moves on its own: a bob or a slip moves the nose and
+not the hands, and read from the nose that is a change of guard. Measured in
+`scripts/guard_signal.py`, the two separate labelled drop frames from guard
+frames about equally (AUC 0.89 against 0.91 per person), but after a combo,
+where the read actually looks, the shoulders separate better: labelled drops
+0.93 against 0.86, and a habit planted from real drops 0.68 against 0.64,
+better or level for 10 of 11 people. Nothing tried did better on the
+labelled frames: elbows, forearm angle, hand points, distance to the face,
+world coordinates, depth, other baselines, smoothing, and a small model
+fitted on the drops held out by person (0.86) all came out level or worse.
 
 Frames where that arm is itself punching are left out of the window. A
-straight is thrown at shoulder height, which is below the nose, so without
-this every one-two would look like a sagging guard.
+straight is thrown at shoulder height, which is below a guard held at the
+chin, so without this every one-two would look like a sagging guard.
+
+A setup is named when a rank test on the heights, corrected for every setup
+and side looked at, is sure they sit lower than after the other combos, and
+the difference is big enough to matter: a height after the setup sits below
+one after the others in at least MIN_EFFECT of all pairs (`effect`). The
+older size bar counted occasions below a fixed "down" line and asked for 1.35
+times the other combos' share. On real sags that bar threw away what the rank
+test found: they are shallow, so both sides of the comparison mostly sit near
+the line, and an 80% habit gave a lift near 1.3 while the test was sure.
+Every null was measured under both bars (`scripts/guard_nulls.py`) and moved
+by under a point.
 
 Output is counts, in the same shape as the miner's findings, so the profile
 pools it across sessions with the same statistics and the caller can arm it
 the same way. An occasion counts as "hand down" when the window's average sits
-more than DOWN below the guard.
+more than DOWN below the guard. The profile still pools those counts with its
+own lift bar (`profile.MIN_LIFT`); only the single-session read uses `effect`.
 """
 
 from __future__ import annotations
@@ -60,14 +83,29 @@ PUNCHING = 0.3
 
 # An occasion counts as "hand down" when the window's mean is this far below
 # the guard, in torso lengths. On the labelled footage, frames in a drop sat
-# 0.34 below the rolling guard on average and frames in guard 0.08, so this
-# sits between the two.
+# 0.34 below the rolling guard on average and frames in guard 0.08 (read from
+# the shoulders, 0.29 and 0.08), so this sits between the two.
 DOWN = 0.2
 
 # At least this many readable frames in a window, or the occasion is skipped.
 MIN_FRAMES = 6
 
+# What guard height is measured from. "shoulders" is the midpoint of the two
+# shoulders; "nose" is the reference the read shipped with, kept only so the
+# two can be compared (scripts/guard_signal.py, scripts/planted_check.py).
+REFERENCES = ("shoulders", "nose")
+REFERENCE = "shoulders"
+
 MIN_SUPPORT = 10
+
+# How big a difference has to be before it is a habit, once the rank test is
+# sure it is there. "effect": the setup's heights sit below the other combos'
+# in at least MIN_EFFECT of all pairs (the rank test's own statistic, as an
+# effect size). "lift": the older bar, the share of occasions below -DOWN at
+# least MIN_LIFT times the other combos' share, kept for comparison.
+RULES = ("effect", "lift")
+RULE = "effect"
+MIN_EFFECT = 0.6
 MIN_LIFT = 1.35
 
 # What one session may propose to the profile. See drill_app for the measured
@@ -84,11 +122,21 @@ class _Frame:
 class GuardTrack:
     """Streaming guard heights, relative to this person's own guard."""
 
-    def __init__(self, aspect: float = 1.0, keep_seconds: float = 900.0):
+    def __init__(self, aspect: float = 1.0, keep_seconds: float = 900.0,
+                 reference: str = REFERENCE):
+        if reference not in REFERENCES:
+            raise ValueError(f"reference is one of {REFERENCES}, not {reference!r}")
+        self.reference = reference
         self.aspect = float(aspect)
         self.keep_seconds = float(keep_seconds)
         self._recent = {side: deque() for side in WRISTS}
         self.frames: deque[_Frame] = deque()
+
+    def _reference(self, image: np.ndarray) -> float:
+        """The height a wrist is measured from, in the aspect-corrected image."""
+        if self.reference == "nose":
+            return float(image[NOSE, 1])
+        return float((image[LEFT_SHOULDER, 1] + image[RIGHT_SHOULDER, 1]) / 2)
 
     def reset(self) -> None:
         for d in self._recent.values():
@@ -108,7 +156,7 @@ class GuardTrack:
                 for side, w in WRISTS.items():
                     if body.visibility[w] < 0.5:
                         continue
-                    raw = -(image[w, 1] - image[NOSE, 1]) / torso
+                    raw = -(image[w, 1] - self._reference(image)) / torso
                     recent = self._recent[side]
                     recent.append((at, raw))
                     while recent and at - recent[0][0] > BASELINE_SECONDS:
@@ -171,8 +219,21 @@ def lower_than(inside: list[float], rest: list[float]) -> float:
     Normal approximation with a tie correction, which is accurate at the
     sample sizes allowed through (MIN_SUPPORT on each side).
     """
+    u, n1, n2, tie_term = _rank_u(inside, rest)
+    mean = n1 * n2 / 2.0
+    n = n1 + n2
+    var = n1 * n2 / 12.0 * ((n + 1) - tie_term / (n * (n - 1)))
+    if var <= 0:
+        return 1.0
+    z = (u - mean + 0.5) / math.sqrt(var)          # continuity-corrected, lower tail
+    return 0.5 * math.erfc(-z / math.sqrt(2.0))
+
+
+def _rank_u(inside, rest):
+    """Mann-Whitney U for `inside` (pairs where it sits higher, ties half),
+    the sample sizes, and the tie term for the variance."""
     n1, n2 = len(inside), len(rest)
-    values = np.concatenate([inside, rest])
+    values = np.concatenate([np.asarray(inside, float), np.asarray(rest, float)])
     order = values.argsort(kind="mergesort")
     ranks = np.empty(len(values))
     sorted_values = values[order]
@@ -187,13 +248,19 @@ def lower_than(inside: list[float], rest: list[float]) -> float:
         tie_term += t ** 3 - t
         i = j + 1
     u = ranks[:n1].sum() - n1 * (n1 + 1) / 2.0
-    mean = n1 * n2 / 2.0
-    n = n1 + n2
-    var = n1 * n2 / 12.0 * ((n + 1) - tie_term / (n * (n - 1)))
-    if var <= 0:
-        return 1.0
-    z = (u - mean + 0.5) / math.sqrt(var)          # continuity-corrected, lower tail
-    return 0.5 * math.erfc(-z / math.sqrt(2.0))
+    return float(u), n1, n2, tie_term
+
+
+def effect(inside: list[float], rest: list[float]) -> float:
+    """How often a height after this setup sits below one after the others,
+    over every pair, ties counting half: the area under the ROC curve, or
+    the rank test's U scaled to 0..1. 0.5 is no difference. Unitless, so it
+    means the same whatever the guard height is measured in, and unlike the
+    p-value it does not grow with the number of occasions."""
+    if not len(inside) or not len(rest):
+        return 0.5
+    u, n1, n2, _ = _rank_u(inside, rest)
+    return 1.0 - u / (n1 * n2)
 
 
 def combo_of(punches: list[tuple[float, str]], i: int) -> list[str]:
@@ -251,10 +318,14 @@ def read(track: GuardTrack, punches: list[tuple[float, str]],
     return read_occasions(occasions(track, punches), fdr=fdr)
 
 
-def read_occasions(occ: list[Occasion], fdr: float = 0.05) -> list[Finding]:
+def read_occasions(occ: list[Occasion], fdr: float = 0.05,
+                   rule: str | None = None) -> list[Finding]:
     """`read`, from occasions already collected. Split out so a simulation can
-    hand it occasions with known habits in them."""
-    candidates = []
+    hand it occasions with known habits in them. `rule` is RULE unless given."""
+    rule = RULE if rule is None else rule
+    if rule not in RULES:
+        raise ValueError(f"rule is one of {RULES}, not {rule!r}")
+    candidates, sizes = [], []
     for k in (1, 2):
         pool = [o for o in occ if len(o.context) == k]
         for side in WRISTS:
@@ -273,13 +344,19 @@ def read_occasions(occ: list[Occasion], fdr: float = 0.05) -> list[Finding]:
                 # sees the few that already look strong, so it never pays for
                 # having looked at the rest: measured on shuffled real
                 # occasions, that let 25% of nulls report a habit.
+                low = [o.height for o in inside]
+                high = [o.height for o in rest]
                 candidates.append(Finding(
                     context=context, then=f"guard_down_{side}", support=len(inside),
                     hits=hits, probability=rate, base=base,
-                    p_value=lower_than([o.height for o in inside],
-                                       [o.height for o in rest])))
+                    p_value=lower_than(low, high)))
+                sizes.append(effect(low, high))
     keep = benjamini_hochberg([c.p_value for c in candidates], fdr=fdr)
-    found = [c for c, ok in zip(candidates, keep) if ok and c.lift >= MIN_LIFT]
+    if rule == "lift":
+        big = [c.lift >= MIN_LIFT for c in candidates]
+    else:
+        big = [e >= MIN_EFFECT for e in sizes]
+    found = [c for c, ok, b in zip(candidates, keep, big) if ok and b]
     # The same reduction the sequence miner makes. A two-punch setup is only
     # worth saying if it beats its own last punch; and when it does by a wide
     # margin, the one-punch version is a diluted echo of it and goes.

@@ -265,12 +265,16 @@ def test_a_combo_that_leaves_the_right_hand_down_is_found():
 
 def test_no_habit_is_found_on_a_fighter_without_one():
     combos = [coach.Combo.parse(n) for n in ("1-2", "1-2-3", "2-3-2")]
+    # The read's false rate is the rank test's level, about 5%: the size bar
+    # (sag.MIN_EFFECT) does not bind at one round's sample sizes, since any
+    # difference the corrected test is sure of is already that big. So this
+    # is held to 10% over enough sessions to tell 5% from 15%.
     false = 0
-    for seed in range(20):
+    for seed in range(100):
         calls = coach.schedule(combos, 180.0, seed=seed)
         track, punches = answered_session(calls, rng=np.random.default_rng(seed), noise=0.3)
         false += bool(coach.read(coach.align(calls, track, punches)))
-    assert false <= 2
+    assert false <= 10
 
 
 def test_the_test_is_the_drills_own():
