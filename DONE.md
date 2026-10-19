@@ -19,3 +19,30 @@ so a strong habit takes a couple of weeks of short rounds to name. The bench to
 improve it on is `bench/shadow`.
 
 Frozen and not blocking: glasses, fight-footage analysis, cursor control, swipes.
+
+# v2: coach mode
+
+`ika coach` calls numbered combos and reads the guard after each, so the
+setup is known instead of read off a punch reader that misses half of what
+is thrown. Measured in simulation at the sensor rates measured on real
+footage (`scripts/coach_check.py`), and against real footage for the null.
+
+| | pass when | state |
+|---|---|---|
+| **Names a habit faster than the drill** | a strong (80%) habit named more often than the drill's 23% in 12 minutes | **done, in simulation.** 80% in one 12-minute session (16% at 3 minutes, 48% at 6); 67% across 12 pooled six-minute sessions against the drill's 40%. With perfect sensors coach and drill are level (91% and 93%): the gain is surviving the punch reader, not more evidence |
+| **No phantom habits** | a clean fighter, a fighter slower than the assumed pace, and real footage all report a habit under 5% of the time | **done.** 5 to 6% of single sessions (400 each, the rank test's level), 4 to 6% for the slower fighter, 2% after 12 pooled sessions, 1% of 600 random schedules over the 15 bench clips |
+| **Calls it live** | a known coach habit adds its reminder to the call | **done.** "one, two... right hand up", from history and from earlier rounds of the same session |
+| **Remembers you** | coach sessions in the profile, tagged, and shown by `ika history` | **done.** Rows carry a mode; history lists coach and drill sessions and habits apart; the drill never watches for a coach habit |
+| **Tested on real calls** | the bench coaches' own calls recovered and the read run on them | **not possible on this bench.** 71 calls recovered from word-timed transcripts across 7 clips, answered 75% against 60% at random times, but no combo is called more than 6 times in a clip against the 10 the read needs (`scripts/coach_calls.py`) |
+
+Two design changes came from nulls that should have been clean. A fixed
+expected pace put the guard window on top of a missed last punch, more for
+long combos than short ones, and told 11% of slower simulated fighters they
+had a habit in 12 minutes; the pace is now learned per combo from the
+session. And following up a combo one session proposed pooled that
+selected session in, which told 6 to 10% of clean fighters they had a habit
+after 12 sessions; a coach habit is now confirmed only by the sessions
+after the one that proposed it, which record their plain counts.
+
+Not measured: anyone following real calls from ika, how often a real person
+answers (95% is assumed), and whether hearing the reminder changes the habit.

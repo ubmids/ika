@@ -49,6 +49,46 @@ described below, so it undercounts.
 per-event lines, and `ika drill some_round.mp4` replays a recorded round
 instead of the camera, which is how everything below was measured.
 
+## Coach mode
+
+```bash
+ika coach            # it calls combos out loud, you throw them; ika coach --rounds 3 for more
+```
+
+The drill has to work out what you threw before it can say anything about
+your guard, and the punch reader is the weak link. In coach mode ika calls
+the combos, like pad work, so it already knows the setup. Standard numbers:
+1 jab, 2 cross, 3 lead hook, 4 rear hook, 5 lead uppercut, 6 rear uppercut.
+A round is three minutes of three combos, dealt evenly so each is called 13
+to 17 times, with the gap after a call scaled to its length so the guard
+can be read before the next one. The punch reader is only asked whether
+anything was thrown after a call; a call with nothing thrown is counted and
+skipped. The guard is read in the second after the response, with the
+drill's own window and rank test, and once a combo is a known habit its
+call ends with a reminder: "one, two... right hand up". `--seed` repeats a
+schedule, `--combos 1-2,2-3-2` picks them, and `ika history` lists coach
+and drill sessions apart.
+
+Simulated at the measured sensor rates (`scripts/coach_check.py`), against
+the drill measured the same way:
+
+| | coach | drill |
+|---|---|---|
+| a strong habit (80%) named in one 12-minute session | **80%** | 23% |
+| the same with perfect sensors | 91% | 93% |
+| named across 12 six-minute sessions, pooled | **67%** | 40% |
+| a fighter with no habit told one, one session | 5 to 6% | 5% |
+| the same, after 12 pooled sessions | 2% | 2% |
+| a habit reported on random schedules over real bench footage | **1%** of 600 | 3% of shuffles |
+
+The gain is all in surviving the sensor: with perfect punch knowledge the
+two are level. A 3-minute round alone names a strong habit 16% of the time,
+so this is still a few rounds' worth of evidence, and a 50% habit is named
+32% of the time in 12 minutes. Across sessions the habit's combo has to be
+drawn into a session before it can be found at all, which is most of the
+gap between 80% and 67%. The person in the simulation answers 95% of calls,
+which is an assumption, and nobody has yet stood in front of it.
+
 ---
 
 ## What it can honestly do
