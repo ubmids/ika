@@ -22,6 +22,7 @@ from pathlib import Path
 import cv2
 
 from .body import PoseTracker
+from .coach import is_coach
 from .cue import Caller, measure
 from .drill import DrillReader, read_habits
 from .hands import HandTracker
@@ -113,7 +114,8 @@ def run_drill(
 
     store = Path(profile) / f"{subject}.json"
     record = Profile.load(store) if store.exists() else Profile(subject=subject)
-    standing = record.habits(now=time.time())
+    # Coach habits are keyed on a called combo, which a drill never has.
+    standing = [h for h in record.habits(now=time.time()) if not is_coach(h.context)]
     if record.log or record.observations:
         _say(f"  {record.sessions() or len(record.log)} earlier session(s) for {subject}")
     for habit in standing[:3]:
@@ -229,6 +231,8 @@ def run_drill(
 
         known = {(tuple(h.context), h.then): h for h in list(standing) + list(found)}
         for context, then in record.tracked():
+            if is_coach(context):
+                continue
             known.setdefault((context, then), Finding(context, then, 0, 0, 0.0, 0.0, 1.0))
         record.record_session(now, clock, reader.counts(),
                               [(h, *reader.rate(h)) for h in known.values()])

@@ -19,7 +19,7 @@ def parse(*argv):
 
 def test_every_command_is_reachable():
     expected = {"record", "train", "live", "train-dynamic", "compare",
-                "tell", "early", "bindings"}
+                "tell", "early", "bindings", "drill", "coach", "history"}
     parser = cli.build_parser()
     actions = [a for a in parser._actions if hasattr(a, "choices") and a.choices]
     available = set(actions[0].choices)

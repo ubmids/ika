@@ -429,52 +429,110 @@ def _drill(args):
     return 0
 
 
+def _coach(args):
+    """Call combos out loud, check each was thrown, and read the guard after it."""
+    from .body import MODELS, POSE_URLS
+    from .hands import ModelMissing
+
+    from .coach_app import run_coach
+    from .drill_app import pose_variant
+
+    variant = pose_variant("stand")
+    model = MODELS / f"pose_landmarker_{variant}.task"
+    if not model.exists():
+        print("\n  first run: fetching the pose models.")
+        import argparse as _argparse
+        if _setup(_argparse.Namespace(camera=args.camera, no_camera=True)) != 0:
+            raise ModelMissing(model, POSE_URLS[variant])
+
+    source = args.source if args.source is not None else args.camera
+    print("\n  Stand back until the camera sees you from head to hips, hands included.")
+    print(f"  Hold your guard still for {args.calibration:.0f}s while it learns it.")
+    print("  Then it calls combos: 1 jab, 2 cross, 3 lead hook, 4 rear hook,")
+    print("  5 lead uppercut, 6 rear uppercut. Throw each one when you hear it.")
+    if source == args.camera:
+        print("  Press Ctrl-C to stop early; what was called is still read and saved.")
+    print()
+    run_coach(camera=source, width=args.width, calibration=args.calibration,
+              profile=args.profile, subject=args.subject, seconds=args.seconds,
+              rounds=args.rounds, rest=args.rest,
+              combos=args.combos.split(",") if args.combos else None,
+              seed=args.seed, voice=not args.silent, save=not args.no_save, quiet=args.quiet)
+    return 0
+
+
 def _history(args):
     """Each habit's rate, session by session, so a fading habit is visible."""
     import time as _time
     from pathlib import Path
 
-    from .profile import Profile
+    from .coach import combo_of, is_coach
+    from .profile import Profile, mode_of
 
     store = Path(args.profile) / f"{args.subject}.json"
     if not store.exists():
-        print(f"\n  no sessions for {args.subject} yet. Run `ika drill` first.")
+        print(f"\n  no sessions for {args.subject} yet. Run `ika drill` or `ika coach` first.")
         return 1
     record = Profile.load(store)
     print(f"\n  {args.subject}: {len(record.log)} logged session(s)\n")
     for row in record.log[-args.last:]:
         when = _time.strftime("%Y-%m-%d %H:%M", _time.localtime(row["at"]))
         counts = row["counts"]
+        if mode_of(row) == "coach":
+            calls = counts.get("calls", 0)
+            print(f"  {when}  {row['seconds'] / 60:4.1f} min  coach  {calls:4d} calls    "
+                  f"{counts.get('answered', 0):3d} answered")
+            continue
         punches = sum(v for k, v in counts.items() if k.startswith("punch_"))
         drops = sum(v for k, v in counts.items() if k.startswith("guard_down_"))
-        print(f"  {when}  {row['seconds'] / 60:4.1f} min  {punches:4d} punches  "
+        print(f"  {when}  {row['seconds'] / 60:4.1f} min  drill  {punches:4d} punches  "
               f"{drops:3d} guard drops")
     series = record.history()
     if not series:
         print("\n  no habit has been found yet.")
         return 0
+
+    def kind(key):
+        context, _, then = key.partition(" -> ")
+        if context.startswith("coach_"):
+            return 0
+        return 1 if then.startswith("guard") else 2
+
+    def label(key):
+        context, _, then = key.partition(" -> ")
+        if context.startswith("coach_"):
+            return f"called {context[len('coach_'):]} -> {then.rsplit('_', 1)[1]} hand down"
+        return key
+
     # Guard habits first: they are the read. Punch patterns are true too, but
-    # "after a jab you throw a cross" is how most people box, not a flaw.
-    series.sort(key=lambda item: (not item[0].split(" -> ")[1].startswith("guard"), item[0]))
+    # "after a jab you throw a cross" is how most people box, not a flaw. A
+    # coach habit is a guard habit after a combo ika called, so it leads. Its
+    # rate is only logged in coach sessions; drill sessions show it as "-".
+    series.sort(key=lambda item: (kind(item[0]), item[0]))
+    headers = {0: "\n  after a called combo (coach):",
+               1: "\n  where your hands go (drill):",
+               2: "\n  punch patterns (drill):"}
     shown_header = None
-    width = max(52, *(len(key) for key, _points in series))
+    width = max(52, *(len(label(key)) for key, _points in series))
     for key, points in series:
-        header = "guard" if key.split(" -> ")[1].startswith("guard") else "punches"
-        if header != shown_header:
-            print("\n  where your hands go:" if header == "guard" else "\n  punch patterns:")
-            shown_header = header
+        if kind(key) != shown_header:
+            print(headers[kind(key)])
+            shown_header = kind(key)
         cells = [f"{h / s:4.0%}" if s else "   -" for _at, h, s in points[-args.last:]]
         rated = [h / s for _a, h, s in points if s]
         trend = ""
         if len(rated) >= 2:
             trend = ("  falling" if rated[-1] < rated[0] - 0.1
                      else "  rising" if rated[-1] > rated[0] + 0.1 else "  steady")
-        print(f"    {key:{width}s} {' '.join(cells)}{trend}")
+        print(f"    {label(key):{width}s} {' '.join(cells)}{trend}")
     standing = record.habits(now=_time.time())
     if standing:
         print("\n  standing now:")
         for habit in standing[:6]:
-            print(f"    {habit.describe(now=_time.time())}")
+            text = habit.describe(now=_time.time())
+            if is_coach(habit.context):
+                text += f"  (the call for {combo_of(habit.context)} now ends with a reminder)"
+            print(f"    {text}")
     return 0
 
 
@@ -662,6 +720,28 @@ def build_parser() -> argparse.ArgumentParser:
     dr.add_argument("--no-save", action="store_true", dest="no_save",
                     help="do not add this session to the profile")
     dr.set_defaults(func=_drill)
+
+    co = sub.add_parser("coach", help="ika calls the combos; it reads your guard after each")
+    co.add_argument("source", nargs="?", default=None,
+                    help="a video file to replay instead of the camera")
+    co.add_argument("--camera", type=int, default=0)
+    co.add_argument("--width", type=int, default=640)
+    co.add_argument("--calibration", type=float, default=3.0)
+    co.add_argument("--subject", default="me")
+    co.add_argument("--profile", default=_default("data", "profiles"),
+                    help="where habits accumulate between sessions")
+    co.add_argument("--seconds", type=float, default=180.0, help="length of a round")
+    co.add_argument("--rounds", type=int, default=1)
+    co.add_argument("--rest", type=float, default=60.0, help="seconds between rounds")
+    co.add_argument("--combos", default=None,
+                    help="comma-separated combos to call, e.g. 1-2,1-2-3,2-3-2; "
+                         "default: known habits first, then a rotation")
+    co.add_argument("--seed", type=int, default=None, help="repeat a session's schedule")
+    co.add_argument("--silent", action="store_true", help="print calls, do not speak them")
+    co.add_argument("--quiet", action="store_true", help="no per-punch lines")
+    co.add_argument("--no-save", action="store_true", dest="no_save",
+                    help="do not add this session to the profile")
+    co.set_defaults(func=_coach)
 
     hi = sub.add_parser("history", help="each habit's rate, session by session")
     hi.add_argument("--subject", default="me")

@@ -163,7 +163,7 @@ class Standing:
         return max(0.0, now - self.last_seen)
 
     def describe(self, now: float | None = None) -> str:
-        context = " then ".join(self.context) if self.context else "anything"
+        context = context_words(self.context)
         text = (
             f"after {context}: {self.then} "
             f"{self.probability:.0%} of the time (normally {self.base:.0%}), "
@@ -223,16 +223,19 @@ class Profile:
             )
 
     def record_session(self, at: float, seconds: float, counts: dict[str, int],
-                       rates=()) -> dict:
+                       rates=(), mode: str = "drill") -> dict:
         """Log one session: its counts, and each known habit's rate in it.
 
         `rates` is (habit, hits, support) for every habit known at the time,
         counted from this session and not taken from the miner, so a session
         where the habit never showed still records a zero out of however many
         times the setup came up.
+
+        `mode` is "drill" or "coach". Rows written before coach mode existed
+        have none, and read as drill.
         """
         rates = {_habit_key(h.context, h.then): [int(a), int(b)] for h, a, b in rates}
-        row = {"at": float(at), "seconds": float(seconds),
+        row = {"at": float(at), "seconds": float(seconds), "mode": mode,
                "counts": dict(counts), "habits": rates}
         self.log.append(row)
         return row
@@ -410,6 +413,20 @@ class Profile:
             ],
             log=list(payload.get("log", [])),
         )
+
+
+def mode_of(row: dict) -> str:
+    """A logged session's mode. Rows from before coach mode are drill rows."""
+    return row.get("mode", "drill")
+
+
+def context_words(context) -> str:
+    """A habit's setup in words: the punches seen, or the combo that was called."""
+    from .coach import combo_of, is_coach
+
+    if is_coach(context):
+        return f"the call {combo_of(context)}"
+    return " then ".join(context) if context else "anything"
 
 
 def _habit_key(context, then) -> str:
