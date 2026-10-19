@@ -117,13 +117,17 @@ code was tuned on, except where it says simulated.
 | a strong guard habit named, with sensors as measured (simulated) | **40%** of fighters by 12 six-minute sessions | 93% in one 12-minute session with perfect sensors |
 | a fighter with no habit told they have one (simulated) | **2%** after 12 sessions | |
 | the call, when the habit is real (simulated) | lands **0.8 s** before the hand drops, right as often as the habit is | |
+| a habit planted in real rounds from real drops, read by the real pipeline | named in **0%** of composite fighters by 12 minutes, at 80% strength | the simulation said 42% for the same habit |
+| the call, on those planted rounds | **0.9 s** early, but only **12%** of calls followed by a planted drop | |
 
 So: the loop works end to end, from a camera to a spoken call, and it rarely
 makes things up. It is also slow to be sure of anything, because the punch
 reader misses about half of what is thrown, and a two-punch setup needs both
 punches caught. For a strong habit that means a couple of weeks of short daily
 rounds, and even then only for some people. A subtle one mostly does not show
-up at all.
+up at all. And that estimate is the simulation's: a habit planted into real
+rounds, made of real drops, was not named at all by twelve minutes, because
+real sags are shallower and their setups rarer than the simulation assumed.
 
 That is the finished state, measured and stated rather than tuned to look
 better. [`DONE.md`](DONE.md) has the criteria it was held to and where each
@@ -166,6 +170,7 @@ python scripts/shadow_guard.py        # dropped guards, as events, against label
 python scripts/sag_check.py           # the guard read on real footage, and its shuffled null
 python scripts/robustness.py          # does the habit read survive these sensors?
 python scripts/cue_check.py           # the call: how early, how often right
+python scripts/planted_check.py       # a habit planted in real rounds, read for real
 ```
 
 ---
@@ -284,6 +289,90 @@ punch reader is: a two-punch setup survives both punches being caught about a
 fifth of the time. That is the one number that would change what ika can do,
 and the bench to measure it on is in `bench/shadow`.
 
+### A habit planted in real footage, and the simulation was optimistic
+
+The simulation above is arithmetic at measured error rates. To test the
+read on real movement, `ika/plant.py` plants a habit with a known strength
+into the bench rounds, and `scripts/planted_check.py` reads them with the
+shipped pipeline: the punch reader held out by person, the guard track, the
+sag read, and a caller armed with the habit.
+
+A planted sag is a real one. Of the 54 drops both guard labellers agreed
+on, 13 look like a sag after a combo in the landmarks (the rest are rests,
+start inside that arm's own punch, or do not show in the pose); they come
+from three people, ten of them from one. Each is cut out as the arm's
+displacement from where it was, tapered to zero at both ends, and added to
+another person's arm in that person's torso lengths, the hand down 0.5 to
+1.0 s after the setup's last punch, never while that arm is punching. The
+plant is triggered by the labelled punches, not the reader's, so the habit
+is in the movement whether or not the reader sees the setup; triggering
+from the reader would only plant where it already succeeded and hide the
+cost of its misses. Strength is exact among the setups that can carry a
+drop. One round is 0.3 to 3.4 labelled minutes, so longer sessions are
+composite fighters, one round per person until the minutes are reached.
+Repeating one person's round instead is not usable: read eight times over,
+11 of 13 people with nothing planted report a guard habit.
+
+After a right to end a combo, the left hand sags. Named, 300 composites a
+cell:
+
+| labelled minutes | 80% real | sim | 50% real | sim | 30% real | sim | shuffled drops | nothing planted | sim, no habit |
+|---|---|---|---|---|---|---|---|---|---|
+| 3 | 3% | 15% | 0% | 4% | 0% | 1% | 15% | 13% | 4% |
+| 6 | 1% | 26% | 0% | 6% | 0% | 2% | 11% | 16% | 4% |
+| 12 | 0% | 42% | 0% | 14% | 0% | 4% | 3% | 4% | 6% |
+
+The simulation's own habit, a sag on the right after two rights, cannot
+really be tested: two rights end a combo 17 times in 19 labelled minutes
+of real shadowboxing, and the reader read 3 of them as that setup. It was
+named in 0 to 1% of composites at every strength, against the
+simulation's 22% at 80% by twelve minutes.
+
+So the simulation was optimistic, by a wide margin, and for reasons it did
+not model:
+
+- **Real sags are shallow.** The labelled drops move the wrist a median
+  0.16 torso lengths. On the occasions a plant landed in, the left hand
+  averaged -0.25 against -0.16 after other combos, sd 0.19; the simulation
+  assumed -0.34 against -0.08, sd 0.30, nearly twice the separation.
+- **The setup is rarer.** Real follow-along combos are long. A right
+  ended one 119 times in 19 minutes, two-thirds of those had room for a
+  drop before that arm threw again, and the reader read 59% of them as the
+  setup. The simulation has about twice as many combo endings a minute.
+- **The other hand is already low.** After a left ends a combo, the left
+  hand is still coming back from it, so "after a right, the left is lower
+  than after anything else" starts against a real difference the other way.
+- **The reader is not the only cost.** With the labelled punches in place
+  of the reader the same habit was named 6% of the time by twelve minutes,
+  and with drops made twice as deep as the labelled ones, 11%. With the
+  reader and twice the depth, 0 to 1%.
+
+The call is the part that held up. Armed with the planted habit it fired
+0.9 s before the hand was down, and 44% of planted drops had a call before
+them, about the reader's catch rate of the setup. But only 12% of calls
+were followed by a planted drop at 80% strength (7% at 50%, 4% at 30%),
+because "after a right" fires on every right the reader sees, mid-combo or
+false, not only on the ones that end a combo. In simulation a call was
+right as often as the habit was.
+
+Nothing planted, the read stays mostly quiet: one round on its own reports
+a guard habit for 1 of 13 people, the same one it always has. In short
+composites that one person is in most draws, which is why "nothing
+planted" sits at 13 to 16%; shuffled drops, as many as the 80% habit but
+after random combos, report no more than nothing planted does, so the
+drops themselves do not make habits up. The plant is not found for the
+wrong reason either: frame to frame the planted wrist steps above the
+person's own 99th percentile on 0.7% of frames, and the reader fires on the
+planted arm less inside plants (2.4 a minute against 21), which is by
+construction, since plants go where that arm is not punching.
+
+What this does not show: these are real movements and real people, but a
+planted habit is not a person's own. A real habit may be deeper, more
+regular, or tied to the setup in ways a transplanted drop is not, and the
+donors are three people. It does show that on the movement the bench has,
+the read does not find a habit of the size real drops have, in any
+session length the bench can build.
+
 ### Limits, plainly
 
 - **Framing.** It needs head to hips in shot. At laptop distance legs are
@@ -295,9 +384,10 @@ and the bench to measure it on is in `bench/shadow`.
 - **The labels are a model's labels.** Two instances agreeing is evidence, not
   proof, and they may share blind spots two people would not.
 - **The habit and the call were measured in simulation**, at the error rates
-  measured on real footage, because nobody on the bench comes with a known
-  habit. The first real test of the whole promise is someone who knows their
-  own habit standing in front of it.
+  measured on real footage, and then on real rounds with a habit planted
+  from real drops, where the read did not find it. Nobody on the bench
+  comes with a known habit of their own. The first real test of the whole
+  promise is still someone who knows their own habit standing in front of it.
 
 ---
 
