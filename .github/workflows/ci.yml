@@ -27,6 +27,6 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y libgl1 libglib2.0-0
       - run: pip install -e '.[dev]'
       # The landmarker weights and the HaGRID subset are deliberately not in
-      # the repo, and there is no camera here, so the 9 tests that need them
-      # skip. Verified locally by hiding both: 181 pass, 9 skip.
+      # the repo, and there is no camera here, so the 16 tests that need them
+      # skip. Verified on a clean clone of v2: 710 pass, 16 skip.
       - run: pytest -q
