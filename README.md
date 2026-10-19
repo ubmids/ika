@@ -5,55 +5,88 @@ loud a beat before you do it.**
 
 Not "you threw a jab". You know that. The read is the thing you cannot see
 yourself: *after two rights, your right hand comes down*. Once it knows that
-about you, it watches for the two rights and says "right hand" while there is
-still time to keep it up.
+about you, it says "right hand" while there is still time to keep it up.
 
 ```bash
-python3.12 -m venv .venv && . .venv/bin/activate   # ika needs Python 3.10 to 3.12
-pip install -e .
-ika drill            # stand back, hold your guard for three seconds, then box. Ctrl-C ends the round
-ika history          # every habit, session by session, and whether it is fading
+ika coach      # it calls combos like pad work and reads your guard after each one
+ika drill      # you box freely; it reads what you throw, finds the habit, and calls it
+ika history    # every habit, session by session: holding, fading or new
 ```
 
-The first `ika drill` fetches the two pose models it needs (15 MB, Google
-MediaPipe). `ika setup` does the same and also checks the camera. Nothing else
-is needed: no account, no network after that, no recording of your own.
+**Start with `ika coach`.** It is the one that works best, because it
+already knows what you threw: it called it. The drill has to read your
+punches off the camera first, and that reader catches about half of them.
+Both are measured below, including what has not been shown yet: nobody has
+stood in front of either with a habit of their own.
 
-Stand back until the camera sees you from head to hips with both hands in
-shot, about two metres from a laptop. This is a real round, replayed from a
-public follow-along workout (`ika drill round.mp4 --silent`), unedited:
+## Install
 
-```
-  round: 180s at 45 fps
-  169 punches (56 a minute), guard dropped 33 times
-  this session:
-    after punch_right: guard_down_left 58% of the time (normally 12%), 4.7x, seen 14/24
-    after punch_right: guard_down_right 46% of the time (normally 12%), 3.7x, seen 11/24
-    after punch_right then punch_left: punch_right 84% of the time (normally 46%), 1.8x, seen 51/61
-    after punch_left: punch_right 68% of the time (normally 46%), 1.5x, seen 62/91
-    after punch_right: punch_left 79% of the time (normally 54%), 1.5x, seen 61/77
-    after punch_left then punch_left then punch_left: punch_left 78% of the time (normally 54%), 1.4x, seen 14/18
-  called it 27 times; the lapse followed 6 (22%), 0.8s before the hand went down
+```bash
+pipx install git+https://github.com/ubmids/ika    # or: uv tool install git+https://github.com/ubmids/ika
+ika setup      # fetches the two pose models (15 MB, Google MediaPipe) and checks the camera
 ```
 
-The first two lines are the read: when this person finishes on a right, both
-hands sit lower for the next second than after anything else they throw.
-Checked by eye it is a lean, not an obvious drop, so treat it as the kind of
-thing ika says rather than as proof it is right. The last four are punch
-patterns, true and mostly just how people box. During the round, once a guard habit is
-known, the call is spoken as the setup happens; "the lapse followed 22%" is
-scored against the dropped-guard event detector, which is the weak sensor
-described below, so it undercounts.
+Python 3.10 to 3.14, on Apple Silicon Macs, x86-64 Linux and Windows,
+which is where MediaPipe 0.10 publishes wheels (no Intel Mac, no ARM
+Linux). Python 3.14.1 exactly is the one release torchvision refuses; any
+other 3.14 is fine. The first `ika coach` or `ika drill` fetches the
+models itself if you skip `ika setup`. Nothing else is needed: no account,
+no network after that, no recording of your own. Installed this way,
+models and history live in `~/.ika` (set `IKA_HOME` to move them). From a
+clone they live in the clone, which is how the research below runs:
 
-`--silent` prints the call instead of speaking it, `--quiet` drops the
-per-event lines, and `ika drill some_round.mp4` replays a recorded round
-instead of the camera, which is how everything below was measured.
+```bash
+git clone https://github.com/ubmids/ika && cd ika
+python3.12 -m venv .venv && . .venv/bin/activate
+pip install -e '.[dev]' && pytest -q
+```
+
+## The screen
+
+Stand back about two metres, head to hips in shot, and hold your guard
+still for three seconds while it calibrates. Then the terminal becomes the
+round, laid out to be read from across the room. This frame is from a
+recorded round replayed through `ika coach`, never the camera:
+
+```
+ ika coach                                                                 BOX
+ ┌────────────────────┐
+ │        ⡔⠉⠑⡆        │               ██████        ██    ██████
+ │        ⠑⠤⠔⠁        │               ██  ██  ██  ████    ██
+ │   ⢠⠤⠤⠤⠤⣀⣀⣀⣀⣀       │               ██  ██        ██    ██████
+ │   ⡏⡆       ⡇⠉⠒⠤⣢⡀  │               ██  ██  ██    ██        ██
+ │  ⡸ ⢱      ⢠⠃    ⠉⠂ │               ██████      ██████  ██████
+ │  ⠁ ⠈⡆     ⢸        │
+ │     ⢣     ⢸        │                   ▄█      ▀▀█     ▀▀█
+ │     ⠘⡄    ⡜        │                    █  ▀▀▀ █▀▀ ▀▀▀ ▀▀█
+ │      ⢣    ⡇        │                   ▀▀▀     ▀▀▀     ▀▀▀
+ │      ⢸⠉⠉⠉⠉⢣        │                     ONE, TWO, THREE
+ │      ⢸     ⢇       │
+ │      ⡜     ⠈⢆      │ left guard  ███████████████┃█░░░░░░░░░░░░░░░ up
+ │      ⡇      ⠘⡄     │ right guard ···············|················ -
+ │      ⡇       ⢸     │
+ │      ⡇       ⠸⡀    │ left hand   ·······················██···█···
+ │      ⡇        ⡇    │ right hand  ·······················█········ 5 thrown
+ │      ⡇        ⡇    │
+ │      ⡇        ⢱    │
+ │      ⢧        ⢸    │
+ │      ⠈        ⠓⠒⠉⠁ │ calibrated. resting guard L +0.07 R -0.03.
+ └────────────────────┘
+ Ctrl-C ends the round    43 fps
+```
+
+The round clock, the call in large type with its words under it, a stick
+figure of what the camera sees, a meter per hand for the guard (the same
+shoulder-relative read the habit statistics use; the line is where a hand
+counts as down, and "-" is a hand it cannot read, often one mid-punch), and
+the last twelve seconds of punches it caught for each hand. A bell rings
+once to start a round and three times to end it; `--no-bell` turns it off,
+and `--silent` (print the calls, do not speak them) is silent throughout.
+`--plain`, `--quiet`, a pipe, or replaying a file with `--silent` print the
+plain transcript instead, which is what every number here was measured
+with. Ctrl-C ends a round, and it is summarised and saved either way.
 
 ## Coach mode
-
-```bash
-ika coach            # it calls combos out loud, you throw them; ika coach --rounds 3 for more
-```
 
 The drill has to work out what you threw before it can say anything about
 your guard, and the punch reader is the weak link. In coach mode ika calls
@@ -65,7 +98,8 @@ can be read before the next one. The punch reader is only asked whether
 anything was thrown after a call; a call with nothing thrown is counted and
 skipped. The guard is read in the second after the response, with the
 drill's own window and rank test, and once a combo is a known habit its
-call ends with a reminder: "one, two... right hand up". `--seed` repeats a
+call ends with a reminder: "one, two... right hand up". `--rounds 3`
+boxes three rounds with a minute's rest between, `--seed` repeats a
 schedule, `--combos 1-2,2-3-2` picks them, and `ika history` lists coach
 and drill sessions apart.
 
@@ -95,7 +129,7 @@ not a measurement of anyone following ika's calls.
 
 Two things moved the first column, and only one of them is ika getting
 better. The guard is now read from the shoulders rather than the nose
-(next section), which on the same measured heights takes a twelve-minute
+(below), which on the same measured heights takes a twelve-minute
 session from 34% to 60%. The rest is the simulation getting more honest:
 real guard heights after a combo have a long low tail, which a rank test
 uses and a normal curve with the same mean and spread hides, so the
@@ -106,6 +140,40 @@ on coach mode under the normal curve; under the measured heights it is
 not, and an effect-size bar tried in its place did no better (see below).
 The person in the simulation answers 95% of calls, an assumption, and
 nobody has yet stood in front of it.
+
+## The drill
+
+Nothing is called. You box however you like, and ika reads what you
+threw and where your hands went after it, and once it knows a habit it
+says the hand out loud as the setup happens. Stand back until the camera sees you from head to hips with both hands in
+shot, about two metres from a laptop. This is a real round, replayed from a
+public follow-along workout (`ika drill round.mp4 --silent`), unedited:
+
+```
+  round: 180s at 45 fps
+  169 punches (56 a minute), guard dropped 33 times
+  this session:
+    after punch_right: guard_down_left 58% of the time (normally 12%), 4.7x, seen 14/24
+    after punch_right: guard_down_right 46% of the time (normally 12%), 3.7x, seen 11/24
+    after punch_right then punch_left: punch_right 84% of the time (normally 46%), 1.8x, seen 51/61
+    after punch_left: punch_right 68% of the time (normally 46%), 1.5x, seen 62/91
+    after punch_right: punch_left 79% of the time (normally 54%), 1.5x, seen 61/77
+    after punch_left then punch_left then punch_left: punch_left 78% of the time (normally 54%), 1.4x, seen 14/18
+  called it 27 times; the lapse followed 6 (22%), 0.8s before the hand went down
+```
+
+The first two lines are the read: when this person finishes on a right, both
+hands sit lower for the next second than after anything else they throw.
+Checked by eye it is a lean, not an obvious drop, so treat it as the kind of
+thing ika says rather than as proof it is right. The last four are punch
+patterns, true and mostly just how people box. During the round, once a guard habit is
+known, the call is spoken as the setup happens; "the lapse followed 22%" is
+scored against the dropped-guard event detector, which is the weak sensor
+described below, so it undercounts.
+
+`--silent` prints the call instead of speaking it, `--quiet` drops the
+per-event lines, and `ika drill some_round.mp4` replays a recorded round
+instead of the camera, which is how everything below was measured.
 
 ---
 
