@@ -23,7 +23,7 @@ import cv2
 
 from .body import PoseTracker
 from .coach import is_coach
-from .cue import Caller, measure
+from .cue import Caller, bell, measure
 from .drill import DrillReader, read_habits
 from .hands import HandTracker
 from .profile import Profile, propose
@@ -101,8 +101,16 @@ def run_drill(
     voice: bool = True,
     save: bool = True,
     quiet: bool = False,
+    live: bool = False,
+    ring: bool = True,
 ) -> dict:
-    """Run one session. Returns what happened, for scripts and tests."""
+    """Run one session. Returns what happened, for scripts and tests.
+
+    `live` draws the round on a full screen (`ika.live`) instead of printing
+    a transcript; the summary is printed either way, after the screen closes.
+    `ring` sounds a bell when the round starts and when a timed round ends,
+    and only when the voice is on: `--silent` and a file replay are quiet.
+    """
     capture, is_file = _open(camera)
     if capture is None or not capture.isOpened():
         if is_file:
@@ -126,9 +134,13 @@ def run_drill(
     reader = DrillReader(calibration=calibration, framing=framing,
                          aspect=frame_w / frame_h)
     caller = Caller(standing, voice=voice and not is_file)
+    ring = ring and voice and not is_file
+    view, state = _live_view(live, "drill", frame_w / frame_h, standing)
+    note = (lambda text: _note(state, text)) if view is not None else _say
     started = time.time()
     frames, last_report, clock = 0, 0.0, 0.0
     announced = False
+    boxing_from = 0.0
     nudged = -1e9
 
     from contextlib import nullcontext
@@ -142,62 +154,89 @@ def run_drill(
         # A camera round ends when you press Ctrl-C. That is the normal way
         # out, not an abort, so the round is still summarised and saved.
         try:
-            while True:
-                ok, bgr = capture.read()
-                if not ok:
-                    break
-                clock = (capture.get(cv2.CAP_PROP_POS_MSEC) / 1000.0 if is_file
-                         else time.time() - started)
-                if seconds is not None and clock > seconds:
-                    break
+            with view if view is not None else nullcontext():
+                while True:
+                    ok, bgr = capture.read()
+                    if not ok:
+                        break
+                    clock = (capture.get(cv2.CAP_PROP_POS_MSEC) / 1000.0 if is_file
+                             else time.time() - started)
+                    if seconds is not None and clock > seconds:
+                        if ring and reader.calibrated:
+                            bell(3)
+                        break
 
-                # Shrunk to at most `width`, never enlarged. 640 because that is the
-                # width the punch reader was measured at; at 480 the pose loses
-                # enough detail that a replay of the same clip read differently.
-                if bgr.shape[1] > width:
-                    scale = width / bgr.shape[1]
-                    bgr = cv2.resize(bgr, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
-                rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-                stamp = int(clock * 1000)
+                    # Shrunk to at most `width`, never enlarged. 640 because that is the
+                    # width the punch reader was measured at; at 480 the pose loses
+                    # enough detail that a replay of the same clip read differently.
+                    if bgr.shape[1] > width:
+                        scale = width / bgr.shape[1]
+                        bgr = cv2.resize(bgr, None, fx=scale, fy=scale,
+                                         interpolation=cv2.INTER_AREA)
+                    rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+                    stamp = int(clock * 1000)
 
-                # The hand landmarker only feeds the close reader; standing back
-                # it finds a hand in a third of frames and nothing reads it.
-                seen_hands = hands(rgb, stamp) if framing == "close" else []
-                bodies = pose(rgb, stamp)
-                frames += 1
+                    # The hand landmarker only feeds the close reader; standing back
+                    # it finds a hand in a third of frames and nothing reads it.
+                    seen_hands = hands(rgb, stamp) if framing == "close" else []
+                    bodies = pose(rgb, stamp)
+                    frames += 1
 
-                for event in reader.observe(seen_hands, bodies[0] if bodies else None, clock):
-                    if not quiet:
-                        _say(f"  {clock:6.1f}s  {event.name}"
-                             + (f"   {event.detail}" if event.detail else ""))
-                    cue = caller.update(current_combo(reader.punches()), clock)
-                    if cue and not quiet:
-                        _say(f"  {clock:6.1f}s  >> {cue.words.upper()}   "
-                             f"(after {' then '.join(cue.context)}, {cue.probability:.0%})")
+                    for event in reader.observe(seen_hands, bodies[0] if bodies else None, clock):
+                        if view is not None:
+                            _show_event(state, event)
+                        elif not quiet:
+                            _say(f"  {clock:6.1f}s  {event.name}"
+                                 + (f"   {event.detail}" if event.detail else ""))
+                        cue = caller.update(current_combo(reader.punches()), clock)
+                        if cue and view is not None:
+                            state.big_text, state.words = cue.words, _setup_words(cue.context)
+                            state.said_at = clock
+                        elif cue and not quiet:
+                            _say(f"  {clock:6.1f}s  >> {cue.words.upper()}   "
+                                 f"(after {' then '.join(cue.context)}, {cue.probability:.0%})")
 
-                # Silence while it waits looks like it is working. If the guard
-                # has not been learned well past the calibration time, say why.
-                if (not reader.calibrated and clock > calibration + 4.0
-                        and clock - nudged >= 8.0):
-                    nudged = clock
-                    _say("  still calibrating: "
-                         + ("I can see you, but hold your guard still with both hands in shot."
-                            if bodies else
-                            "no one in view. Step back until head to hips are in shot."))
+                    # Silence while it waits looks like it is working. If the guard
+                    # has not been learned well past the calibration time, say why.
+                    if (not reader.calibrated and clock > calibration + 4.0
+                            and clock - nudged >= 8.0):
+                        nudged = clock
+                        note("  still calibrating: "
+                             + ("I can see you, but hold your guard still with both hands in shot."
+                                if bodies else
+                                "no one in view. Step back until head to hips are in shot."))
 
-                if reader.calibrated and not announced:
-                    announced = True
-                    _say(f"  calibrated. resting guard "
-                         f"L {reader.baseline.guard_left:+.2f} "
-                         f"R {reader.baseline.guard_right:+.2f}. go.")
+                    if reader.calibrated and not announced:
+                        announced = True
+                        boxing_from = clock
+                        note(f"  calibrated. resting guard "
+                             f"L {reader.baseline.guard_left:+.2f} "
+                             f"R {reader.baseline.guard_right:+.2f}. go.")
+                        if ring:
+                            bell(1)
 
-                if clock - last_report >= report_every and reader.calibrated:
-                    last_report = clock
-                    found = read_habits(reader)
-                    # This session's own habits join the watch list as they appear.
-                    caller.arm(list(standing) + list(found))
-                    if not quiet:
-                        _report(found)
+                    if clock - last_report >= report_every and reader.calibrated:
+                        last_report = clock
+                        found = read_habits(reader)
+                        # This session's own habits join the watch list as they appear.
+                        caller.arm(list(standing) + list(found))
+                        if view is not None:
+                            for habit in found[:2]:
+                                note(f"  habit: {habit.describe()}")
+                        elif not quiet:
+                            _report(found)
+
+                    if view is not None:
+                        state.clock = clock
+                        if reader.calibrated:
+                            state.phase = "box"
+                            state.remaining = (seconds - clock) if seconds is not None else None
+                            state.elapsed = clock - boxing_from
+                        else:
+                            state.remaining = max(0.0, calibration - clock)
+                        _show_frame(state, reader, bodies, clock,
+                                    frames / max(time.time() - started, 1e-6))
+                        view.draw(state)
         except KeyboardInterrupt:
             _say("\n  round over.")
 
@@ -261,3 +300,62 @@ def _report(found) -> None:
     _say("  this session:")
     for habit in found[:6]:
         _say(f"    {habit.describe()}")
+
+
+# --- the live screen --------------------------------------------------------
+# Shared with coach mode. Kept here, beside the loop that feeds them, rather
+# than in `live`, which only draws and knows nothing about readers.
+
+# How long a call or cue stays bright, then on screen at all.
+FRESH_SECONDS = 1.5
+SHOWN_SECONDS = 5.0
+
+
+def _live_view(live: bool, mode: str, aspect: float, standing=()):
+    from .live import LiveState, Screen
+
+    state = LiveState(mode=mode, aspect=aspect)
+    for habit in list(standing)[:2]:
+        _note(state, f"watching for: {habit.describe()}")
+    return (Screen() if live else None), state
+
+
+def _note(state, text: str) -> None:
+    """Add a line under the screen, unless it was one of the last few."""
+    text = text.strip()
+    if text and text not in state.notes[-4:]:
+        state.notes.append(text)
+    del state.notes[:-8]
+
+
+def _setup_words(context) -> str:
+    """A drill setup in words: ("punch_right", "punch_left") -> "after right, left"."""
+    return "after " + ", ".join(c.rsplit("_", 1)[-1] for c in context)
+
+
+def _show_event(state, event) -> None:
+    if event.name in ("punch_left", "punch_right"):
+        state.punches.append((event.at, event.name.rsplit("_", 1)[1]))
+        state.punch_count += 1
+        from .live import TICK_SECONDS
+        while state.punches and event.at - state.punches[0][0] > TICK_SECONDS:
+            state.punches.pop(0)
+
+
+def _show_frame(state, reader, bodies, clock: float, fps: float) -> None:
+    """The per-frame parts of the screen: the pose, the guard, the call's age."""
+    import math
+
+    state.body = bodies[0] if bodies else None
+    state.fps = fps
+    # The guard meter averages the last few frames of the same shoulder
+    # relative read the habit statistics use, so it moves like a hand and
+    # does not flicker like a landmark.
+    recent = list(reader.guard_track.frames)[-8:]
+    for side in ("left", "right"):
+        values = [f.height[side] for f in recent if math.isfinite(f.height[side])]
+        state.guard[side] = sum(values) / len(values) if values else float("nan")
+    age = clock - state.said_at
+    state.fresh = age < FRESH_SECONDS
+    if state.mode == "drill" and age > SHOWN_SECONDS:
+        state.big_text = state.words = ""

@@ -24,6 +24,7 @@ import shutil
 import subprocess
 import sys
 from dataclasses import dataclass
+from pathlib import Path
 
 LAPSES = ("guard_down_",)
 
@@ -95,14 +96,32 @@ def _speaker() -> str | None:
     return shutil.which("say") if sys.platform == "darwin" else None
 
 
+def _spawn(command: list[str]) -> None:
+    """Start a sound and do not wait for it. The one place ika makes a noise,
+    so a test can replace it and be sure nothing is ever played."""
+    subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
 def _say(words: str) -> None:
     """Speak without waiting. A blocked loop would drop the frames it is reading."""
     speaker = _speaker()
     if speaker is None:
         print("\a", end="", flush=True)
         return
-    subprocess.Popen([speaker, "-r", "240", words],
-                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    _spawn([speaker, "-r", "240", words])
+
+
+# A round bell: one ring to start, three to stop, like the real thing. A
+# system sound, played the same way the voice is spoken.
+BELL_SOUND = Path("/System/Library/Sounds/Glass.aiff")
+
+
+def bell(rings: int = 1) -> None:
+    player = shutil.which("afplay") if sys.platform == "darwin" else None
+    if player is None or not BELL_SOUND.exists():
+        print("\a", end="", flush=True)
+        return
+    _spawn(["sh", "-c", "; ".join([f'"{player}" "{BELL_SOUND}"'] * max(1, rings))])
 
 
 def measure(cues: list[Cue], events, window: float = 1.5) -> dict:

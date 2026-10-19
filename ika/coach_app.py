@@ -14,6 +14,7 @@ null, not of anyone's habits; it is how this was run without a camera.
 from __future__ import annotations
 
 import time
+from contextlib import nullcontext
 from pathlib import Path
 
 import cv2
@@ -21,9 +22,10 @@ import cv2
 from . import coach, sag
 from .body import PoseTracker
 from .cue import _say as speak
-from .cue import _speaker
+from .cue import _speaker, bell
 from .drill import DrillReader
-from .drill_app import _NativeLogsToFile, _open, _say, pose_variant
+from .drill_app import (_NativeLogsToFile, _live_view, _note, _open, _say, _show_event,
+                        _show_frame, pose_variant)
 from .profile import Profile
 
 
@@ -52,8 +54,14 @@ def run_coach(
     voice: bool = True,
     save: bool = True,
     quiet: bool = False,
+    live: bool = False,
+    ring: bool = True,
 ) -> dict:
-    """Run one coach session of `rounds` rounds. Returns what happened."""
+    """Run one coach session of `rounds` rounds. Returns what happened.
+
+    `live` and `ring` are as in `drill_app.run_drill`: a full-screen view of
+    the round, and a bell at the start and end of each round.
+    """
     capture, is_file = _open(camera)
     if capture is None or not capture.isOpened():
         if is_file:
@@ -85,6 +93,11 @@ def run_coach(
     reader = DrillReader(calibration=calibration, framing="stand",
                          aspect=frame_w / frame_h)
     say = _Voice(voice and not is_file)
+    ring = ring and voice and not is_file
+    view, state = _live_view(live, "coach", frame_w / frame_h, standing)
+    state.rounds = rounds
+    note = (lambda text: _note(state, text)) if view is not None else _say
+    spans: list[tuple[float, float]] = []   # each round, from its bell to its last guard window
     started = time.time()
     clock, frames = 0.0, 0
     calls: list[coach.Call] = []     # the whole session's schedule, once it starts
@@ -97,64 +110,80 @@ def run_coach(
          PoseTracker(variant=pose_variant("stand"), max_bodies=1,
                      detection_confidence=0.4) as pose:
         try:
-            while True:
-                ok, bgr = capture.read()
-                if not ok:
-                    break
-                clock = (capture.get(cv2.CAP_PROP_POS_MSEC) / 1000.0 if is_file
-                         else time.time() - started)
-                if bgr.shape[1] > width:
-                    scale = width / bgr.shape[1]
-                    bgr = cv2.resize(bgr, None, fx=scale, fy=scale,
-                                     interpolation=cv2.INTER_AREA)
-                rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-                bodies = pose(rgb, int(clock * 1000))
-                frames += 1
-                for event in reader.observe([], bodies[0] if bodies else None, clock):
-                    if not quiet and event.name.startswith("punch_"):
-                        _say(f"  {clock:6.1f}s  {event.name}")
-
-                if not reader.calibrated:
-                    if clock > calibration + 4.0 and clock - nudged >= 8.0:
-                        nudged = clock
-                        _say("  still calibrating: "
-                             + ("I can see you, but hold your guard still with both "
-                                "hands in shot." if bodies else
-                                "no one in view. Step back until head to hips are in shot."))
-                    continue
-
-                if begun is None:
-                    begun = clock
-                    calls, marks = _session(chosen, seconds, rounds, rest, seed,
-                                            clock + coach.LEAD_IN)
-                    calls = coach.with_reminders(calls, remind)
-                    _say(f"  calibrated. resting guard L {reader.baseline.guard_left:+.2f} "
-                         f"R {reader.baseline.guard_right:+.2f}.")
-
-                while marks and marks[0][0] <= clock:
-                    _at, words = marks.pop(0)
-                    _say(f"  {clock:6.1f}s  [{words}]")
-                    say(words)
-                    if words.endswith("rest"):
-                        # Between rounds, what this session has shown so far
-                        # joins what history knows, so the next round's calls
-                        # for a combo that is already a habit carry the reminder.
-                        so_far = coach.align(made, reader.guard_track, reader.punches())
-                        found = coach.read(so_far)
-                        for f in found[:3]:
-                            _say(f"    so far: {coach.describe(f)}")
-                        remind = coach.reminders(list(standing) + list(found))
-                        calls = made + coach.with_reminders(calls[len(made):], remind)
-                while len(made) < len(calls) and calls[len(made)].at <= clock:
-                    call = calls[len(made)]
-                    made.append(call)
-                    _say(f"  {clock:6.1f}s  >> {call.words.upper()}")
-                    say(call.words)
-                if begun is not None and not marks and len(made) == len(calls):
-                    # The last call's guard window has to be seen before stopping.
-                    last = calls[-1] if calls else None
-                    if last is None or clock > last.at + coach.gap(last.combo):
+            with view if view is not None else nullcontext():
+                while True:
+                    ok, bgr = capture.read()
+                    if not ok:
                         break
+                    clock = (capture.get(cv2.CAP_PROP_POS_MSEC) / 1000.0 if is_file
+                             else time.time() - started)
+                    if bgr.shape[1] > width:
+                        scale = width / bgr.shape[1]
+                        bgr = cv2.resize(bgr, None, fx=scale, fy=scale,
+                                         interpolation=cv2.INTER_AREA)
+                    rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+                    bodies = pose(rgb, int(clock * 1000))
+                    frames += 1
+                    for event in reader.observe([], bodies[0] if bodies else None, clock):
+                        if view is not None:
+                            _show_event(state, event)
+                        elif not quiet and event.name.startswith("punch_"):
+                            _say(f"  {clock:6.1f}s  {event.name}")
+
+                    if view is not None:
+                        _show_live(state, reader, bodies, clock, spans, calibration,
+                                   frames / max(time.time() - started, 1e-6))
+                        view.draw(state)
+
+                    if not reader.calibrated:
+                        if clock > calibration + 4.0 and clock - nudged >= 8.0:
+                            nudged = clock
+                            note("  still calibrating: "
+                                 + ("I can see you, but hold your guard still with both "
+                                    "hands in shot." if bodies else
+                                    "no one in view. Step back until head to hips are in shot."))
+                        continue
+
+                    if begun is None:
+                        begun = clock
+                        calls, marks = _session(chosen, seconds, rounds, rest, seed,
+                                                clock + coach.LEAD_IN)
+                        calls = coach.with_reminders(calls, remind)
+                        spans = list(zip([m[0] for m in marks[0::2]], [m[0] for m in marks[1::2]]))
+                        note(f"  calibrated. resting guard L {reader.baseline.guard_left:+.2f} "
+                             f"R {reader.baseline.guard_right:+.2f}.")
+
+                    while marks and marks[0][0] <= clock:
+                        _at, words = marks.pop(0)
+                        if view is None:
+                            _say(f"  {clock:6.1f}s  [{words}]")
+                        if ring:
+                            bell(1 if words.endswith("box") else 3)
+                        say(words)
+                        if words.endswith("rest"):
+                            # Between rounds, what this session has shown so far
+                            # joins what history knows, so the next round's calls
+                            # for a combo that is already a habit carry the reminder.
+                            so_far = coach.align(made, reader.guard_track, reader.punches())
+                            found = coach.read(so_far)
+                            for f in found[:3]:
+                                note(f"    so far: {coach.describe(f)}")
+                            remind = coach.reminders(list(standing) + list(found))
+                            calls = made + coach.with_reminders(calls[len(made):], remind)
+                    while len(made) < len(calls) and calls[len(made)].at <= clock:
+                        call = calls[len(made)]
+                        made.append(call)
+                        if view is not None:
+                            state.big_text, state.words = call.combo.name, call.words
+                            state.said_at = clock
+                        else:
+                            _say(f"  {clock:6.1f}s  >> {call.words.upper()}")
+                        say(call.words)
+                    if begun is not None and not marks and len(made) == len(calls):
+                        # The last call's guard window has to be seen before stopping.
+                        last = calls[-1] if calls else None
+                        if last is None or clock > last.at + coach.gap(last.combo):
+                            break
         except KeyboardInterrupt:
             _say("\n  round over.")
 
@@ -189,6 +218,27 @@ def run_coach(
         _say(f"\n  saved to {store}. `ika history --subject {subject}` shows the trend.")
     return {"reps": reps, "found": found, "calls": made, "seconds": clock,
             "combos": [c.name for c in chosen]}
+
+
+def _show_live(state, reader, bodies, clock, spans, calibration, fps) -> None:
+    """Where the session is: calibrating, waiting for the bell, a round, a rest."""
+    state.clock = clock
+    _show_frame(state, reader, bodies, clock, fps)
+    if not reader.calibrated or not spans:
+        state.phase, state.remaining = "calibrating", max(0.0, calibration - clock)
+        return
+    for i, (begin, end) in enumerate(spans):
+        if clock < begin:
+            state.phase = "ready" if i == 0 else "rest"
+            state.remaining = begin - clock
+            state.round_no = i + 1
+            state.big_text = state.words = ""
+            return
+        if clock < end:
+            state.phase, state.remaining, state.round_no = "box", end - clock, i + 1
+            return
+    state.phase, state.remaining = "time", 0.0
+    state.big_text = state.words = ""
 
 
 def _session(combos, seconds, rounds, rest, seed, start):

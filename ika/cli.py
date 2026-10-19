@@ -425,7 +425,8 @@ def _drill(args):
     run_drill(camera=source, width=args.width,
               calibration=args.calibration, profile=args.profile,
               subject=args.subject, seconds=args.seconds, framing=framing,
-              voice=not args.silent, save=not args.no_save, quiet=args.quiet)
+              voice=not args.silent, save=not args.no_save, quiet=args.quiet,
+              live=_wants_live(args), ring=not args.no_bell)
     return 0
 
 
@@ -457,8 +458,17 @@ def _coach(args):
               profile=args.profile, subject=args.subject, seconds=args.seconds,
               rounds=args.rounds, rest=args.rest,
               combos=args.combos.split(",") if args.combos else None,
-              seed=args.seed, voice=not args.silent, save=not args.no_save, quiet=args.quiet)
+              seed=args.seed, voice=not args.silent, save=not args.no_save, quiet=args.quiet,
+              live=_wants_live(args), ring=not args.no_bell)
     return 0
+
+
+def _wants_live(args) -> bool:
+    """The full-screen view in a terminal; the plain transcript for anything else."""
+    from .live import wanted
+
+    return wanted(quiet=args.quiet, plain=args.plain, replay=args.source is not None,
+                  silent=args.silent)
 
 
 def _history(args):
@@ -590,6 +600,13 @@ def _bindings(_args):
     return 0
 
 
+def _screen_flags(parser) -> None:
+    parser.add_argument("--plain", action="store_true",
+                        help="print a transcript instead of the full-screen view")
+    parser.add_argument("--no-bell", action="store_true", dest="no_bell",
+                        help="no round bell at the start and end")
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="ika",
@@ -717,6 +734,7 @@ def build_parser() -> argparse.ArgumentParser:
                     help="stop after this long, for a bounded session")
     dr.add_argument("--silent", action="store_true", help="print cues, do not speak them")
     dr.add_argument("--quiet", action="store_true", help="no per-event lines")
+    _screen_flags(dr)
     dr.add_argument("--no-save", action="store_true", dest="no_save",
                     help="do not add this session to the profile")
     dr.set_defaults(func=_drill)
@@ -739,6 +757,7 @@ def build_parser() -> argparse.ArgumentParser:
     co.add_argument("--seed", type=int, default=None, help="repeat a session's schedule")
     co.add_argument("--silent", action="store_true", help="print calls, do not speak them")
     co.add_argument("--quiet", action="store_true", help="no per-punch lines")
+    _screen_flags(co)
     co.add_argument("--no-save", action="store_true", dest="no_save",
                     help="do not add this session to the profile")
     co.set_defaults(func=_coach)
