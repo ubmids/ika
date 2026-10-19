@@ -176,7 +176,9 @@ def render(record: Profile | None, subject: str, now: float | None = None,
                            f"{spark(points).ljust(max(len(times), 12))}  {tail}  "
                            f"{label.get(key, '')}")
     if not series:
-        out += ["", "  no habit has been found yet. A habit needs two sessions behind it."]
+        out += ["", "  no habit has been found yet. It takes a few sessions: two for a drill",
+                "  habit, three for a coach one, whose first session only proposes it."]
+        return out
 
     standing = record.habits(now=now)
     if standing:
