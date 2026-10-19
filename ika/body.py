@@ -22,7 +22,9 @@ from pathlib import Path
 
 import numpy as np
 
-MODELS = Path(__file__).resolve().parent.parent / "models"
+from .paths import HOME
+
+MODELS = HOME / "models"
 
 POSE_URLS = {
     "lite": "https://storage.googleapis.com/mediapipe-models/pose_landmarker"

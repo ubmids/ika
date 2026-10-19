@@ -24,7 +24,9 @@ from pathlib import Path
 
 import numpy as np
 
-MODEL = Path(__file__).resolve().parent.parent / "models" / "hand_landmarker.task"
+from .paths import HOME
+
+MODEL = HOME / "models" / "hand_landmarker.task"
 
 HAND_MODEL_URL = (
     "https://storage.googleapis.com/mediapipe-models/hand_landmarker"

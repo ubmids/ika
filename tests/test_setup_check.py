@@ -257,3 +257,32 @@ def test_the_annotations_already_here_match_their_expected_size():
     if not path.is_file():
         pytest.skip("HaGRID not downloaded")
     assert path.stat().st_size == HAGRID_ANNOTATIONS_BYTES
+
+
+def test_a_tested_python_gets_no_note_and_others_get_a_friendly_one():
+    from ika.setup_check import python_note
+
+    for version in ((3, 10, 0), (3, 12, 7), (3, 13, 1), (3, 14, 7)):
+        assert python_note(version) is None
+    newer = python_note((3, 15, 0))
+    assert "newer than ika has been tested on" in newer and "3.12" in newer
+    assert "older" in python_note((3, 9, 18))
+    assert "torchvision" in python_note((3, 14, 1))
+
+
+def test_an_installed_tool_keeps_its_models_and_history_out_of_the_venv(tmp_path, monkeypatch):
+    import importlib
+
+    from ika import paths
+
+    monkeypatch.setenv("IKA_HOME", str(tmp_path / "home"))
+    assert paths._home() == tmp_path / "home"
+    monkeypatch.delenv("IKA_HOME")
+    # A clone resolves to itself, so the README's replays find data/ in place.
+    assert paths._home() == paths.PACKAGE.parent
+    # Installed into site-packages there is no pyproject beside the package.
+    fake = tmp_path / "site-packages" / "ika"
+    fake.mkdir(parents=True)
+    monkeypatch.setattr(paths, "PACKAGE", fake)
+    assert paths._home() == paths.Path.home() / ".ika"
+    importlib.reload(paths)

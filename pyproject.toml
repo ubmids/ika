@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ika"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Shadowbox in front of a camera; it finds your habit and calls it before you do it"
 readme = "README.md"
-requires-python = ">=3.10,<3.13"
+requires-python = ">=3.10,<3.15"
 license = { text = "MIT" }
 authors = [{ name = "Subomi Olagoke" }]
 
@@ -30,6 +30,9 @@ dev = ["pytest>=8.0"]
 
 [project.scripts]
 ika = "ika.cli:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "ika.__version__" }
 
 [tool.setuptools.packages.find]
 include = ["ika*"]

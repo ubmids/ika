@@ -106,3 +106,30 @@ def test_tell_and_early_need_no_camera_or_model():
     """They run on simulation, so they must not be gated behind preflight."""
     assert parse("tell").null is False
     assert parse("early").feints == 0.35
+
+
+def test_version_matches_the_package_metadata(capsys):
+    import re
+    from pathlib import Path
+
+    import ika
+    from ika import cli
+
+    with pytest.raises(SystemExit) as done:
+        cli.main(["--version"])
+    assert done.value.code == 0
+    assert capsys.readouterr().out.strip() == f"ika {ika.__version__}"
+    assert re.fullmatch(r"\d+\.\d+\.\d+", ika.__version__)
+    # pyproject reads the version from the package, so the two cannot drift.
+    pyproject = (Path(ika.__file__).parent.parent / "pyproject.toml").read_text()
+    assert 'version = { attr = "ika.__version__" }' in pyproject
+
+
+def test_drill_and_coach_take_the_screen_flags():
+    from ika import cli
+
+    for command in ("drill", "coach"):
+        args = cli.build_parser().parse_args([command, "--plain", "--no-bell"])
+        assert args.plain and args.no_bell
+        args = cli.build_parser().parse_args([command])
+        assert not args.plain and not args.no_bell

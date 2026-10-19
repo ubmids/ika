@@ -11,10 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      # pyproject claims >=3.10,<3.13. Testing one version proved a third of
-      # that, so the matrix covers what the metadata promises.
+      # pyproject claims >=3.10,<3.15. Testing one version proved a fifth of
+      # that, so the matrix covers what the metadata promises. MediaPipe's
+      # wheels are py3-none, so the range is torch's and numpy's.
       matrix:
-        python-version: ['3.10', '3.11', '3.12']
+        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
     name: tests on ${{ matrix.python-version }}
     steps:
       - uses: actions/checkout@v4

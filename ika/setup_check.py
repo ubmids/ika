@@ -34,7 +34,7 @@ from pathlib import Path
 
 # Resolved against the package, not the working directory, so a survey means
 # the same thing from anywhere. `ika/cli.py` picks its defaults the same way.
-ROOT = Path(__file__).resolve().parent.parent
+from .paths import HOME as ROOT  # noqa: E402
 
 # The names are constants because scripts dispatch on them. A caller matching
 # on a literal string would break silently the first time wording changed.
@@ -231,6 +231,30 @@ def survey(root: Path | None = None) -> list[Requirement]:
             "with: .venv/bin/python scripts/train_from_hagrid.py",
         ),
     ]
+
+
+# The Pythons ika is tested on, in CI and by installing from a clean clone.
+# MediaPipe ships one wheel for every Python 3 (py3-none), so the floor and
+# ceiling come from torch and numpy wheels and from what has been run.
+PYTHONS = ((3, 10), (3, 14))
+
+
+def python_note(version: tuple[int, ...]) -> str | None:
+    """A friendly word about this Python, or None when it is a tested one."""
+    major_minor = tuple(version[:2])
+    tested = f"{PYTHONS[0][0]}.{PYTHONS[0][1]} to {PYTHONS[1][0]}.{PYTHONS[1][1]}"
+    here = ".".join(str(v) for v in version[:3])
+    if major_minor < PYTHONS[0]:
+        return (f"Python {here} is older than ika supports ({tested}). Install a newer "
+                "one, for example `uv tool install --python 3.12 git+https://github.com/ubmids/ika`.")
+    if major_minor > PYTHONS[1]:
+        return (f"Python {here} is newer than ika has been tested on ({tested}). It may "
+                "well work; if an install or import fails, use 3.12: "
+                "`uv tool install --python 3.12 git+https://github.com/ubmids/ika`.")
+    if tuple(version[:3]) == (3, 14, 1):
+        return ("Python 3.14.1 is the one release torchvision refuses to install on. "
+                "Any other 3.14, or 3.12, works.")
+    return None
 
 
 def missing(root: Path | None = None) -> list[Requirement]:

@@ -8,9 +8,9 @@ from pathlib import Path
 
 from . import control
 
-# Defaults resolve against the repo, not the working directory, so `ika live`
-# works from anywhere rather than only from the project root.
-ROOT = Path(__file__).resolve().parent.parent
+# Defaults resolve against the clone (or ~/.ika for an installed tool, see
+# `paths`), not the working directory, so `ika drill` works from anywhere.
+from .paths import HOME as ROOT  # noqa: E402
 
 
 def _default(*parts: str) -> str:
@@ -489,7 +489,11 @@ def _setup(args):
     import urllib.request
 
     from .body import MODELS, POSE_URLS
+    from .setup_check import python_note
 
+    note = python_note(tuple(sys.version_info[:3]))
+    print(f"  Python {sys.version.split()[0]}" + (f". {note}" if note else ", tested."))
+    print(f"  models and history live in {MODELS.parent}")
     MODELS.mkdir(parents=True, exist_ok=True)
     for variant in ("full", "lite"):
         target = MODELS / f"pose_landmarker_{variant}.task"
@@ -550,6 +554,9 @@ def build_parser() -> argparse.ArgumentParser:
         prog="ika",
         description="Shadowbox in front of a camera; it finds your habit and calls it "
                     "before you do it.")
+    from . import __version__
+
+    parser.add_argument("--version", action="version", version=f"ika {__version__}")
     sub = parser.add_subparsers(dest="command", required=True)
 
     rec = sub.add_parser("record", help="record your own gestures")
