@@ -51,15 +51,68 @@ from ika.profile import Profile  # noqa: E402
 FPS = 30.0
 UP, DOWN, SPREAD = -0.08, -0.34, 0.30
 
-# Two guard models, as (up, down, spread) for the window average after a
-# combo. SIM is what robustness.py assumed from the labelled drop frames.
-# REAL is what a planted-habit test on real footage measured: sags planted
-# into real guard tracks averaged -0.25 against -0.16 after other combos,
-# sd 0.19, about half SIM's separation in standard deviations (0.47 against
-# 0.87). With labelled punches, which is the setup knowledge coach mode has,
-# that test named an 80% habit in 6% of 12-minute composites. REAL is the
-# one to believe; SIM is kept so the two can be compared.
-GUARD = {"sim": (UP, DOWN, SPREAD), "real": (-0.16, -0.25, 0.19)}
+# Guard models: what the average guard height in the second after a combo
+# is, with and without a drop. Each draws one occasion's level.
+#
+#   real          measured on the planted bench (scripts/planted_check.py
+#                 --heights, bench/shadow/guard_heights.json): real guard
+#                 tracks, the shipped read from the shoulders, the held-out
+#                 punch reader, an 80% habit planted from real drops. "Down"
+#                 draws from the heights after combos a plant landed in, "up"
+#                 from every other, each person centred on their own guard.
+#                 Drawn from the measured quantiles, so the shape is real and
+#                 not assumed normal: the heights have a long low tail, and
+#                 the rank test reads them at an effect of 0.70 where a normal
+#                 curve with the same means and spreads would say about 0.65.
+#   real-nose     the same, measured from the nose, the read's old reference.
+#   real-normal   the previous REAL model, normal: -0.25 against -0.16, sd
+#                 0.19, the means and spread of the same nose measurement.
+#   sim           what robustness.py assumed from labelled drop frames,
+#                 -0.34 against -0.08, sd 0.30. Optimistic; kept to compare.
+HEIGHTS = Path(__file__).resolve().parent.parent / "bench" / "shadow" / "guard_heights.json"
+
+
+class Normal:
+    def __init__(self, up, down, spread):
+        self.up, self.down, self.spread = up, down, spread
+
+    def draw(self, rng, down: bool) -> float:
+        return float(rng.normal(self.down if down else self.up, self.spread))
+
+    def describe(self) -> str:
+        return (f"normal, after the habit combo {self.down:+.2f}, after others "
+                f"{self.up:+.2f}, sd {self.spread:.2f}")
+
+
+class Measured:
+    def __init__(self, reference):
+        import json
+        d = json.loads(HEIGHTS.read_text())[reference]
+        self.q = np.linspace(0.0, 1.0, len(d["rest"]))
+        self.rest, self.planted = np.asarray(d["rest"]), np.asarray(d["planted"])
+        self.reference, self.effect = reference, d["effect"]
+
+    def draw(self, rng, down: bool) -> float:
+        return float(np.interp(rng.random(), self.q, self.planted if down else self.rest))
+
+    def describe(self) -> str:
+        return (f"measured from the {self.reference}, after a plant median "
+                f"{np.median(self.planted):+.2f}, after others {np.median(self.rest):+.2f}, "
+                f"effect {self.effect:.2f}")
+
+
+GUARD = {"real": lambda: Measured("shoulders"), "real-nose": lambda: Measured("nose"),
+         "real-normal": lambda: Normal(-0.16, -0.25, 0.19),
+         "sim": lambda: Normal(UP, DOWN, SPREAD)}
+_MODELS = {}
+
+
+def model(guard):
+    if guard not in _MODELS:
+        _MODELS[guard] = GUARD[guard]()
+    return _MODELS[guard]
+
+
 FRAME_NOISE = 0.10
 UNREAD = 0.03
 PUNCH_DEPTH = -0.5
@@ -96,7 +149,7 @@ def calls_for(combos, minutes: float, seed: int) -> list[coach.Call]:
 
 
 def person(rng, calls, habit_combo, habit: float, pace=(0.7, 0.3), guard="sim"):
-    UP, DOWN, SPREAD = GUARD[guard]
+    level = model(guard)
     """What a fighter following the calls does: true punches, and guard
     heights frame by frame."""
     end_time = calls[-1].at + coach.gap(calls[-1].combo) + 2.0
@@ -107,7 +160,7 @@ def person(rng, calls, habit_combo, habit: float, pace=(0.7, 0.3), guard="sim"):
     # Before the first call: in guard.
     first = np.searchsorted(t, bounds[0])
     for side in sag.WRISTS:
-        h[side][:first] = rng.normal(UP, SPREAD)
+        h[side][:first] = level.draw(rng, False)
     for i, call in enumerate(calls):
         a, b = np.searchsorted(t, call.at), np.searchsorted(t, bounds[i + 1])
         answered = rng.random() < ANSWER
@@ -123,9 +176,8 @@ def person(rng, calls, habit_combo, habit: float, pace=(0.7, 0.3), guard="sim"):
         dropped = answered and (rng.random() < (habit if call.combo == habit_combo
                                                 else BASE_DROP))
         for side in sag.WRISTS:
-            h[side][a:after] = rng.normal(UP, SPREAD)
-            level = DOWN if (dropped and side == "right") else UP
-            h[side][after:b] = rng.normal(level, SPREAD)
+            h[side][a:after] = level.draw(rng, False)
+            h[side][after:b] = level.draw(rng, dropped and side == "right")
     for side in sag.WRISTS:
         h[side] += rng.normal(0.0, FRAME_NOISE, len(t))
         for at, s in punches:
@@ -234,11 +286,7 @@ def bench_null(schedules=40):
 
 
 def report(guard: str, n: int, npool: int) -> None:
-    up, down, spread = GUARD[guard]
-    title = ("REAL-MEASURED guard model" if guard == "real"
-             else "OLD SIM guard model (optimistic)")
-    print(f"=== {title}: after the habit combo {down:+.2f}, after others {up:+.2f}, "
-          f"sd {spread:.2f} ===\n")
+    print(f"=== guard model {guard}: {model(guard).describe()}, rule {sag.RULE} ===\n")
     print("a planted habit (right hand drops after one called combo, 80%), one session"
           " whose three combos include it:")
     print(f"  {'minutes':>7s} {'perfect':>8s} {'measured':>9s} {'calls read':>11s}")
@@ -250,7 +298,7 @@ def report(guard: str, n: int, npool: int) -> None:
     for minutes in (3, 6, 12):
         m, _ = single(minutes, 0.5, MEASURED, n, guard=guard)
         print(f"  {minutes:7d} min  {m:4.0%}")
-    if guard == "real":
+    if guard.startswith("real"):
         print("\nhow long one session (same three combos, --rounds) takes, 80% habit,"
               " measured sensors:")
         for minutes in (24, 48, 96, 192):
@@ -289,7 +337,11 @@ def main() -> int:
     ap.add_argument("--no-bench", action="store_true", dest="no_bench")
     ap.add_argument("--guard", nargs="+", default=["real", "sim"], choices=sorted(GUARD),
                     help="guard model(s): real-measured separation, or the older sim one")
+    ap.add_argument("--rule", default=sag.RULE, choices=sag.RULES,
+                    help="the guard read's size bar: effect (shipped) or lift (old)")
     args = ap.parse_args()
+    sag.RULE = args.rule
+    print(f"decision rule: {args.rule}\n")
     n = 40 if args.quick else 200
     npool = 20 if args.quick else 100
 
