@@ -104,7 +104,8 @@ def test_history_shows_coach_and_drill_sessions_apart(tmp_path, monkeypatch, cap
     out = capsys.readouterr().out
     assert "drill    30 punches" in out
     assert "coach    47 calls" in out and "40 answered" in out
-    assert "after a called combo (coach):" in out
+    assert "after a called combo" in out
+    assert out.index("ika called the combos") < out.index("ika read what you threw")
     assert "called 1-2 -> right hand down" in out
     assert "60%" in out
     assert "the call 1-2" in out and "ends with a reminder" in out

@@ -473,76 +473,14 @@ def _wants_live(args) -> bool:
 
 def _history(args):
     """Each habit's rate, session by session, so a fading habit is visible."""
-    import time as _time
     from pathlib import Path
 
-    from .coach import combo_of, is_coach
-    from .profile import Profile, mode_of
+    from .history import render
+    from .profile import Profile
 
     store = Path(args.profile) / f"{args.subject}.json"
-    if not store.exists():
-        print(f"\n  no sessions for {args.subject} yet. Run `ika drill` or `ika coach` first.")
-        return 1
-    record = Profile.load(store)
-    print(f"\n  {args.subject}: {len(record.log)} logged session(s)\n")
-    for row in record.log[-args.last:]:
-        when = _time.strftime("%Y-%m-%d %H:%M", _time.localtime(row["at"]))
-        counts = row["counts"]
-        if mode_of(row) == "coach":
-            calls = counts.get("calls", 0)
-            print(f"  {when}  {row['seconds'] / 60:4.1f} min  coach  {calls:4d} calls    "
-                  f"{counts.get('answered', 0):3d} answered")
-            continue
-        punches = sum(v for k, v in counts.items() if k.startswith("punch_"))
-        drops = sum(v for k, v in counts.items() if k.startswith("guard_down_"))
-        print(f"  {when}  {row['seconds'] / 60:4.1f} min  drill  {punches:4d} punches  "
-              f"{drops:3d} guard drops")
-    series = record.history()
-    if not series:
-        print("\n  no habit has been found yet.")
-        return 0
-
-    def kind(key):
-        context, _, then = key.partition(" -> ")
-        if context.startswith("coach_"):
-            return 0
-        return 1 if then.startswith("guard") else 2
-
-    def label(key):
-        context, _, then = key.partition(" -> ")
-        if context.startswith("coach_"):
-            return f"called {context[len('coach_'):]} -> {then.rsplit('_', 1)[1]} hand down"
-        return key
-
-    # Guard habits first: they are the read. Punch patterns are true too, but
-    # "after a jab you throw a cross" is how most people box, not a flaw. A
-    # coach habit is a guard habit after a combo ika called, so it leads. Its
-    # rate is only logged in coach sessions; drill sessions show it as "-".
-    series.sort(key=lambda item: (kind(item[0]), item[0]))
-    headers = {0: "\n  after a called combo (coach):",
-               1: "\n  where your hands go (drill):",
-               2: "\n  punch patterns (drill):"}
-    shown_header = None
-    width = max(52, *(len(label(key)) for key, _points in series))
-    for key, points in series:
-        if kind(key) != shown_header:
-            print(headers[kind(key)])
-            shown_header = kind(key)
-        cells = [f"{h / s:4.0%}" if s else "   -" for _at, h, s in points[-args.last:]]
-        rated = [h / s for _a, h, s in points if s]
-        trend = ""
-        if len(rated) >= 2:
-            trend = ("  falling" if rated[-1] < rated[0] - 0.1
-                     else "  rising" if rated[-1] > rated[0] + 0.1 else "  steady")
-        print(f"    {label(key):{width}s} {' '.join(cells)}{trend}")
-    standing = record.habits(now=_time.time())
-    if standing:
-        print("\n  standing now:")
-        for habit in standing[:6]:
-            text = habit.describe(now=_time.time())
-            if is_coach(habit.context):
-                text += f"  (the call for {combo_of(habit.context)} now ends with a reminder)"
-            print(f"    {text}")
+    record = Profile.load(store) if store.exists() else None
+    print("\n".join([""] + render(record, args.subject, last=args.last)))
     return 0
 
 
